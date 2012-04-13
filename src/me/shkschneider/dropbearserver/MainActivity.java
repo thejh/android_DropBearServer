@@ -16,27 +16,23 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener {
 
 	private static final String TAG = "MainActivity";
+	private static final int DEFAULT_PAGE = 1;
 
 	private ViewPager mPager;
 	private ViewPagerTabs mTabs;
 	private MainAdapter mAdapter;
+	
+	private ImageView mLogo;
 	private TextView mDropbearVersion;
-
-	private void offerSuperUser() {
-		try {
-			RootTools.offerSuperUser(this);
-		}
-		catch (ActivityNotFoundException e) {
-			Toast.makeText(this, R.string.no_market, Toast.LENGTH_SHORT).show();
-			Log.d(TAG, "Google Play not found, RootTools.offerSuperUser failed");
-		}
-	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,15 +60,34 @@ public class MainActivity extends Activity {
 		mPager.setAdapter(mAdapter);
 		mTabs = (ViewPagerTabs) findViewById(R.id.tabs);
 		mTabs.setViewPager(mPager);
-		mPager.setCurrentItem(1);
+		mPager.setCurrentItem(DEFAULT_PAGE);
 		
 		/* Header */
+		mLogo = (ImageView) findViewById(R.id.logo);
+		mLogo.setOnClickListener(this);
 		mDropbearVersion = (TextView) findViewById(R.id.dropbear_version);
 		try {
 			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo("me.shkschneider.dropbearserver", PackageManager.GET_META_DATA);
 			mDropbearVersion.setText("" + pInfo.versionName);
 		} catch (NameNotFoundException e) {
 			mDropbearVersion.setText("" + 0);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v == mLogo) {
+			mPager.setCurrentItem(DEFAULT_PAGE);
+		}
+	}
+
+	private void offerSuperUser() {
+		try {
+			RootTools.offerSuperUser(this);
+		}
+		catch (ActivityNotFoundException e) {
+			Toast.makeText(this, R.string.no_market, Toast.LENGTH_SHORT).show();
+			Log.d(TAG, "Market not found, RootTools.offerSuperUser failed");
 		}
 	}
 	

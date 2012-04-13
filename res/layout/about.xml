@@ -50,24 +50,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:singleLine="false"
-                android:text="Lorem ipsum..."
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:minHeight="60dp"
-            android:orientation="vertical" >
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:singleLine="false"
                 android:text="Released under the GNU General Public License 2.\nSource code available at leonnib4@github."
                 android:textColor="@color/white" />
         </LinearLayout>

@@ -14,264 +14,282 @@
         android:paddingRight="5dp" >
 
         <LinearLayout
-            style="@style/list_item_top"
+            android:id="@+id/general"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:clickable="true"
-            android:gravity="center_horizontal"
             android:orientation="horizontal" >
 
             <TextView
                 style="@style/content_page_large_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.0"
                 android:text="General" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_middle"
+            android:id="@+id/general_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/list_item_top"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Start at boot"
-                android:textColor="@color/white" />
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-            <CheckBox
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Start at boot"
+                    android:textColor="@color/white" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Keep screen ON"
+                    android:textColor="@color/white" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Only over Wi-Fi"
+                    android:textColor="@color/white" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_bottom"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Complete removal"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Keep screen ON"
-                android:textColor="@color/white" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Only over Wi-Fi"
-                android:textColor="@color/white" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Complete removal"
-                android:textColor="@color/white" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/list_item_top"
+            android:id="@+id/dropbear"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:clickable="true"
-            android:gravity="center_horizontal"
             android:orientation="horizontal" >
 
             <TextView
                 style="@style/content_page_large_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:layout_weight="1.0"
                 android:text="DropBear" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_middle"
+            android:id="@+id/dropbear_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/list_item_top"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Banner"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Banner"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Message Of The Day"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Message Of The Day"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Disallow root logins"
-                android:textColor="@color/white" />
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-            <CheckBox
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Disallow root logins"
+                    android:textColor="@color/white" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
-        </LinearLayout>
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Disable password logins"
+                    android:textColor="@color/white" />
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Disable password logins"
-                android:textColor="@color/white" />
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-            <CheckBox
-                android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Disable password logins for root"
+                    android:textColor="@color/white" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
-        </LinearLayout>
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Enable master password to any account"
+                    android:textColor="@color/white" />
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_bottom"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Disable password logins for root"
-                android:textColor="@color/white" />
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Listening port"
+                    android:textColor="@color/white" />
 
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Enable master password to any account"
-                android:textColor="@color/white" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/list_item_middle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="Listening port"
-                android:textColor="@color/white" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="numberSigned"
-                android:text="22" />
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:text="22" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -280,32 +298,35 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:clickable="true"
-            android:gravity="center_horizontal"
             android:orientation="horizontal" >
 
             <TextView
                 style="@style/content_page_large_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:layout_weight="1.0"
                 android:text="Public keys" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_middle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/list_item_bottom"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:gravity="left"
-                android:text="..."
-                android:textColor="@color/white" />
+                android:duplicateParentState="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="..."
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

@@ -14,64 +14,84 @@
         android:paddingRight="5dp" >
 
         <LinearLayout
-            style="@style/list_item_top"
+            android:id="@+id/what_is_root"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:clickable="true"
-            android:orientation="vertical" >
+            android:orientation="horizontal" >
 
             <TextView
                 style="@style/content_page_large_text"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_weight="1.0"
                 android:text="What is root?" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_bottom"
+            android:id="@+id/what_is_root_content"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:clickable="false"
             android:minHeight="60dp"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/content_page_small_text"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:singleLine="false"
                 android:text="Lorem ipsum..."
                 android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_top"
+            android:id="@+id/what_is_dropbear"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:clickable="true"
-            android:orientation="vertical" >
+            android:orientation="horizontal" >
 
             <TextView
                 style="@style/content_page_large_text"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_weight="1.0"
                 android:text="What is dropbear?" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
         </LinearLayout>
 
         <LinearLayout
-            style="@style/list_item_bottom"
+            android:id="@+id/what_is_dropbear_content"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:clickable="false"
             android:minHeight="60dp"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <TextView
                 style="@style/content_page_small_text"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:singleLine="false"
                 android:text="Lorem ipsum..."
                 android:textColor="@color/white" />

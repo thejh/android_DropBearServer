@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- main -->
     <string name="app_name">DropBear Server</string>
     <string name="dropbear">DropBear</string>
+    
+    <!-- server -->
     <string name="root_privileges">Root privileges</string>
+    <string name="dropbear_status">DropBear status</string>
     <string name="server_status">Server status</string>
-    <string name="ko">KO</string>
-    <string name="server_stopped">Stopped</string>
-    <string name="start">Start server</string>
-    <string name="stop">Stop server</string>
-    <string name="configure">Configure</string>
-    <string name="about">About</string>
-    <string name="more_apps">More Apps</string>
     <string name="ok">OK</string>
+    <string name="ko">KO</string>
     <string name="started">STARTED</string>
     <string name="stopped">STOPPED</string>
-    <string name="no_market">Google Play could not be found</string>
+    <string name="start">START SERVER</string>
+    <string name="stop">STOP SERVER</string>
+    
+    <!-- other -->
+    <string name="no_market">Android Market could not be found</string>
 
 </resources>
