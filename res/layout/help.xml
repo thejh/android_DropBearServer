@@ -18,7 +18,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:clickable="false"
+            android:clickable="true"
             android:orientation="vertical" >
 
             <TextView
@@ -26,12 +26,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="What is root?"
-                android:textColor="@color/sugreen" />
+                android:text="What is root?" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/list_item_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:minHeight="60dp"
+            android:orientation="vertical" >
 
             <TextView
                 style="@style/content_page_small_text"
                 android:layout_width="fill_parent"
+                android:singleLine="false"
                 android:text="Lorem ipsum..."
                 android:textColor="@color/white" />
         </LinearLayout>
@@ -41,7 +50,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:clickable="false"
+            android:clickable="true"
             android:orientation="vertical" >
 
             <TextView
@@ -49,12 +58,21 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="What is dropbear?"
-                android:textColor="@color/sugreen" />
+                android:text="What is dropbear?" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/list_item_bottom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:minHeight="60dp"
+            android:orientation="vertical" >
 
             <TextView
                 style="@style/content_page_small_text"
                 android:layout_width="fill_parent"
+                android:singleLine="false"
                 android:text="Lorem ipsum..."
                 android:textColor="@color/white" />
         </LinearLayout>

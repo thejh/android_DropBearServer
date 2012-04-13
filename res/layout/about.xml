@@ -49,6 +49,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:singleLine="false"
                 android:text="Lorem ipsum..."
                 android:textColor="@color/white" />
         </LinearLayout>
@@ -66,16 +67,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Released under the GNU General Public License 2."
-                android:textColor="@color/white" />
-
-            <TextView
-                style="@style/content_page_small_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:linksClickable="true"
-                android:text="Source code available at leonnib4@github."
+                android:singleLine="false"
+                android:text="Released under the GNU General Public License 2.\nSource code available at leonnib4@github."
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -143,6 +136,50 @@
                 android:gravity="center_horizontal"
                 android:text="Hi, I&apos;m an Android developer!"
                 android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/list_item_middle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="icon"
+                android:src="@drawable/ic_launcher" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:duplicateParentState="true"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/content_page_large_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Donate!" />
+
+                <TextView
+                    style="@style/content_page_small_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:singleLine="false"
+                    android:text="By donating any amount, you are directly supporting my developments."
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
         </LinearLayout>
 
         <LinearLayout
