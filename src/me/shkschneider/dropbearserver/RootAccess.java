@@ -8,29 +8,24 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import android.util.Log;
 
 public abstract class RootAccess
 {
 	private static final String TAG = "RootAccess";
-	public static Boolean rootAvailable = false;
+	public static Boolean suAvailable = false;
 	public static Boolean dropbearAvailable = false;
 	
 	public static ArrayList<String> commandsToExecute = new ArrayList<String>();
 
-	public static boolean isBusyboxAvailable()
-	{
-		return true;
-	}
-
-	public static boolean isRootAvailable()
+	public static boolean isSuAvailable()
 	{
 		boolean retval = false;
 		Process suProcess;
 
 		try {
 			suProcess = Runtime.getRuntime().exec("su");
-
 			DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
 			DataInputStream osRes = new DataInputStream(suProcess.getInputStream());
 
@@ -42,19 +37,17 @@ public abstract class RootAccess
 				String currUid = osRes.readLine();
 				boolean exitSu = false;
 				if (null == currUid) {
-					retval = false;
-					exitSu = false;
-					Log.d(TAG, "isRootAvailable(): Can't get root access or denied by user");
+					Log.d(TAG, "isSuAvailable(): su access denied by user");
 				}
 				else if (true == currUid.contains("uid=0")) {
 					retval = true;
 					exitSu = true;
-					Log.d(TAG, "isRootAvailable(): Root access granted");
+					suAvailable = true;
+					Log.d(TAG, "isSuAvailable(): su access granted");
 				}
 				else {
-					retval = false;
 					exitSu = true;
-					Log.d(TAG, "isRootAvailable(): Root access rejected: " + currUid);
+					Log.d(TAG, "isSuAvailable(): su access rejected: " + currUid);
 				}
 
 				if (exitSu) {
@@ -64,12 +57,38 @@ public abstract class RootAccess
 			}
 		}
 		catch (Exception e) {
-			// Can't get root !
-			// Probably broken pipe exception on trying to write to output
-			// stream after su failed, meaning that the device is not rooted
+			Log.d(TAG, "isRootAvailable(): su access rejected: [" + e.getClass().getName() + "] : " + e.getMessage());
+		}
 
-			retval = false;
-			Log.d(TAG, "isRootAvailable(): Root access rejected [" + e.getClass().getName() + "] : " + e.getMessage());
+		return retval;
+	}
+
+	public static boolean isDropbearAvailable()
+	{
+		boolean retval = false;
+		Process dbProcess;
+
+		try {
+			dbProcess = Runtime.getRuntime().exec("dropbear -h");
+			DataInputStream osRes = new DataInputStream(dbProcess.getInputStream());
+
+			if (null != osRes) {
+				String dropbearHelp = osRes.readLine();
+				if (null == dropbearHelp) {
+					Log.d(TAG, "isDropbearAvailable(): dropbear access denied by user");
+				}
+				else if (true == dropbearHelp.contains("Dropbear sshd v")) {
+					retval = true;
+					dropbearAvailable = true;
+					Log.d(TAG, "isDropbearAvailable(): dropbear access granted");
+				}
+				else {
+					Log.d(TAG, "isDropbearAvailable(): dropbear access rejected: " + dropbearHelp);
+				}
+			}
+		}
+		catch (Exception e) {
+			Log.d(TAG, "isRootAvailable(): dropbear access rejected: [" + e.getClass().getName() + "] : " + e.getMessage());
 		}
 
 		return retval;

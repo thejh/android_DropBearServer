@@ -1,10 +1,7 @@
 package me.shkschneider.dropbearserver;
 
-import java.util.concurrent.TimeoutException;
-
 import com.astuetz.viewpagertabs.ViewPagerTabs;
 import com.stericson.RootTools.RootTools;
-
 import me.shkschneider.dropbearserver.R;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -30,38 +27,22 @@ public class MainActivity extends Activity implements OnClickListener {
 	private ViewPager mPager;
 	private ViewPagerTabs mTabs;
 	private MainAdapter mAdapter;
-	
+
 	private ImageView mLogo;
 	private TextView mDropbearVersion;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.main);
 
-		/* RootTools */
-		try {
-			if (RootTools.isAccessGiven()) {
-				RootAccess.rootAvailable = true;
-			}
-			else {
-				offerSuperUser();
-			}
+		/* RootAccess */
+		if (!RootAccess.isSuAvailable()) {
+			offerSuperuser();
 		}
-		catch (TimeoutException e) {
-			offerSuperUser();
-		}
-		
-		/* ViewPagerTabs */
-		mAdapter = new MainAdapter(this);
-		mAdapter.initPages();
-		mPager = (ViewPager) findViewById(R.id.pager);
-		mPager.setAdapter(mAdapter);
-		mTabs = (ViewPagerTabs) findViewById(R.id.tabs);
-		mTabs.setViewPager(mPager);
-		mPager.setCurrentItem(DEFAULT_PAGE);
-		
+		RootAccess.isDropbearAvailable();
+
 		/* Header */
 		mLogo = (ImageView) findViewById(R.id.logo);
 		mLogo.setOnClickListener(this);
@@ -72,6 +53,15 @@ public class MainActivity extends Activity implements OnClickListener {
 		} catch (NameNotFoundException e) {
 			mDropbearVersion.setText("" + 0);
 		}
+
+		/* ViewPagerTabs */
+		mAdapter = new MainAdapter(this);
+		mAdapter.initPages();
+		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setAdapter(mAdapter);
+		mTabs = (ViewPagerTabs) findViewById(R.id.tabs);
+		mTabs.setViewPager(mPager);
+		mPager.setCurrentItem(DEFAULT_PAGE);
 	}
 
 	@Override
@@ -81,7 +71,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 
-	private void offerSuperUser() {
+	private void offerSuperuser() {
 		try {
 			RootTools.offerSuperUser(this);
 		}
@@ -90,12 +80,12 @@ public class MainActivity extends Activity implements OnClickListener {
 			Log.d(TAG, "Market not found, RootTools.offerSuperUser failed");
 		}
 	}
-	
+
 	public static Intent createIntent(Context context) {
-        Intent i = new Intent(context, MainActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        return i;
-    }
+		Intent i = new Intent(context, MainActivity.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		return i;
+	}
 
 	@Override
 	public void onStart() {

@@ -29,7 +29,7 @@ public class ServerPage implements OnClickListener {
 		
 		// mRootStatus
 		mRootStatus = (TextView) mView.findViewById(R.id.root_status);
-		if (RootAccess.rootAvailable == true) {
+		if (RootAccess.suAvailable == true) {
 			mRootStatus.setText(R.string.ok);
 			mRootStatus.setTextColor(Color.GREEN);
 		}
