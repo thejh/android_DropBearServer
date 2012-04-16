@@ -1,12 +1,13 @@
 package me.shkschneider.dropbearserver;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-public class SettingsPage implements OnClickListener {
+public class SettingsPage extends Activity implements OnClickListener {
 
 	private Context mContext;
 	private View mView;
@@ -30,6 +31,10 @@ public class SettingsPage implements OnClickListener {
 		mDropbear = (LinearLayout) mView.findViewById(R.id.dropbear);
 		mDropbear.setOnClickListener(this);
 		mDropbearContent = (LinearLayout) mView.findViewById(R.id.dropbear_content);
+	}
+	
+	public void update() {
+		// ...
 	}
 
 	public View getView() {

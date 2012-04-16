@@ -55,6 +55,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/go_rate"
             style="@style/list_item_bottom"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -121,6 +122,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/go_donate"
             style="@style/list_item_middle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -165,6 +167,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/go_website"
             style="@style/list_item_bottom"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

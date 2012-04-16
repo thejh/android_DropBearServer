@@ -14,17 +14,17 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	private static final int HELP_INDEX = 2;
 	private static final int ABOUT_INDEX = 3;
 
-	protected transient Activity mContext;
-	private SettingsPage mSettingsPage;
-	private ServerPage mServerPage;
-	private HelpPage mHelpPage;
-	private AboutPage mAboutPage;
-	
+	protected transient Activity mContext = null;
+	private SettingsPage mSettingsPage = null;
+	private ServerPage mServerPage = null;
+	private HelpPage mHelpPage = null;
+	private AboutPage mAboutPage = null;
+
 	private String[] mTitles = {
-			"Settings".toUpperCase(),
-			"Server".toUpperCase(),
-			"Help".toUpperCase(),
-			"About".toUpperCase()
+			"SETTINGS",
+			"SERVER",
+			"HELP",
+			"ABOUT"
 	};
 
 	public void initPages() {
@@ -38,25 +38,32 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		mAboutPage.initView(mContext);
 	}
 
+	public void updatePages() {
+		mSettingsPage.update();
+		mServerPage.update();
+		mHelpPage.update();
+		mAboutPage.update();
+	}
+
 	@Override
 	public Object instantiateItem(View container, int position) {
-		View view = null;
+		View v = null;
 		switch (position) {
 		case SETTINGS_INDEX:
-			view = mSettingsPage.getView();
+			v = mSettingsPage.getView();
 			break;
 		case SERVER_INDEX:
-			view = mServerPage.getView();
+			v = mServerPage.getView();
 			break;
 		case HELP_INDEX:
-			view = mHelpPage.getView();
+			v = mHelpPage.getView();
 			break;
 		case ABOUT_INDEX:
-			view = mAboutPage.getView();
+			v = mAboutPage.getView();
 			break;
 		}
-		((ViewPager) container).addView(view, 0);
-		return view;
+		((ViewPager) container).addView(v, 0);
+		return v;
 	}
 
 	public MainAdapter(Activity context) {

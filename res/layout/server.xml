@@ -9,10 +9,12 @@
     android:paddingRight="5dp" >
 
     <LinearLayout
-        style="@style/list_item_top"
+        style="@style/list_item_single"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="5dp"
+        android:clickable="false"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,19 +23,52 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/root_status"
+            android:id="@+id/superuser_status"
+            style="@style/content_page_large_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="@string/ko"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        style="@style/list_item_middle"
+        android:id="@+id/get_superuser"
+        style="@style/list_item_single"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="icon"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Get &apos;Superuser&apos;!"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ImageView
+            style="@style/list_item_chevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="chevron" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/list_item_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="false"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,15 +81,77 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="@string/ko"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        style="@style/list_item_bottom"
+        android:id="@+id/get_dropbear"
+        style="@style/list_item_single"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="icon"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Install &apos;DropBear&apos;!"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <ImageView
+            style="@style/list_item_chevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="chevron" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/get_dropbear_configuration"
+        style="@style/list_item_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="icon"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Configure &apos;DropBear&apos;!"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone" />
+
+        <ImageView
+            style="@style/list_item_chevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="chevron" />
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/list_item_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="false"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="@string/stopped"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
     </LinearLayout>
@@ -75,30 +172,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/infos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="-"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:clickable="true"
-        android:gravity="bottom"
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/launch"
+            android:id="@+id/server_launch"
             style="@style/list_item_single"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
             android:orientation="horizontal" >
@@ -111,12 +191,12 @@
                 android:orientation="vertical" >
 
                 <TextView
-            		android:id="@+id/launch_label"
+                    android:id="@+id/launch_label"
                     style="@style/content_page_large_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:text="@string/start" />
+                    android:text="" />
             </LinearLayout>
 
             <ImageView
@@ -125,6 +205,24 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="chevron" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/infos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:background="@color/black"
+            android:gravity="center_horizontal"
+            android:padding="1dp"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
 </LinearLayout>

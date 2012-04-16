@@ -1,10 +1,8 @@
 package me.shkschneider.dropbearserver;
 
 import com.astuetz.viewpagertabs.ViewPagerTabs;
-import com.stericson.RootTools.RootTools;
 import me.shkschneider.dropbearserver.R;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -17,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -25,7 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private static final int DEFAULT_PAGE = 1;
 
 	private ViewPager mPager;
-	private ViewPagerTabs mTabs;
+	private ViewPagerTabs mPagerTabs;
 	private MainAdapter mAdapter;
 
 	private ImageView mLogo;
@@ -36,31 +33,25 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.main);
-
-		/* RootAccess */
-		if (!RootAccess.isSuAvailable()) {
-			offerSuperuser();
-		}
-		RootAccess.isDropbearAvailable();
-
-		/* Header */
+		
+		// Header
 		mLogo = (ImageView) findViewById(R.id.logo);
 		mLogo.setOnClickListener(this);
 		mDropbearVersion = (TextView) findViewById(R.id.dropbear_version);
 		try {
-			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo("me.shkschneider.dropbearserver", PackageManager.GET_META_DATA);
+			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getResources().getString(R.string.app_package), PackageManager.GET_META_DATA);
 			mDropbearVersion.setText("" + pInfo.versionName);
 		} catch (NameNotFoundException e) {
 			mDropbearVersion.setText("" + 0);
 		}
 
-		/* ViewPagerTabs */
+		// ViewPagerTabs
 		mAdapter = new MainAdapter(this);
 		mAdapter.initPages();
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPager.setAdapter(mAdapter);
-		mTabs = (ViewPagerTabs) findViewById(R.id.tabs);
-		mTabs.setViewPager(mPager);
+		mPagerTabs = (ViewPagerTabs) findViewById(R.id.tabs);
+		mPagerTabs.setViewPager(mPager);
 		mPager.setCurrentItem(DEFAULT_PAGE);
 	}
 
@@ -68,16 +59,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		if (v == mLogo) {
 			mPager.setCurrentItem(DEFAULT_PAGE);
-		}
-	}
-
-	private void offerSuperuser() {
-		try {
-			RootTools.offerSuperUser(this);
-		}
-		catch (ActivityNotFoundException e) {
-			Toast.makeText(this, R.string.no_market, Toast.LENGTH_SHORT).show();
-			Log.d(TAG, "Market not found, RootTools.offerSuperUser failed");
 		}
 	}
 
@@ -91,6 +72,13 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onStart() {
 		super.onStart();
 		Log.d(TAG, "onStart()");
+		
+		// Root dependencies
+		DropBearServerHelper.checkRootAccess();
+		DropBearServerHelper.checkDropbear();
+		
+		// Pages
+		mAdapter.updatePages();
 	}
 
 	@Override

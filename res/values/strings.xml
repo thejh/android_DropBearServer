@@ -3,6 +3,9 @@
 
     <!-- main -->
     <string name="app_name">DropBear Server</string>
+    <string name="app_package">me.shkschneider.dropbearserver</string>
+    <string name="app_donate">http://www.paypal.com</string>
+    <string name="app_website">http://www.shkschneider.me</string>
     <string name="dropbear">DropBear</string>
     
     <!-- server -->
