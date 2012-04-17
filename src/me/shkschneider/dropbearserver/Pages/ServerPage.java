@@ -3,11 +3,12 @@ package me.shkschneider.dropbearserver.Pages;
 import me.shkschneider.dropbearserver.ASyncTaskCallback;
 import me.shkschneider.dropbearserver.DropbearInstaller;
 import me.shkschneider.dropbearserver.R;
-import me.shkschneider.dropbearserver.StartServer;
-import me.shkschneider.dropbearserver.StopServer;
+import me.shkschneider.dropbearserver.ServerStarter;
+import me.shkschneider.dropbearserver.ServerStopper;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
+
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -182,8 +183,8 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 				mServerStatusCode = STATUS_STARTING;
 				updateServerStatus();
 				// StartServer
-				StartServer startServer = new StartServer(mContext, this);
-				startServer.execute();
+				ServerStarter serverStarter = new ServerStarter(mContext, this);
+				serverStarter.execute();
 				break;
 			case STATUS_STARTING:
 				mServerStatusCode = STATUS_STARTED;
@@ -192,8 +193,8 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 				mServerStatusCode = STATUS_STOPPING;
 				updateServerStatus();
 				// StopServer
-				StopServer stopServer = new StopServer(mContext, this);
-				stopServer.execute();
+				ServerStopper serverStopper = new ServerStopper(mContext, this);
+				serverStopper.execute();
 				break;
 			case STATUS_STOPPING:
 				mServerStatusCode = STATUS_STOPPED;
@@ -224,7 +225,7 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 	}
 
 	@Override
-	public void onDropbearInstallerComplete(Boolean result) {
+	public void DropbearInstallerDelegate(Boolean result) {
 		Log.i(TAG, "onDropbearInstallerComplete()");
 		if (result == true) {
 			RootUtils.checkDropbear();
@@ -235,7 +236,7 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 	}
 
 	@Override
-	public void onStartServerComplete(Boolean result) {
+	public void ServerStarterDelegate(Boolean result) {
 		Log.i(TAG, "onStartServerComplete()");
 		if (result == true) {
 			mServerStatusCode = STATUS_STARTED;
@@ -247,7 +248,7 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 	}
 
 	@Override
-	public void onStopServerComplete(Boolean result) {
+	public void ServerStopperDelegate(Boolean result) {
 		Log.i(TAG, "onStopServerComplete()");
 		if (result == true) {
 			mServerStatusCode = STATUS_STOPPED;

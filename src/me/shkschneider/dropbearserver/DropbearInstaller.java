@@ -2,6 +2,7 @@ package me.shkschneider.dropbearserver;
 
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -100,6 +101,6 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 		else {
 			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_LONG).show();
 		}
-		mCallback.onDropbearInstallerComplete(result);
+		mCallback.DropbearInstallerDelegate(result);
 	}
 }

@@ -6,8 +6,8 @@ package me.shkschneider.dropbearserver;
 
 public interface ASyncTaskCallback<T> {
 
-	public void onDropbearInstallerComplete(T result);
-	public void onStartServerComplete(T result);
-	public void onStopServerComplete(T result);
+	public void DropbearInstallerDelegate(T result);
+	public void ServerStarterDelegate(T result);
+	public void ServerStopperDelegate(T result);
 	
 }

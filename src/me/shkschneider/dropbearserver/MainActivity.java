@@ -1,8 +1,10 @@
 package me.shkschneider.dropbearserver;
 
 import com.astuetz.viewpagertabs.ViewPagerTabs;
+
 import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
