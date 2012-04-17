@@ -2,6 +2,7 @@ package me.shkschneider.dropbearserver;
 
 import com.astuetz.viewpagertabs.ViewPagerTabs;
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Utils.RootUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,17 +34,24 @@ public class MainActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.main);
-		
+
+		// Introduction version
+		String appName = getResources().getString(R.string.app_name);
+		String appVersion = "0";
+		String packageName = getApplication().getPackageName();
+		try {
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(packageName, PackageManager.GET_META_DATA);
+			appVersion = packageInfo.versionName.toString();
+		} catch (NameNotFoundException e) {
+			Log.d(TAG, "onCreate(): " + e.getMessage());
+		}
+		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ")");
+
 		// Header
 		mLogo = (ImageView) findViewById(R.id.logo);
 		mLogo.setOnClickListener(this);
 		mDropbearVersion = (TextView) findViewById(R.id.dropbear_version);
-		try {
-			PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getResources().getString(R.string.app_package), PackageManager.GET_META_DATA);
-			mDropbearVersion.setText("" + pInfo.versionName);
-		} catch (NameNotFoundException e) {
-			mDropbearVersion.setText("" + 0);
-		}
+		mDropbearVersion.setText(appVersion);
 
 		// ViewPagerTabs
 		mAdapter = new MainAdapter(this);
@@ -72,11 +80,18 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onStart() {
 		super.onStart();
 		Log.d(TAG, "onStart()");
-		
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume()");
+
 		// Root dependencies
-		DropBearServerHelper.checkRootAccess();
-		DropBearServerHelper.checkDropbear();
-		
+		RootUtils.checkRootAccess();
+		RootUtils.checkBusybox();
+		RootUtils.checkDropbear();
+
 		// Pages
 		mAdapter.updatePages();
 	}

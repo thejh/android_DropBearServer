@@ -1,5 +1,7 @@
-package me.shkschneider.dropbearserver;
+package me.shkschneider.dropbearserver.Pages;
 
+import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -49,10 +51,10 @@ public class AboutPage extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		if (v == mRateThisApp) {
 			try {
-				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.app_package))));
+				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getApplicationInfo().packageName)));
 			}
 			catch (ActivityNotFoundException e) {
-				DropBearServerHelper.marketNotFound(mContext);
+				Utils.marketNotFound(mContext);
 				mRateThisApp.setEnabled(false);
 			}
 		}

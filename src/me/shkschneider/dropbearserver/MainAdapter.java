@@ -1,5 +1,9 @@
 package me.shkschneider.dropbearserver;
 
+import me.shkschneider.dropbearserver.Pages.AboutPage;
+import me.shkschneider.dropbearserver.Pages.HelpPage;
+import me.shkschneider.dropbearserver.Pages.ServerPage;
+import me.shkschneider.dropbearserver.Pages.SettingsPage;
 import android.app.Activity;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;

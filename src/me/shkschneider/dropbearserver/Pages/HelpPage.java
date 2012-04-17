@@ -1,5 +1,6 @@
-package me.shkschneider.dropbearserver;
+package me.shkschneider.dropbearserver.Pages;
 
+import me.shkschneider.dropbearserver.R;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
