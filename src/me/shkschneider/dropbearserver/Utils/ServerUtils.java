@@ -1,6 +1,9 @@
 package me.shkschneider.dropbearserver.Utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import android.util.Log;
 
@@ -47,12 +50,20 @@ public abstract class ServerUtils
 		}
 		else {
 			File f = new File("/data/dropbear/pid");
-			if (!f.exists() || f.isFile()) {
-				return 0;
+			if (f.exists() && f.isFile()) {
+				BufferedReader input;
+				try {
+					input = new BufferedReader(new FileReader("/data/dropbear/pid"));
+					return Integer.parseInt(input.readLine());
+				} catch (FileNotFoundException e) {
+					Log.e(TAG, "setServerPid(): " + e.getMessage());
+					return -1;
+				} catch (IOException e) {
+					Log.e(TAG, "setServerPid(): " + e.getMessage());
+					return -1;
+				}
 			}
-			else {
-				return 42;
-			}
+			return -1;
 		}
 	}
 }

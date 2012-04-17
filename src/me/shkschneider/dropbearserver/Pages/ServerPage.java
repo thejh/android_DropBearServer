@@ -1,5 +1,6 @@
 package me.shkschneider.dropbearserver.Pages;
 
+import me.shkschneider.dropbearserver.ASyncTaskCallback;
 import me.shkschneider.dropbearserver.DropbearInstaller;
 import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.StartServer;
@@ -8,7 +9,6 @@ import me.shkschneider.dropbearserver.Utils.RootUtils;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServerPage extends Activity implements OnClickListener
+public class ServerPage extends Activity implements OnClickListener, ASyncTaskCallback<Boolean>
 {
 	public static final String TAG = "ServerPage";
 
@@ -43,9 +43,8 @@ public class ServerPage extends Activity implements OnClickListener
 	private TextView mServerStatus;
 	private LinearLayout mServerLaunch;
 	private TextView mServerLaunchLabel;
-	private TextView mInfos;
 
-	public void initView(Context context) {
+	public ServerPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.server, null);
@@ -56,31 +55,22 @@ public class ServerPage extends Activity implements OnClickListener
 		mGetSuperuser.setOnClickListener(this);
 		mGetBusybox = (LinearLayout) mView.findViewById(R.id.get_busybox);
 		mGetBusybox.setOnClickListener(this);
-		updateRootStatus();
 
 		// mDropbearStatus mGetDropbear
 		mDropbearStatus = (TextView) mView.findViewById(R.id.dropbear_status);
 		mGetDropbear = (LinearLayout) mView.findViewById(R.id.get_dropbear);
 		mGetDropbear.setOnClickListener(this);
-		updateDropbearStatus();
 
-		// mLaunch mLaunchLabel mServerStatus mInfos
+		// mServerStatus mServerLaunch mServerLaunchLabel
+		mServerStatus = (TextView) mView.findViewById(R.id.server_status);
 		mServerLaunch = (LinearLayout) mView.findViewById(R.id.server_launch);
 		mServerLaunch.setOnClickListener(this);
 		mServerLaunchLabel = (TextView) mView.findViewById(R.id.launch_label);
-		mServerStatus = (TextView) mView.findViewById(R.id.server_status);
-		mInfos = (TextView) mView.findViewById(R.id.infos);
-		//updateServerStatus();
 	}
 
 	public void update() {
-		// Superuser
 		updateRootStatus();
-
-		// Dropbear
 		updateDropbearStatus();
-
-		// ServerStatus
 		updateServerStatusCode();
 		updateServerStatus();
 	}
@@ -107,7 +97,7 @@ public class ServerPage extends Activity implements OnClickListener
 	}
 
 	public void updateDropbearStatus() {
-		if (RootUtils.hasDropbear == true) {
+		if (RootUtils.hasRootAccess == true && RootUtils.hasDropbear == true) {
 			mDropbearStatus.setText(R.string.ok);
 			mDropbearStatus.setTextColor(Color.GREEN);
 			mGetDropbear.setVisibility(View.GONE);
@@ -120,52 +110,12 @@ public class ServerPage extends Activity implements OnClickListener
 		}
 	}
 
-	public void updateServerStatus() {
-		switch (mServerStatusCode) {
-		case STATUS_STOPPED:
-			mServerStatus.setText("STOPPED");
-			mServerStatus.setTextColor(Color.RED);
-			//mServerLaunchLabel.setEnabled(true);
-			mServerLaunchLabel.setText("START SERVER");
-			break;
-		case STATUS_STARTING:
-			mServerStatus.setText("STARTING");
-			mServerStatus.setTextColor(Color.YELLOW);
-			//mServerLaunch.setEnabled(false);
-			mServerLaunchLabel.setText("STARTING...");
-			break;
-		case STATUS_STARTED:
-			mServerStatus.setText("STARTED");
-			mServerStatus.setTextColor(Color.GREEN);
-			//mServerLaunchLabel.setEnabled(true);
-			mServerLaunchLabel.setText("STOP SERVER");
-			break;
-		case STATUS_STOPPING:
-			mServerStatus.setText("STOPPING");
-			mServerStatus.setTextColor(Color.YELLOW);
-			//mServerLaunch.setEnabled(false);
-			mServerLaunchLabel.setText("STOPPING...");
-			break;
-		case STATUS_ERROR:
-			mServerStatus.setText("ERROR");
-			mServerStatus.setTextColor(Color.RED);
-			mServerLaunch.setEnabled(false);
-			mServerLaunch.setVisibility(View.GONE);
-			mServerLaunchLabel.setText("ERROR");
-			break;
-		default:
-			break;
-		}
-	}
-
 	public void updateServerStatusCode() {
 		if (RootUtils.hasRootAccess == false) {
 			mServerStatusCode = STATUS_ERROR;
-			mInfos.setText("Superuser is missing");
 		}
 		else if (RootUtils.hasDropbear == false) {
 			mServerStatusCode = STATUS_ERROR;
-			mInfos.setText("Dropbear is missing");
 		}
 		else {
 			int pid = ServerUtils.getServerPid();
@@ -178,6 +128,45 @@ public class ServerPage extends Activity implements OnClickListener
 			else {
 				mServerStatusCode = STATUS_STARTED;
 			}
+			// DEBUG
+			mServerStatusCode = STATUS_STOPPED;
+		}
+	}
+	
+	public void updateServerStatus() {
+		switch (mServerStatusCode) {
+		case STATUS_STOPPED:
+			mServerStatus.setText("STOPPED");
+			mServerStatus.setTextColor(Color.RED);
+			mServerLaunch.setVisibility(View.VISIBLE);
+			mServerLaunchLabel.setText("START SERVER");
+			break;
+		case STATUS_STARTING:
+			mServerStatus.setText("STARTING");
+			mServerStatus.setTextColor(Color.YELLOW);
+			mServerLaunch.setVisibility(View.VISIBLE);
+			mServerLaunchLabel.setText("STARTING...");
+			break;
+		case STATUS_STARTED:
+			mServerStatus.setText("STARTED");
+			mServerStatus.setTextColor(Color.GREEN);
+			mServerLaunch.setVisibility(View.VISIBLE);
+			mServerLaunchLabel.setText("STOP SERVER");
+			break;
+		case STATUS_STOPPING:
+			mServerStatus.setText("STOPPING");
+			mServerStatus.setTextColor(Color.YELLOW);
+			mServerLaunch.setVisibility(View.VISIBLE);
+			mServerLaunchLabel.setText("STOPPING...");
+			break;
+		case STATUS_ERROR:
+			mServerStatus.setText("ERROR");
+			mServerStatus.setTextColor(Color.RED);
+			mServerLaunch.setVisibility(View.GONE);
+			mServerLaunchLabel.setText("ERROR");
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -191,9 +180,9 @@ public class ServerPage extends Activity implements OnClickListener
 			switch (mServerStatusCode) {
 			case STATUS_STOPPED:
 				mServerStatusCode = STATUS_STARTING;
+				updateServerStatus();
 				// StartServer
-				StartServer startServer = new StartServer();
-				startServer.init(mContext);
+				StartServer startServer = new StartServer(mContext, this);
 				startServer.execute();
 				break;
 			case STATUS_STARTING:
@@ -201,9 +190,9 @@ public class ServerPage extends Activity implements OnClickListener
 				break;
 			case STATUS_STARTED:
 				mServerStatusCode = STATUS_STOPPING;
+				updateServerStatus();
 				// StopServer
-				StopServer stopServer = new StopServer();
-				stopServer.init(mContext);
+				StopServer stopServer = new StopServer(mContext, this);
 				stopServer.execute();
 				break;
 			case STATUS_STOPPING:
@@ -215,7 +204,6 @@ public class ServerPage extends Activity implements OnClickListener
 			default:
 				break;
 			}
-			updateServerStatus();
 		}
 		else if (v == mGetSuperuser) {
 			try {
@@ -230,13 +218,43 @@ public class ServerPage extends Activity implements OnClickListener
 		}
 		else if (v == mGetDropbear) {
 			// DropbearInstaller
-			DropbearInstaller dropbearInstaller = new DropbearInstaller();
-			dropbearInstaller.init(mContext);
+			DropbearInstaller dropbearInstaller = new DropbearInstaller(mContext, this);
 			dropbearInstaller.execute();
+		}
+	}
 
-			Log.d(TAG, "dropbear should be installed");
+	@Override
+	public void onDropbearInstallerComplete(Boolean result) {
+		Log.i(TAG, "onDropbearInstallerComplete()");
+		if (result == true) {
 			RootUtils.checkDropbear();
 			updateDropbearStatus();
+			updateServerStatusCode();
+			updateServerStatus();
 		}
+	}
+
+	@Override
+	public void onStartServerComplete(Boolean result) {
+		Log.i(TAG, "onStartServerComplete()");
+		if (result == true) {
+			mServerStatusCode = STATUS_STARTED;
+		}
+		else {
+			mServerStatusCode = STATUS_ERROR;
+		}
+		updateServerStatus();
+	}
+
+	@Override
+	public void onStopServerComplete(Boolean result) {
+		Log.i(TAG, "onStopServerComplete()");
+		if (result == true) {
+			mServerStatusCode = STATUS_STOPPED;
+		}
+		else {
+			mServerStatusCode = STATUS_ERROR;
+		}
+		updateServerStatus();
 	}
 }

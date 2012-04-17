@@ -1,3 +1,7 @@
+/*
+ * Thanks to:
+ * - Muzikant <http://muzikant-android.blogspot.fr/2011/02/how-to-get-root-access-and-execute.html>
+ */
 package me.shkschneider.dropbearserver.Utils;
 
 import java.io.BufferedReader;
@@ -51,6 +55,16 @@ public abstract class ShellUtils
 		commands.add("cat " + srcPath + " > " + destPath);
 		commands.add("chown " + owner + " " + destPath);
 		commands.add("chmod " + chmod + " " + destPath);
+		return execute();
+	}
+	
+	public static final Boolean echoToFile(String text, String path) {
+		commands.add("echo " + text + " > " + path);
+		return execute();
+	}
+	
+	public static final Boolean echoAppendToFile(String text, String path) {
+		commands.add("echo " + text + " >> " + path);
 		return execute();
 	}
 

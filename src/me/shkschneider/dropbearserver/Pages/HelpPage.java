@@ -18,7 +18,7 @@ public class HelpPage extends Activity implements OnClickListener {
 	private LinearLayout mWhatIsDropbear;
 	private LinearLayout mWhatisDropbearContent;
 
-	public void initView(Context context) {
+	public HelpPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.help, null);

@@ -12,9 +12,12 @@ public class StartServer extends AsyncTask<Void, String, Boolean>
 
 	public Context mContext;
 	public ProgressDialog mProgressDialog;
+	
+	private ASyncTaskCallback<Boolean> mCallback;
 
-	public void init(Context context) {
+	public StartServer(Context context, ASyncTaskCallback<Boolean> callback) {
 		mContext = context;
+        mCallback = callback;
 		mProgressDialog = new ProgressDialog(mContext);
 		mProgressDialog.setTitle("Starting server");
 		mProgressDialog.setMessage("Please wait...");
@@ -56,5 +59,6 @@ public class StartServer extends AsyncTask<Void, String, Boolean>
 		else {
 			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_LONG).show();
 		}
+		mCallback.onStartServerComplete(result);
 	}
 }

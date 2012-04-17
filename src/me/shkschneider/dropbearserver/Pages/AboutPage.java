@@ -21,7 +21,7 @@ public class AboutPage extends Activity implements OnClickListener {
 	private LinearLayout mDonate;
 	private LinearLayout mVisitMyWebsite;
 	
-	public void initView(Context context) {
+	public AboutPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.about, null);

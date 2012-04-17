@@ -55,7 +55,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// ViewPagerTabs
 		mAdapter = new MainAdapter(this);
-		mAdapter.initPages();
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPager.setAdapter(mAdapter);
 		mPagerTabs = (ViewPagerTabs) findViewById(R.id.tabs);
@@ -91,9 +90,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		RootUtils.checkRootAccess();
 		RootUtils.checkBusybox();
 		RootUtils.checkDropbear();
-
+		
 		// Pages
-		mAdapter.updatePages();
+		mAdapter.update();
 	}
 
 	@Override

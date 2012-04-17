@@ -14,14 +14,17 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 
 	private Context mContext;
 	private ProgressDialog mProgressDialog;
+	
+	private ASyncTaskCallback<Boolean> mCallback;
 
-	public void init(Context context) {
+	public DropbearInstaller(Context context, ASyncTaskCallback<Boolean> callback) {
 		mContext = context;
+        mCallback = callback;
 		mProgressDialog = new ProgressDialog(mContext);
 		mProgressDialog.setTitle("Installing Dropbear");
 		mProgressDialog.setMessage("Please wait...");
 		mProgressDialog.setCancelable(false);
-	}
+    }
 	
 	@Override
 	protected void onPreExecute() {
@@ -33,53 +36,57 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 	@Override
 	protected void onProgressUpdate(String... progress) {
 		super.onProgressUpdate(progress);
-		mProgressDialog.setTitle(progress[0]);
-		mProgressDialog.setMessage(progress[1]);
+		Float f = (Float.parseFloat(progress[0] + ".0") / Float.parseFloat(progress[1] + ".0") * 100);
+		mProgressDialog.setTitle("" + Math.round(f) + "%");
+		mProgressDialog.setMessage(progress[2]);
 	}
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		int step = 1;
-		int steps = 10;
+		int step = 0;
+		int steps = 11;
 		
 		// read-write
-		publishProgress(step++ + "/" + steps, "/system read-write");
+		publishProgress("" + step++, "" + steps, "/system read-write");
 		Utils.remountReadWrite("/system");
 
 		// data/dropbear
-		publishProgress(step++ + "/" + steps, "/data/dropbear");
+		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		if (ShellUtils.mkdir("/data/dropbear", "root.root", "755") == false)
 			return false;
-		publishProgress(step++ + "/" + steps, "/data/dropbear/rsa");
+		publishProgress("" + step++, "" + steps, "/data/dropbear/rsa");
 		if (ShellUtils.touch("/data/dropbear/rsa", "root.root", "644") == false)
 			return false;
-		publishProgress(step++ + "/" + steps, "/data/dropbear/dss");
+		publishProgress("" + step++, "" + steps, "/data/dropbear/dss");
 		if (ShellUtils.touch("/data/dropbear/dss", "root.root", "644") == false)
 			return false;
-		publishProgress(step++ + "/" + steps, "/data/dropbear/pid");
+		publishProgress("" + step++, "" + steps, "/data/dropbear/pid");
 		if (ShellUtils.touch("/data/dropbear/pid", "root.root", "600") == false)
 			return false;
-		publishProgress(step++ + "/" + steps, "/data/dropbear/.ssh");
+		publishProgress("" + step++, "" + steps, "/data/dropbear/pid");
+		if (ShellUtils.echoToFile("0", "/data/dropbear/pid") == false)
+			return false;
+		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh");
 		if (ShellUtils.mkdir("/data/dropbear/.ssh", "root.root", "700") == false)
 			return false;
-		publishProgress(step++ + "/" + steps, "/data/dropbear/.ssh/authorized_keys");
+		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh/authorized_keys");
 		if (ShellUtils.touch("/data/dropbear/.ssh/authorized_keys", "root.root", "600") == false)
 			return false;
 
 		// system/xbin
-		publishProgress(step++ + "/" + steps, "/system/xbin/dropbear");
+		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
 		if (Utils.copyRawFile(mContext, R.raw.dropbear, Environment.getExternalStorageDirectory() + "/dropbear") == false)
 			return false;
 		if (ShellUtils.mv("/sdcard/dropbear", "/system/xbin/dropbear", "root.root", "755") == false)
 			return false;
-		publishProgress(step++ + "/" + steps, "/system/xbin/dropbearkey");
+		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
 		if (Utils.copyRawFile(mContext, R.raw.dropbearkey, Environment.getExternalStorageDirectory() + "/dropbearkey") == false)
 			return false;
 		if (ShellUtils.mv("/sdcard/dropbearkey", "/system/xbin/dropbearkey", "root.root", "755") == false)
 			return false;
 
 		// read-only
-		publishProgress(step++ + "/" + steps, "/system read-only");
+		publishProgress("" + step++, "" + steps, "/system read-only");
 		Utils.remountReadOnly("/system");
 		return true;
 	}
@@ -93,5 +100,6 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 		else {
 			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_LONG).show();
 		}
+		mCallback.onDropbearInstallerComplete(result);
 	}
 }

@@ -18,7 +18,7 @@ public class SettingsPage extends Activity implements OnClickListener {
 	private LinearLayout mDropbear;
 	private LinearLayout mDropbearContent;
 
-	public void initView(Context context) {
+	public SettingsPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.settings, null);

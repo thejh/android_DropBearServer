@@ -31,18 +31,15 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 			"ABOUT"
 	};
 
-	public void initPages() {
-		mSettingsPage = new SettingsPage();
-		mSettingsPage.initView(mContext);
-		mServerPage = new ServerPage();
-		mServerPage.initView(mContext);
-		mHelpPage = new HelpPage();
-		mHelpPage.initView(mContext);
-		mAboutPage = new AboutPage();
-		mAboutPage.initView(mContext);
+	public MainAdapter(Activity context) {
+		mContext = context;
+		mSettingsPage = new SettingsPage(mContext);
+		mServerPage = new ServerPage(mContext);
+		mHelpPage = new HelpPage(mContext);
+		mAboutPage = new AboutPage(mContext);
 	}
 
-	public void updatePages() {
+	public void update() {
 		mSettingsPage.update();
 		mServerPage.update();
 		mHelpPage.update();
@@ -54,24 +51,24 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		View v = null;
 		switch (position) {
 		case SETTINGS_INDEX:
+			//mSettingsPage.update();
 			v = mSettingsPage.getView();
 			break;
 		case SERVER_INDEX:
+			//mServerPage.update();
 			v = mServerPage.getView();
 			break;
 		case HELP_INDEX:
+			//mHelpPage.update();
 			v = mHelpPage.getView();
 			break;
 		case ABOUT_INDEX:
+			//mAboutPage.update();
 			v = mAboutPage.getView();
 			break;
 		}
 		((ViewPager) container).addView(v, 0);
 		return v;
-	}
-
-	public MainAdapter(Activity context) {
-		mContext = context;
 	}
 
 	@Override
