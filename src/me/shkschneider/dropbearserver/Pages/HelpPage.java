@@ -1,14 +1,13 @@
 package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.R;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-public class HelpPage extends Activity implements OnClickListener {
+public class HelpPage implements OnClickListener {
 
 	private Context mContext;
 	private View mView;

@@ -2,7 +2,6 @@ package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Utils.Utils;
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-public class AboutPage extends Activity implements OnClickListener {
+public class AboutPage implements OnClickListener {
 
 	private Context mContext;
 	private View mView;
