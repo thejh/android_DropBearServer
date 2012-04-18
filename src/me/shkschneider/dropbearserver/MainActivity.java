@@ -109,4 +109,8 @@ public class MainActivity extends Activity {
 	public void check() {
 		mAdapter.check();
 	}
+	
+	public void updateServer() {
+		mAdapter.updateServer();
+	}
 }

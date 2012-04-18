@@ -38,6 +38,11 @@ public abstract class ShellUtils
 	}
 	
 	public static final Boolean rm(String path) {
+		commands.add("rm " + path);
+		return execute();
+	}
+	
+	public static final Boolean rmRecursive(String path) {
 		commands.add("rm -r " + path);
 		return execute();
 	}

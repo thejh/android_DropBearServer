@@ -1,6 +1,10 @@
 package me.shkschneider.dropbearserver.Pages;
 
+import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Tasks.DropbearRemover;
+import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
+import me.shkschneider.dropbearserver.Utils.RootUtils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-public class SettingsPage implements OnClickListener {
+public class SettingsPage implements OnClickListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private Context mContext;
 	private View mView;
@@ -57,17 +61,33 @@ public class SettingsPage implements OnClickListener {
 		}
 		else if (v == mCompleteRemoval) {
 			new AlertDialog.Builder(mContext)
-			.setMessage("message")
-			.setTitle("title")
+			.setTitle("Confirm")
+			.setMessage("This will remove dropbear and all its configuration (including public keys).")
 			.setCancelable(true)
-			.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton){}
-			})
+			.setPositiveButton("Okay", this)
+			.setNegativeButton("Cancel", this)
 			.show();
 		}
 		// mDropbear
 		else if (v == mDropbear) {
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+		}
+	}
+
+	@Override
+	public void onClick(DialogInterface dialog, int button) {
+		if (button == DialogInterface.BUTTON_POSITIVE) {
+			// mDropbearRemover
+			DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
+			dropbearRemover.execute();
+		}
+	}
+
+	@Override
+	public void onDropbearRemoverComplete(Boolean result) {
+		if (result == true) {
+			RootUtils.hasDropbear = false;
+			((MainActivity) mContext).updateServer();
 		}
 	}
 }

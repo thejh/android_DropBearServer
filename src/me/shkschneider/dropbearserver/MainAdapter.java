@@ -117,4 +117,8 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	public void check() {
 		mServerPage.check();
 	}
+	
+	public void updateServer() {
+		mServerPage.update();
+	}
 }
