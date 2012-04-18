@@ -24,7 +24,6 @@
 
         <TextView
             android:id="@+id/superuser_status"
-            style="@style/content_page_large_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
