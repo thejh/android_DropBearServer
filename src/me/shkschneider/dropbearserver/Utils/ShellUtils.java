@@ -1,17 +1,10 @@
 /*
- * Thanks to:
- * - Muzikant <http://muzikant-android.blogspot.fr/2011/02/how-to-get-root-access-and-execute.html>
+ * Muzikant <http://muzikant-android.blogspot.fr/2011/02/how-to-get-root-access-and-execute.html>
  */
 package me.shkschneider.dropbearserver.Utils;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import android.util.Log;
@@ -24,17 +17,23 @@ public abstract class ShellUtils
 	public static String mBusyboxPath = null;
 	public static ArrayList<String> commands = new ArrayList<String>();
 	
-	public static final Boolean mkdir(String path, String owner, String chmod) {
+	public static final Boolean mkdir(String path) {
 		commands.add("mkdir " + path);
+		return execute();
+	}
+	
+	public static final Boolean chown(String path, String owner) {
 		commands.add("chown " + owner + " " + path);
+		return execute();
+	}
+	
+	public static final Boolean chmod(String path, String chmod) {
 		commands.add("chmod " + chmod + " " + path);
 		return execute();
 	}
 	
-	public static final Boolean touch(String path, String owner, String chmod) {
-		commands.add("echo '' > " + path);
-		commands.add("chown " + owner + " " + path);
-		commands.add("chmod " + chmod + " " + path);
+	public static final Boolean touch(String path) {
+		commands.add("echo -n '' > " + path);
 		return execute();
 	}
 	
@@ -43,18 +42,14 @@ public abstract class ShellUtils
 		return execute();
 	}
 	
-	public static final Boolean mv(String srcPath, String destPath, String owner, String chmod) {
+	public static final Boolean mv(String srcPath, String destPath) {
 		commands.add("cat " + srcPath + " > " + destPath);
-		commands.add("chown " + owner + " " + destPath);
-		commands.add("chmod " + chmod + " " + destPath);
 		commands.add("rm " + srcPath);
 		return execute();
 	}
 	
-	public static final Boolean cp(String srcPath, String destPath, String owner, String chmod) {
+	public static final Boolean cp(String srcPath, String destPath) {
 		commands.add("cat " + srcPath + " > " + destPath);
-		commands.add("chown " + owner + " " + destPath);
-		commands.add("chmod " + chmod + " " + destPath);
 		return execute();
 	}
 	
@@ -67,6 +62,14 @@ public abstract class ShellUtils
 		commands.add("echo " + text + " >> " + path);
 		return execute();
 	}
+	
+	public static final Boolean kill(int signal, int pid) {
+		if (signal > 0 && pid > 0) {
+			commands.add("kill -" + signal + " " + pid);
+			return execute();
+		}
+		return false;
+	}
 
 	public static final boolean execute()
 	{
@@ -77,6 +80,7 @@ public abstract class ShellUtils
 				Process suProcess = Runtime.getRuntime().exec("su");
 				DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
 				for (String currCommand : commands) {
+					Log.d(TAG, "# " + currCommand);
 					os.writeBytes(currCommand + "\n");
 					os.flush();
 				}
@@ -106,6 +110,7 @@ public abstract class ShellUtils
 			Log.w(TAG, "Error executing internal operation");
 		}
 
+		commands.clear();
 		return retval;
 	}
 	
@@ -157,7 +162,6 @@ public abstract class ShellUtils
         }
         return true;
     }
-	*/
 	
 	public static final String md5sum(String s) {
 	    try {
@@ -236,4 +240,5 @@ public abstract class ShellUtils
         }
         return null;
     }
+	*/
 }

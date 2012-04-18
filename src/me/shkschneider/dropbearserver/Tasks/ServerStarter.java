@@ -1,4 +1,4 @@
-package me.shkschneider.dropbearserver;
+package me.shkschneider.dropbearserver.Tasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,9 +13,9 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean>
 	public Context mContext;
 	public ProgressDialog mProgressDialog;
 	
-	private ASyncTaskCallback<Boolean> mCallback;
+	private ServerStarterCallback<Boolean> mCallback;
 
-	public ServerStarter(Context context, ASyncTaskCallback<Boolean> callback) {
+	public ServerStarter(Context context, ServerStarterCallback<Boolean> callback) {
 		mContext = context;
         mCallback = callback;
 		mProgressDialog = new ProgressDialog(mContext);
@@ -28,7 +28,6 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean>
 	protected void onPreExecute() {
 		super.onPreExecute();
 		mProgressDialog.show();
-		Toast.makeText(mContext, TAG + ": onPreExecute()", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -54,11 +53,13 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean>
 	protected void onPostExecute(Boolean result) {
 		mProgressDialog.dismiss();
 		if (result == true) {
-			Toast.makeText(mContext, TAG + ": onPostExecute(true)", Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext, TAG + ": onPostExecute(true)", Toast.LENGTH_SHORT).show();
 		}
 		else {
-			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_SHORT).show();
 		}
-		mCallback.ServerStarterDelegate(result);
+		if (mCallback != null) {
+			mCallback.onServerStarterComplete(result);
+		}
 	}
 }

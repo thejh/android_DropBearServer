@@ -44,9 +44,11 @@ public class SettingsPage extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		// mGeneral
 		if (v == mGeneral) {
 			mGeneralContent.setVisibility(mGeneralContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}
+		// mDropbear
 		else if (v == mDropbear) {
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}

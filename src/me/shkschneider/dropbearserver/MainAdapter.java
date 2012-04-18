@@ -1,3 +1,6 @@
+/*
+ * Andreas Stutz <https://github.com/astuetz/android-viewpagertabs-example>
+ */
 package me.shkschneider.dropbearserver;
 
 import me.shkschneider.dropbearserver.Pages.AboutPage;

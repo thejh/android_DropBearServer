@@ -1,10 +1,12 @@
 package me.shkschneider.dropbearserver.Pages;
 
-import me.shkschneider.dropbearserver.ASyncTaskCallback;
-import me.shkschneider.dropbearserver.DropbearInstaller;
 import me.shkschneider.dropbearserver.R;
-import me.shkschneider.dropbearserver.ServerStarter;
-import me.shkschneider.dropbearserver.ServerStopper;
+import me.shkschneider.dropbearserver.Tasks.DropbearInstaller;
+import me.shkschneider.dropbearserver.Tasks.DropbearInstallerCallback;
+import me.shkschneider.dropbearserver.Tasks.ServerStarter;
+import me.shkschneider.dropbearserver.Tasks.ServerStarterCallback;
+import me.shkschneider.dropbearserver.Tasks.ServerStopper;
+import me.shkschneider.dropbearserver.Tasks.ServerStopperCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
@@ -22,7 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServerPage extends Activity implements OnClickListener, ASyncTaskCallback<Boolean>
+public class ServerPage extends Activity implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>
 {
 	public static final String TAG = "ServerPage";
 
@@ -49,6 +51,7 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.server, null);
+		mServerStatusCode = STATUS_ERROR;
 
 		// mSuperuserStatus mGetSuperuser
 		mRootStatus = (TextView) mView.findViewById(R.id.superuser_status);
@@ -129,11 +132,9 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 			else {
 				mServerStatusCode = STATUS_STARTED;
 			}
-			// DEBUG
-			mServerStatusCode = STATUS_STOPPED;
 		}
 	}
-	
+
 	public void updateServerStatus() {
 		switch (mServerStatusCode) {
 		case STATUS_STOPPED:
@@ -225,8 +226,8 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 	}
 
 	@Override
-	public void DropbearInstallerDelegate(Boolean result) {
-		Log.i(TAG, "onDropbearInstallerComplete()");
+	public void onDropbearInstallerComplete(Boolean result) {
+		Log.i(TAG, "onDropbearInstallerComplete(" + result + ")");
 		if (result == true) {
 			RootUtils.checkDropbear();
 			updateDropbearStatus();
@@ -236,8 +237,8 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 	}
 
 	@Override
-	public void ServerStarterDelegate(Boolean result) {
-		Log.i(TAG, "onStartServerComplete()");
+	public void onServerStarterComplete(Boolean result) {
+		Log.i(TAG, "onStartServerComplete(" + result + ")");
 		if (result == true) {
 			mServerStatusCode = STATUS_STARTED;
 		}
@@ -248,8 +249,8 @@ public class ServerPage extends Activity implements OnClickListener, ASyncTaskCa
 	}
 
 	@Override
-	public void ServerStopperDelegate(Boolean result) {
-		Log.i(TAG, "onStopServerComplete()");
+	public void onServerStopperComplete(Boolean result) {
+		Log.i(TAG, "onStopServerComplete(" + result + ")");
 		if (result == true) {
 			mServerStatusCode = STATUS_STOPPED;
 		}
