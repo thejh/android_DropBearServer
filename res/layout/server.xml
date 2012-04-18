@@ -145,36 +145,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/get_dropbear_configuration"
-        style="@style/list_item_single"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:orientation="horizontal"
-        android:visibility="gone" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="icon"
-            android:src="@drawable/ic_launcher" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="Configure &apos;DropBear&apos;!"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:visibility="gone" />
-
-        <ImageView
-            style="@style/list_item_chevron"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="chevron" />
-    </LinearLayout>
-
-    <LinearLayout
         style="@style/list_item_single"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

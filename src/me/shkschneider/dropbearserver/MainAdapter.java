@@ -8,7 +8,7 @@ import me.shkschneider.dropbearserver.Pages.HelpPage;
 import me.shkschneider.dropbearserver.Pages.ServerPage;
 import me.shkschneider.dropbearserver.Pages.SettingsPage;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,11 +23,11 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	private static final int HELP_INDEX = 2;
 	private static final int ABOUT_INDEX = 3;
 
-	protected transient Activity mContext = null;
-	private SettingsPage mSettingsPage = null;
-	private ServerPage mServerPage = null;
-	private HelpPage mHelpPage = null;
-	private AboutPage mAboutPage = null;
+	private Context mContext;
+	private SettingsPage mSettingsPage;
+	private ServerPage mServerPage;
+	private HelpPage mHelpPage;
+	private AboutPage mAboutPage;
 
 	private String[] mTitles = {
 			"SETTINGS",
@@ -36,7 +36,7 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 			"ABOUT"
 	};
 
-	public MainAdapter(Activity context) {
+	public MainAdapter(Context context) {
 		mContext = context;
 		mSettingsPage = new SettingsPage(mContext);
 		mServerPage = new ServerPage(mContext);
@@ -112,5 +112,9 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	public String getTitle(int position) {
 		final int len = mTitles.length;
 		return (position >= 0 && position < len ? mTitles[position] : "");
+	}
+	
+	public void check() {
+		mServerPage.check();
 	}
 }

@@ -37,7 +37,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 	protected void onProgressUpdate(String... progress) {
 		super.onProgressUpdate(progress);
 		Float f = (Float.parseFloat(progress[0] + ".0") / Float.parseFloat(progress[1] + ".0") * 100);
-		mProgressDialog.setTitle("" + Math.round(f) + "%");
+		mProgressDialog.setTitle("Installing: " + Math.round(f) + "%");
 		mProgressDialog.setMessage(progress[2]);
 	}
 

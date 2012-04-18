@@ -1,6 +1,9 @@
 package me.shkschneider.dropbearserver.Pages;
 
+import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Tasks.Checker;
+import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstaller;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstallerCallback;
 import me.shkschneider.dropbearserver.Tasks.ServerStarter;
@@ -23,7 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>
+public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>, CheckerCallback<Boolean>
 {
 	public static final String TAG = "ServerPage";
 
@@ -208,16 +211,28 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 		else if (v == mGetSuperuser) {
 			try {
-				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.noshufou.android.su")));
+				Log.i(TAG, "market://details?id=" + mContext.getResources().getString(R.string.superuser_package));
+				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.superuser_package))));
 			}
 			catch (ActivityNotFoundException e) {
 				Utils.marketNotFound(mContext);
 			}
 			RootUtils.checkRootAccess();
+			updateRootStatus();
+		}
+		else if (v == mGetBusybox) {
+			try {
+				Log.i(TAG, "market://details?id=" + mContext.getResources().getString(R.string.busybox_package));
+				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.busybox_package))));
+			}
+			catch (ActivityNotFoundException e) {
+				Utils.marketNotFound(mContext);
+			}
 			RootUtils.checkBusybox();
 			updateRootStatus();
 		}
 		else if (v == mGetDropbear) {
+			Log.i(TAG, "DropbearInstaller");
 			// DropbearInstaller
 			DropbearInstaller dropbearInstaller = new DropbearInstaller(mContext, this);
 			dropbearInstaller.execute();
@@ -257,5 +272,18 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatusCode = STATUS_ERROR;
 		}
 		updateServerStatus();
+	}
+
+	@Override
+	public void onCheckerComplete(Boolean result) {
+		update();
+    	((MainActivity) mContext).setActionBarProgressBarVisibility(View.GONE);
+	}
+	
+	public void check() {
+    	((MainActivity) mContext).setActionBarProgressBarVisibility(View.VISIBLE);
+		// Checker
+		Checker checker = new Checker(mContext, this);
+		checker.execute();
 	}
 }

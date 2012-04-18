@@ -1,9 +1,9 @@
 package me.shkschneider.dropbearserver;
 
 import com.astuetz.viewpagertabs.ViewPagerTabs;
+import com.markupartist.android.widget.ActionBar;
 
 import me.shkschneider.dropbearserver.R;
-import me.shkschneider.dropbearserver.Utils.RootUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,15 +11,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 
 	private static final String TAG = "MainActivity";
 	private static final int DEFAULT_PAGE = 1;
@@ -28,16 +26,15 @@ public class MainActivity extends Activity implements OnClickListener {
 	private ViewPagerTabs mPagerTabs;
 	private MainAdapter mAdapter;
 
-	private ImageView mLogo;
-	private TextView mDropbearVersion;
-
+	private ActionBar mActionBar;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.main);
 
-		// Introduction version
+		// Introduction
 		String appName = getResources().getString(R.string.app_name);
 		String appVersion = "0";
 		String packageName = getApplication().getPackageName();
@@ -47,13 +44,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		} catch (NameNotFoundException e) {
 			Log.d(TAG, "onCreate(): " + e.getMessage());
 		}
-		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ")");
+		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ") Android " + Build.VERSION.RELEASE + " (API-" + Build.VERSION.SDK + ")");
 
 		// Header
-		mLogo = (ImageView) findViewById(R.id.logo);
-		mLogo.setOnClickListener(this);
-		mDropbearVersion = (TextView) findViewById(R.id.dropbear_version);
-		mDropbearVersion.setText(appVersion);
+		mActionBar = (ActionBar) findViewById(R.id.actionbar);
+		mActionBar.setTitle("DropBear Server");
+		mActionBar.setHomeAction(new HomeAction(this));
+		mActionBar.addAction(new CheckAction(this));
+	    mActionBar.setProgressBarVisibility(View.VISIBLE);
 
 		// ViewPagerTabs
 		mAdapter = new MainAdapter(this);
@@ -61,14 +59,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		mPager.setAdapter(mAdapter);
 		mPagerTabs = (ViewPagerTabs) findViewById(R.id.tabs);
 		mPagerTabs.setViewPager(mPager);
-		mPager.setCurrentItem(DEFAULT_PAGE);
-	}
-
-	@Override
-	public void onClick(View v) {
-		if (v == mLogo) {
-			mPager.setCurrentItem(DEFAULT_PAGE);
-		}
+		goToDefaultPage();
 	}
 
 	public static Intent createIntent(Context context) {
@@ -89,9 +80,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		Log.d(TAG, "onResume()");
 
 		// Root dependencies
-		RootUtils.checkRootAccess();
-		RootUtils.checkBusybox();
-		RootUtils.checkDropbear();
+		check();
 		
 		// Pages
 		mAdapter.update();
@@ -107,5 +96,17 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d(TAG, "onDestroy()");
+	}
+
+	public void goToDefaultPage() {
+		mPager.setCurrentItem(DEFAULT_PAGE);
+	}
+	
+	public void setActionBarProgressBarVisibility(int visibility) {
+		mActionBar.setProgressBarVisibility(visibility);
+	}
+	
+	public void check() {
+		mAdapter.check();
 	}
 }

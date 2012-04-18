@@ -44,6 +44,7 @@
             android:visibility="gone" >
 
             <LinearLayout
+                android:id="@+id/start_at_boot"
                 style="@style/list_item_top"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -65,6 +66,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/keep_screen_on"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -86,6 +88,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/only_over_wifi"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -107,6 +110,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/complete_removal"
                 style="@style/list_item_bottom"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -154,6 +158,7 @@
             android:visibility="gone" >
 
             <LinearLayout
+                android:id="@+id/banner"
                 style="@style/list_item_top"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -170,6 +175,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/message_of_the_day"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -186,6 +192,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/disallow_root_logins"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -207,6 +214,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/disable_password_logins"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -228,6 +236,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/disable_password_logins_for_root"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -249,6 +258,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/enable_master_password"
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -270,6 +280,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/listening_port"
                 style="@style/list_item_bottom"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -283,12 +294,6 @@
                     android:layout_weight="1.0"
                     android:text="Listening port"
                     android:textColor="@color/white" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberSigned"
-                    android:text="22" />
             </LinearLayout>
         </LinearLayout>
 

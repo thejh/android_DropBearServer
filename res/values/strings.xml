@@ -20,5 +20,7 @@
     
     <!-- other -->
     <string name="no_market">Android Market could not be found</string>
+    <string name="superuser_package">com.noshufou.android.su</string>
+    <string name="busybox_package">stericson.busybox</string>
 
 </resources>

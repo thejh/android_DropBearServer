@@ -4,6 +4,7 @@
 package me.shkschneider.dropbearserver.Utils;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,7 +15,6 @@ public abstract class ShellUtils
 {
 	public static String TAG = "ShellUtils";
 
-	public static String mBusyboxPath = null;
 	public static ArrayList<String> commands = new ArrayList<String>();
 	
 	public static final Boolean mkdir(String path) {
@@ -229,6 +229,7 @@ public abstract class ShellUtils
         }
         return true;
     }
+	*/
     
 	public static String which(String binaryName) {
         String path = System.getenv("PATH");
@@ -240,5 +241,4 @@ public abstract class ShellUtils
         }
         return null;
     }
-	*/
 }
