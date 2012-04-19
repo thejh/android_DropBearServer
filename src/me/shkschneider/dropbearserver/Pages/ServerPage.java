@@ -280,10 +280,10 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
     	((MainActivity) mContext).setActionBarProgressBarVisibility(View.GONE);
 	}
 	
-	public void check() {
+	public void check(Boolean visible) {
     	((MainActivity) mContext).setActionBarProgressBarVisibility(View.VISIBLE);
 		// Checker
-		Checker checker = new Checker(mContext, this);
+		Checker checker = new Checker((visible ? mContext : null), this);
 		checker.execute();
 	}
 }

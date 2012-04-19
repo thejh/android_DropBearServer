@@ -114,8 +114,8 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		return (position >= 0 && position < len ? mTitles[position] : "");
 	}
 	
-	public void check() {
-		mServerPage.check();
+	public void check(Boolean visible) {
+		mServerPage.check(visible);
 	}
 	
 	public void updateServer() {

@@ -23,7 +23,7 @@ class CheckAction implements Action {
 
     @Override
     public void performAction(View view) {
-    	((MainActivity) mContext).check();
+    	((MainActivity) mContext).check(true);
     }
 
 }

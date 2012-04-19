@@ -60,6 +60,9 @@ public class MainActivity extends Activity {
 		mPagerTabs = (ViewPagerTabs) findViewById(R.id.tabs);
 		mPagerTabs.setViewPager(mPager);
 		goToDefaultPage();
+
+		// Root dependencies
+		check(true);
 	}
 
 	public static Intent createIntent(Context context) {
@@ -80,7 +83,7 @@ public class MainActivity extends Activity {
 		Log.d(TAG, "onResume()");
 
 		// Root dependencies
-		check();
+		check(false);
 		
 		// Pages
 		mAdapter.update();
@@ -106,8 +109,8 @@ public class MainActivity extends Activity {
 		mActionBar.setProgressBarVisibility(visibility);
 	}
 	
-	public void check() {
-		mAdapter.check();
+	public void check(Boolean visible) {
+		mAdapter.check(visible);
 	}
 	
 	public void updateServer() {

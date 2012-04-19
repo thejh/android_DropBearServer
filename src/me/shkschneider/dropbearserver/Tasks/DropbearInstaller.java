@@ -7,45 +7,53 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 {
 	public static final String TAG = "DropbearInstaller";
 
-	private Context mContext;
-	private ProgressDialog mProgressDialog;
-	
+	private Context mContext = null;
+	private ProgressDialog mProgressDialog = null;
+
 	private DropbearInstallerCallback<Boolean> mCallback;
 
 	public DropbearInstaller(Context context, DropbearInstallerCallback<Boolean> callback) {
 		mContext = context;
-        mCallback = callback;
-		mProgressDialog = new ProgressDialog(mContext);
-		mProgressDialog.setTitle("Installing Dropbear");
-		mProgressDialog.setMessage("Please wait...");
-		mProgressDialog.setCancelable(false);
-    }
-	
+		mCallback = callback;
+		if (mContext != null) {
+			mProgressDialog = new ProgressDialog(mContext);
+			mProgressDialog.setTitle("Installing Dropbear");
+			mProgressDialog.setMessage("Please wait...");
+			mProgressDialog.setCancelable(false);
+			mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			mProgressDialog.setMax(100);
+			mProgressDialog.setIcon(0);
+		}
+	}
+
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		mProgressDialog.show();
+		if (mProgressDialog != null) {
+			mProgressDialog.show();
+		}
 	}
 
 	@Override
 	protected void onProgressUpdate(String... progress) {
 		super.onProgressUpdate(progress);
-		Float f = (Float.parseFloat(progress[0] + ".0") / Float.parseFloat(progress[1] + ".0") * 100);
-		mProgressDialog.setTitle("Installing: " + Math.round(f) + "%");
-		mProgressDialog.setMessage(progress[2]);
+		if (mProgressDialog != null) {
+			Float f = (Float.parseFloat(progress[0] + ".0") / Float.parseFloat(progress[1] + ".0") * 100);
+			mProgressDialog.setProgress(Math.round(f));
+			mProgressDialog.setMessage(progress[2]);
+		}
 	}
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		int step = 0;
 		int steps = 25;
-		
+
 		// read-write
 		publishProgress("" + step++, "" + steps, "/system read-write");
 		if (Utils.remountReadWrite("/system") == false)
@@ -61,7 +69,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		if (ShellUtils.chmod("/data/dropbear", "755") == false)
 			return false;
-		
+
 		// data/dropbear/rsa
 		publishProgress("" + step++, "" + steps, "/data/dropbear/rsa");
 		if (ShellUtils.touch("/data/dropbear/rsa") == false)
@@ -72,7 +80,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 		publishProgress("" + step++, "" + steps, "/data/dropbear/rsa");
 		if (ShellUtils.chmod("/data/dropbear/rsa", "644") == false)
 			return false;
-		
+
 		// data/dropbear/dss
 		publishProgress("" + step++, "" + steps, "/data/dropbear/dss");
 		if (ShellUtils.touch("/data/dropbear/dss") == false)
@@ -83,7 +91,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 		publishProgress("" + step++, "" + steps, "/data/dropbear/dss");
 		if (ShellUtils.chmod("/data/dropbear/dss", "644") == false)
 			return false;
-		
+
 		// data/dropbear/.ssh
 		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh");
 		if (ShellUtils.mkdir("/data/dropbear/.ssh") == false)
@@ -94,7 +102,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh");
 		if (ShellUtils.chmod("/data/dropbear/.ssh", "700") == false)
 			return false;
-		
+
 		// data/dropbear/.ssh/authorized_keys
 		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh/authorized_keys");
 		if (ShellUtils.touch("/data/dropbear/.ssh/authorized_keys") == false)
@@ -141,12 +149,8 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		mProgressDialog.dismiss();
-		if (result == true) {
-			Toast.makeText(mContext, TAG + ": onPostExecute(true)", Toast.LENGTH_SHORT).show();
-		}
-		else {
-			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_SHORT).show();
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
 		}
 		if (mCallback != null) {
 			mCallback.onDropbearInstallerComplete(result);
