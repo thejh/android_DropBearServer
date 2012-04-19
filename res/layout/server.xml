@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/root_privileges"
+            android:text="Root privileges"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -101,7 +101,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dropbear_status"
+            android:text="DropBear status"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -154,7 +154,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/server_status"
+            android:text="Server status"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView

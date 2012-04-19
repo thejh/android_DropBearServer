@@ -84,19 +84,19 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	public void updateRootStatus() {
 		if (RootUtils.hasRootAccess == true) {
 			if (RootUtils.hasBusybox == true) {
-				mRootStatus.setText(R.string.ok);
+				mRootStatus.setText("OK");
 				mRootStatus.setTextColor(Color.GREEN);
 				mGetBusybox.setVisibility(View.GONE);
 			}
 			else {
-				mRootStatus.setText(R.string.ko);
+				mRootStatus.setText("KO");
 				mRootStatus.setTextColor(Color.RED);
 				mGetBusybox.setVisibility(View.VISIBLE);
 			}
 			mGetSuperuser.setVisibility(View.GONE);
 		}
 		else {
-			mRootStatus.setText(R.string.ko);
+			mRootStatus.setText("KO");
 			mRootStatus.setTextColor(Color.RED);
 			mGetSuperuser.setVisibility(View.VISIBLE);
 		}
@@ -104,12 +104,12 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 
 	public void updateDropbearStatus() {
 		if (RootUtils.hasRootAccess == true && RootUtils.hasDropbear == true) {
-			mDropbearStatus.setText(R.string.ok);
+			mDropbearStatus.setText("OK");
 			mDropbearStatus.setTextColor(Color.GREEN);
 			mGetDropbear.setVisibility(View.GONE);
 		}
 		else {
-			mDropbearStatus.setText(R.string.ko);
+			mDropbearStatus.setText("KO");
 			mDropbearStatus.setTextColor(Color.RED);
 			mGetDropbear.setVisibility(View.VISIBLE);
 			mServerStatusCode = STATUS_ERROR;

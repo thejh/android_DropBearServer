@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- main -->
     <string name="app_name">DropBear Server</string>
     <string name="app_donate">http://www.paypal.com</string>
     <string name="app_website">http://www.shkschneider.me</string>
-    <string name="dropbear">DropBear</string>
-    
-    <!-- server -->
-    <string name="root_privileges">Root privileges</string>
-    <string name="dropbear_status">DropBear status</string>
-    <string name="server_status">Server status</string>
-    <string name="ok">OK</string>
-    <string name="ko">KO</string>
-    <string name="started">STARTED</string>
-    <string name="stopped">STOPPED</string>
-    <string name="start">START SERVER</string>
-    <string name="stop">STOP SERVER</string>
-    
-    <!-- other -->
-    <string name="no_market">Android Market could not be found</string>
     <string name="superuser_package">com.noshufou.android.su</string>
     <string name="busybox_package">stericson.busybox</string>
 
