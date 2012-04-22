@@ -15,8 +15,7 @@ public abstract class Utils
 {
 	public static String TAG = "Utils";
 
-	public static void marketNotFound(Context context)
-	{
+	public static void marketNotFound(Context context) {
 		Toast.makeText(context, "Market not found!", Toast.LENGTH_SHORT).show();
 	}
 	

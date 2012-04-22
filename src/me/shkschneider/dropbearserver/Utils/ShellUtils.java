@@ -19,59 +19,78 @@ public abstract class ShellUtils
 	public static ArrayList<String> commands = new ArrayList<String>();
 	
 	public static final Boolean mkdir(String path) {
-		commands.add("mkdir " + path);
+		commands.add("busybox mkdir " + path);
+		return execute();
+	}
+	
+	public static final Boolean mkdirRecursive(String path) {
+		commands.add("busybox mkdir -p " + path);
 		return execute();
 	}
 	
 	public static final Boolean chown(String path, String owner) {
-		commands.add("chown " + owner + " " + path);
+		commands.add("busybox chown " + owner + " " + path);
+		return execute();
+	}
+	
+	public static final Boolean chownRecursive(String path, String owner) {
+		commands.add("busybox chown -R " + owner + " " + path);
 		return execute();
 	}
 	
 	public static final Boolean chmod(String path, String chmod) {
-		commands.add("chmod " + chmod + " " + path);
+		commands.add("busybox chmod " + chmod + " " + path);
+		return execute();
+	}
+	
+	public static final Boolean chmodRecursive(String path, String chmod) {
+		commands.add("busybox chmod -R " + chmod + " " + path);
 		return execute();
 	}
 	
 	public static final Boolean touch(String path) {
-		commands.add("echo -n '' > " + path);
+		commands.add("busybox echo -n '' > " + path);
 		return execute();
 	}
 	
 	public static final Boolean rm(String path) {
-		commands.add("rm " + path);
+		commands.add("busybox rm -f " + path);
 		return execute();
 	}
 	
 	public static final Boolean rmRecursive(String path) {
-		commands.add("rm -r " + path);
+		commands.add("busybox rm -rf " + path);
 		return execute();
 	}
 	
 	public static final Boolean mv(String srcPath, String destPath) {
-		commands.add("cat " + srcPath + " > " + destPath);
-		commands.add("rm " + srcPath);
+		commands.add("busybox mv " + srcPath + " " + destPath);
 		return execute();
 	}
 	
 	public static final Boolean cp(String srcPath, String destPath) {
-		commands.add("cat " + srcPath + " > " + destPath);
+		commands.add("busybox cp " + srcPath + " " + destPath);
+		return execute();
+	}
+	
+	public static final Boolean cpRecursive(String srcPath, String destPath) {
+		commands.add("busybox cp -r " + srcPath + " " + destPath);
 		return execute();
 	}
 	
 	public static final Boolean echoToFile(String text, String path) {
-		commands.add("echo " + text + " > " + path);
+		commands.add("busybox echo '" + text + "' > " + path);
 		return execute();
 	}
 	
 	public static final Boolean echoAppendToFile(String text, String path) {
-		commands.add("echo " + text + " >> " + path);
+		commands.add("busybox echo '" + text + "' >> " + path);
 		return execute();
 	}
 	
 	public static final Boolean kill(int signal, int pid) {
 		if (signal > 0 && pid > 0) {
-			commands.add("kill -" + signal + " " + pid);
+			commands.add("busybox kill -" + signal + " " + pid);
 			return execute();
 		}
 		return false;
