@@ -1,7 +1,6 @@
 package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.MainActivity;
-import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Tasks.Checker;
 import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstaller;
@@ -13,6 +12,7 @@ import me.shkschneider.dropbearserver.Tasks.ServerStopperCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
+import me.shkschneider.dropbearserver.R;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -178,7 +178,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		return mView;
 	}
 
-	@Override
 	public void onClick(View v) {
 		if (v == mServerLaunch) {
 			switch (mServerStatusCode) {
@@ -239,7 +238,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 	}
 
-	@Override
 	public void onDropbearInstallerComplete(Boolean result) {
 		Log.i(TAG, "onDropbearInstallerComplete(" + result + ")");
 		if (result == true) {
@@ -250,7 +248,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 	}
 
-	@Override
 	public void onServerStarterComplete(Boolean result) {
 		Log.i(TAG, "onStartServerComplete(" + result + ")");
 		if (result == true) {
@@ -262,7 +259,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		updateServerStatus();
 	}
 
-	@Override
 	public void onServerStopperComplete(Boolean result) {
 		Log.i(TAG, "onStopServerComplete(" + result + ")");
 		if (result == true) {
@@ -274,7 +270,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		updateServerStatus();
 	}
 
-	@Override
 	public void onCheckerComplete(Boolean result) {
 		update();
     	((MainActivity) mContext).setActionBarProgressBarVisibility(View.GONE);

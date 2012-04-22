@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:singleLine="false"
-                android:text="Released under the GNU General Public License 2.\nSource code available at leonnib4@github."
+                android:text="Released under the GNU General Public License 2.\nSource code available at shkschneider@github."
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -110,7 +110,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="shk.schneider" />
+                android:text="shkschneider" />
 
             <TextView
                 style="@style/content_page_small_text"

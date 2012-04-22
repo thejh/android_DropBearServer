@@ -1,8 +1,8 @@
 package me.shkschneider.dropbearserver.Tasks;
 
-import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
+import me.shkschneider.dropbearserver.R;
 
 import android.app.ProgressDialog;
 import android.content.Context;

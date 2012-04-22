@@ -1,7 +1,8 @@
 package me.shkschneider.dropbearserver.Pages;
 
-import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Utils.Utils;
+import me.shkschneider.dropbearserver.R;
+
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +47,6 @@ public class AboutPage implements OnClickListener {
 		return mView;
 	}
 
-	@Override
 	public void onClick(View v) {
 		if (v == mRateThisApp) {
 			try {

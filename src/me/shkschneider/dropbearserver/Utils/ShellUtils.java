@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.util.Log;
+
 import com.stericson.RootTools.RootTools;
 
 public abstract class ShellUtils

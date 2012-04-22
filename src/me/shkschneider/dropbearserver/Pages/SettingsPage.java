@@ -1,10 +1,11 @@
 package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.MainActivity;
-import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemover;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
+import me.shkschneider.dropbearserver.R;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,7 +54,6 @@ public class SettingsPage implements OnClickListener, DialogInterface.OnClickLis
 		return mView;
 	}
 
-	@Override
 	public void onClick(View v) {
 		// mGeneral
 		if (v == mGeneral) {
@@ -74,7 +74,6 @@ public class SettingsPage implements OnClickListener, DialogInterface.OnClickLis
 		}
 	}
 
-	@Override
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
 			// mDropbearRemover
@@ -83,7 +82,6 @@ public class SettingsPage implements OnClickListener, DialogInterface.OnClickLis
 		}
 	}
 
-	@Override
 	public void onDropbearRemoverComplete(Boolean result) {
 		if (result == true) {
 			RootUtils.hasDropbear = false;
