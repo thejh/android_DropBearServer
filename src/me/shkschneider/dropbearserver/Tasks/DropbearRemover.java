@@ -6,7 +6,6 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 public class DropbearRemover extends AsyncTask<Void, String, Boolean>
 {
@@ -52,33 +51,25 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean>
 
 		// data/dropbear
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
-		if (ShellUtils.rmRecursive("/data/dropbear") == false)
-			return false;;
+		ShellUtils.rmRecursive("/data/dropbear");
 
 		// system/xbin
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (ShellUtils.rm("/system/xbin/dropbear") == false)
-			return false;
+		ShellUtils.rm("/system/xbin/dropbear");
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (ShellUtils.rm("/system/xbin/dropbearkey") == false)
-			return false;
+		ShellUtils.rm("/system/xbin/dropbearkey");
 
 		// read-only
 		publishProgress("" + step++, "" + steps, "/system read-only");
 		if (Utils.remountReadOnly("/system") == false)
 			return false;
+		
 		return true;
 	}
 
 	@Override
 	protected void onPostExecute(Boolean result) {
 		mProgressDialog.dismiss();
-		if (result == true) {
-			Toast.makeText(mContext, TAG + ": onPostExecute(true)", Toast.LENGTH_SHORT).show();
-		}
-		else {
-			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_SHORT).show();
-		}
 		if (mCallback != null) {
 			mCallback.onDropbearRemoverComplete(result);
 		}

@@ -1,10 +1,9 @@
 package me.shkschneider.dropbearserver.Tasks;
 
+import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 public class ServerStarter extends AsyncTask<Void, String, Boolean>
 {
@@ -31,20 +30,11 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean>
 	}
 
 	@Override
-	protected void onProgressUpdate(String... progress) {
-		super.onProgressUpdate(progress);
-		mProgressDialog.setTitle(progress[0]);
-		mProgressDialog.setMessage(progress[1]);
-	}
-
-	@Override
 	protected Boolean doInBackground(Void... params) {
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			Log.w(TAG, "doInBackground(): " + e.getMessage());
-		}
+		// dropbear
+		ShellUtils.commands.add("dropbear -s");
+		if (ShellUtils.execute() == false)
+			return false;
 		
 		return true;
 	}
@@ -52,12 +42,6 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean>
 	@Override
 	protected void onPostExecute(Boolean result) {
 		mProgressDialog.dismiss();
-		if (result == true) {
-			Toast.makeText(mContext, TAG + ": onPostExecute(true)", Toast.LENGTH_SHORT).show();
-		}
-		else {
-			Toast.makeText(mContext, TAG + ": onPostExecute(false)", Toast.LENGTH_SHORT).show();
-		}
 		if (mCallback != null) {
 			mCallback.onServerStarterComplete(result);
 		}

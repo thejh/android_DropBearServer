@@ -39,6 +39,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private Context mContext;
 	private View mView;
 	private int mServerStatusCode;
+	private int mPid = 0;
 
 	private TextView mRootStatus;
 	private LinearLayout mGetSuperuser;
@@ -124,11 +125,11 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
-			int pid = ServerUtils.getServerPid();
-			if (pid < 0) {
+			mPid = ServerUtils.getServerPid();
+			if (mPid < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
-			else if (pid == 0) {
+			else if (mPid == 0) {
 				mServerStatusCode = STATUS_STOPPED;
 			}
 			else {
@@ -155,7 +156,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatus.setText("STARTED");
 			mServerStatus.setTextColor(Color.GREEN);
 			mServerLaunch.setVisibility(View.VISIBLE);
-			mServerLaunchLabel.setText("STOP SERVER");
+			mServerLaunchLabel.setText("STOP SERVER (PID " + mPid + ")");
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");
@@ -250,23 +251,13 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 
 	public void onServerStarterComplete(Boolean result) {
 		Log.i(TAG, "onStartServerComplete(" + result + ")");
-		if (result == true) {
-			mServerStatusCode = STATUS_STARTED;
-		}
-		else {
-			mServerStatusCode = STATUS_ERROR;
-		}
+		updateServerStatusCode();
 		updateServerStatus();
 	}
 
 	public void onServerStopperComplete(Boolean result) {
 		Log.i(TAG, "onStopServerComplete(" + result + ")");
-		if (result == true) {
-			mServerStatusCode = STATUS_STOPPED;
-		}
-		else {
-			mServerStatusCode = STATUS_ERROR;
-		}
+		updateServerStatusCode();
 		updateServerStatus();
 	}
 

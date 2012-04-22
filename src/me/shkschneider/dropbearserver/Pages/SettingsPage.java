@@ -9,6 +9,7 @@ import me.shkschneider.dropbearserver.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,8 @@ import android.widget.LinearLayout;
 
 public class SettingsPage implements OnClickListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
+	private static final String TAG = "SettingsPage";
+	
 	private Context mContext;
 	private View mView;
 
@@ -83,6 +86,7 @@ public class SettingsPage implements OnClickListener, DialogInterface.OnClickLis
 	}
 
 	public void onDropbearRemoverComplete(Boolean result) {
+		Log.i(TAG, "onDropbearRemoverComplete(" + result + ")");
 		if (result == true) {
 			RootUtils.hasDropbear = false;
 			((MainActivity) mContext).updateServer();
