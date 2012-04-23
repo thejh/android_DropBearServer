@@ -16,13 +16,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 
 public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "SettingsPage";
-	
+
 	private Context mContext;
 	private View mView;
 	private SettingsHelper mSettingsHelper;
@@ -39,7 +40,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mDropbear;
 	private LinearLayout mDropbearContent;
 	private LinearLayout mDropbearContentError;
-	
+
 	private LinearLayout mBanner;
 	private CheckBox mDisallowRootLogins;
 	private CheckBox mDisablePasswordLogins;
@@ -92,13 +93,13 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(this);
 		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
 		mListeningPort.setOnClickListener(this);
-		
+
 		// mAccounts mAccountsContent
 		mAccounts = (LinearLayout) mView.findViewById(R.id.accounts);
 		mAccounts.setOnClickListener(this);
 		mAccountsContent = (LinearLayout) mView.findViewById(R.id.accounts_content);
 		mAccountsContentError = (LinearLayout) mView.findViewById(R.id.accounts_content_error);
-		
+
 		// mPublicKeys mPublicKeysContent
 		mPublicKeys = (LinearLayout) mView.findViewById(R.id.public_keys);
 		mPublicKeys.setOnClickListener(this);
@@ -128,23 +129,23 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			mPublicKeysContent.setVisibility(View.GONE);
 			mPublicKeysContentError.setVisibility(View.VISIBLE);
 		}
-		
+
 		// mGeneral
 		mStartAtBoot.setChecked(mSettingsHelper.getStartAtBoot());
 		mOnlyIfRunningBefore.setChecked(mSettingsHelper.getOnlyIfRunningBefore());
 		mKeepScreenOn.setChecked(mSettingsHelper.getKeepScreenOn());
 		mOnlyOverWifi.setChecked(mSettingsHelper.getOnlyOverWifi());
-		
+
 		// mDropbear
 		// TODO: setBanner
 		mDisallowRootLogins.setChecked(mSettingsHelper.getDisallowRootLogins());
 		mDisablePasswordLogins.setChecked(mSettingsHelper.getDisablePasswordLogins());
 		mDisablePasswordLoginsForRoot.setChecked(mSettingsHelper.getDisablePasswordLoginsForRoot());
 		// TODO: setListeningPort
-		
+
 		// mAccounts
 		// TODO: setAccounts
-		
+
 		// mPublicKeys
 		// TODO: setPublicKeys
 	}
@@ -195,6 +196,12 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			mSettingsHelper.setStartAtBoot(buttonView.isChecked());
 		}
 		else if (buttonView == mKeepScreenOn) {
+			if (isChecked == true) {
+				((MainActivity) mContext).getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			}
+			else {
+				((MainActivity) mContext).getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			}
 			mSettingsHelper.setKeepScreenOn(buttonView.isChecked());
 		}
 		else if (buttonView == mOnlyOverWifi) {
@@ -225,10 +232,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			// do not check for dropbear
 			RootUtils.hasDropbear = false;
 			((MainActivity) mContext).update();
+			// TODO: remove?
 			((MainActivity) mContext).goToDefaultPage();
 		}
 		else {
-			// TODO: Toast
+			Toast.makeText(mContext, "DropbearRemover failed", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

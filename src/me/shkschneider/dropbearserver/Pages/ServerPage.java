@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>, CheckerCallback<Boolean>
 {
@@ -280,14 +281,14 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			((MainActivity) mContext).update();
 		}
 		else {
-			// TODO: Toast
+			Toast.makeText(mContext, "DropbearInstaller failed", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void onServerStarterComplete(Boolean result) {
 		Log.i(TAG, "onStartServerComplete(" + result + ")");
 		if (result == false) {
-			// TODO: Toast
+			Toast.makeText(mContext, "ServerStarter failed", Toast.LENGTH_SHORT).show();
 		}
 		updateServerStatusCode();
 		updateServerStatus();
@@ -296,7 +297,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	public void onServerStopperComplete(Boolean result) {
 		Log.i(TAG, "onStopServerComplete(" + result + ")");
 		if (result == false) {
-			// TODO: Toast
+			Toast.makeText(mContext, "ServerStopper failed", Toast.LENGTH_SHORT).show();
 		}
 		updateServerStatusCode();
 		updateServerStatus();
@@ -305,9 +306,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	public void onCheckerComplete(Boolean result) {
 		if (result == true) {
 			update();
-		}
-		else {
-			// TODO: Toast
 		}
 	}
 

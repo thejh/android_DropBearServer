@@ -1,7 +1,9 @@
 package me.shkschneider.dropbearserver.Tasks;
 
+import me.shkschneider.dropbearserver.SettingsHelper;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
+import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -37,6 +39,11 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
+		SettingsHelper settingsHelper = new SettingsHelper(mContext);
+		if (settingsHelper.getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
+			return false;
+		}
+		
 		String login = "root";
 		String passwd = "42";
 		String hostRsa = "/data/dropbear/host_rsa";
@@ -54,6 +61,16 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		command = command.concat(" -U " + uid + " -G " + uid);
 		command = command.concat(" -p " + listeningPort);
 		command = command.concat(" -P " + pidFile);
+		
+		if (settingsHelper.getDisallowRootLogins() == true) {
+			command = command.concat(" -w");
+		}
+		if (settingsHelper.getDisablePasswordLogins() == true) {
+			command = command.concat(" -s");
+		}
+		if (settingsHelper.getDisablePasswordLoginsForRoot() == true) {
+			command = command.concat(" -g");
+		}
 		
 		ShellUtils.commands.add(command);
 		if (ShellUtils.execute() == false)

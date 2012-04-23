@@ -33,12 +33,16 @@ public class SettingsHelper {
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
 	public static final Integer LISTENING_PORT_DEFAULT = 22;
 	
-    private SharedPreferences mSharedPreferences;
-    private Editor mEditor;
+    private static SharedPreferences mSharedPreferences = null;
+    private static Editor mEditor = null;
     
     public SettingsHelper(Context context) {
-    	mSharedPreferences = context.getSharedPreferences("shared_preferences", Activity.MODE_PRIVATE);
-    	mEditor = mSharedPreferences.edit();
+    	if (mSharedPreferences == null) {
+    		mSharedPreferences = context.getSharedPreferences("shared_preferences", Activity.MODE_PRIVATE);
+    	}
+    	if (mEditor == null) {
+    		mEditor = mSharedPreferences.edit();
+    	}
     }
     
     // startAtBoot
@@ -70,7 +74,7 @@ public class SettingsHelper {
     
     public void setKeepScreenOn(Boolean b) {
     	Log.d(TAG, "setKeepScreenOn(" + b + ")");
-    	mEditor.putBoolean(PREF_START_AT_BOOT, b);
+    	mEditor.putBoolean(PREF_KEEP_SCREEN_ON, b);
     	mEditor.commit();
     }
     
@@ -81,7 +85,7 @@ public class SettingsHelper {
     
     public void setOnlyOverWifi(Boolean b) {
     	Log.d(TAG, "setOnlyOverWifi(" + b + ")");
-    	mEditor.putBoolean(PREF_START_AT_BOOT, b);
+    	mEditor.putBoolean(PREF_ONLY_OVER_WIFI, b);
     	mEditor.commit();
     }
     

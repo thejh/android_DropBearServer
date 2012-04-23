@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			Log.e(TAG, e.getMessage());
 		}
 		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ") Android " + Build.VERSION.RELEASE + " (API-" + Build.VERSION.SDK + ")");
-
+		
 		// Header
 		mActionBar = (ActionBar) findViewById(R.id.actionbar);
 		mActionBar.setTitle(getResources().getString(R.string.app_name));

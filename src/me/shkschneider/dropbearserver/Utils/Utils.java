@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,5 +46,12 @@ public abstract class Utils {
 	
 	public static final Boolean remountReadOnly(String path) {
 		return RootTools.remount(path, "RO");
+	}
+	
+	public static Boolean isConnectedToWiFi(Context context) {
+	    ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+	    return netInfo.isConnected();
 	}
 }
