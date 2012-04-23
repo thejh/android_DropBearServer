@@ -1,6 +1,7 @@
 package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.R;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,6 @@ public class HelpPage implements OnClickListener {
 		return mView;
 	}
 
-	@Override
 	public void onClick(View v) {
 		if (v == mWhatIsRoot) {
 			mWhatIsRootContent.setVisibility(mWhatIsRootContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);

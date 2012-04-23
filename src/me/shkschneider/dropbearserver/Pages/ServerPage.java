@@ -2,6 +2,8 @@ package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Tasks.Checker;
+import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstaller;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstallerCallback;
 import me.shkschneider.dropbearserver.Tasks.ServerStarter;
@@ -24,7 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>
+public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>, CheckerCallback<Boolean>
 {
 	public static final String TAG = "ServerPage";
 
@@ -37,6 +39,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private Context mContext;
 	private View mView;
 	private int mServerStatusCode;
+	private int mPid = 0;
 
 	private TextView mRootStatus;
 	private LinearLayout mGetSuperuser;
@@ -48,8 +51,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private TextView mServerLaunchLabel;
 
 	public ServerPage(Context context) {
-		Log.d(TAG, "ServerPage()");
-		
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.server, null);
@@ -124,11 +125,11 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
-			int pid = ServerUtils.getServerPid();
-			if (pid < 0) {
+			mPid = ServerUtils.getServerPid();
+			if (mPid < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
-			else if (pid == 0) {
+			else if (mPid == 0) {
 				mServerStatusCode = STATUS_STOPPED;
 			}
 			else {
@@ -155,7 +156,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatus.setText("STARTED");
 			mServerStatus.setTextColor(Color.GREEN);
 			mServerLaunch.setVisibility(View.VISIBLE);
-			mServerLaunchLabel.setText("STOP SERVER");
+			mServerLaunchLabel.setText("STOP SERVER (PID " + mPid + ")");
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");
@@ -178,7 +179,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		return mView;
 	}
 
-	@Override
 	public void onClick(View v) {
 		if (v == mServerLaunch) {
 			switch (mServerStatusCode) {
@@ -239,7 +239,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 	}
 
-	@Override
 	public void onDropbearInstallerComplete(Boolean result) {
 		if (result == true) {
 			RootUtils.checkDropbear();
@@ -247,25 +246,25 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 	}
 
-	@Override
 	public void onServerStarterComplete(Boolean result) {
-		if (result == true) {
-			mServerStatusCode = STATUS_STARTED;
-		}
-		else {
-			mServerStatusCode = STATUS_ERROR;
-		}
+		Log.i(TAG, "onStartServerComplete(" + result + ")");
+		updateServerStatusCode();
 		updateServerStatus();
 	}
 
-	@Override
 	public void onServerStopperComplete(Boolean result) {
-		if (result == true) {
-			mServerStatusCode = STATUS_STOPPED;
-		}
-		else {
-			mServerStatusCode = STATUS_ERROR;
-		}
+		Log.i(TAG, "onStopServerComplete(" + result + ")");
+		updateServerStatusCode();
 		updateServerStatus();
+	}
+
+	public void onCheckerComplete(Boolean result) {
+		update();
+	}
+	
+	public void check() {
+		// Checker
+		Checker checker = new Checker(mContext, this);
+		checker.execute();
 	}
 }

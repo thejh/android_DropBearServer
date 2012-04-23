@@ -6,11 +6,8 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-public class DropbearRemover extends AsyncTask<Void, String, Boolean>
-{
-	public static final String TAG = "DropbearInstaller";
+public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
@@ -18,8 +15,6 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean>
 	private DropbearRemoverCallback<Boolean> mCallback;
 
 	public DropbearRemover(Context context, DropbearRemoverCallback<Boolean> callback) {
-		Log.d(TAG, "DropbearRemover()");
-		
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
@@ -63,29 +58,25 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean>
 
 		// data/dropbear
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
-		if (ShellUtils.rmRecursive("/data/dropbear") == false)
-			return false;;
+		ShellUtils.rmRecursive("/data/dropbear");
 
-			// system/xbin
-			publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-			if (ShellUtils.rm("/system/xbin/dropbear") == false)
-				return false;
-			publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-			if (ShellUtils.rm("/system/xbin/dropbearkey") == false)
-				return false;
+		// system/xbin
+		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
+		ShellUtils.rm("/system/xbin/dropbear");
+		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
+		ShellUtils.rm("/system/xbin/dropbearkey");
 
-			// read-only
-			publishProgress("" + step++, "" + steps, "/system read-only");
-			if (Utils.remountReadOnly("/system") == false)
-				return false;
-			return true;
+		// read-only
+		publishProgress("" + step++, "" + steps, "/system read-only");
+		if (Utils.remountReadOnly("/system") == false)
+			return false;
+		
+		return true;
 	}
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		if (mProgressDialog != null) {
-			mProgressDialog.dismiss();
-		}
+		mProgressDialog.dismiss();
 		if (mCallback != null) {
 			mCallback.onDropbearRemoverComplete(result);
 		}

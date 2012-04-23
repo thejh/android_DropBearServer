@@ -3,19 +3,18 @@
  */
 package me.shkschneider.dropbearserver;
 
+import com.astuetz.viewpagertabs.ViewPagerTabProvider;
+
 import me.shkschneider.dropbearserver.Pages.AboutPage;
 import me.shkschneider.dropbearserver.Pages.HelpPage;
 import me.shkschneider.dropbearserver.Pages.ServerPage;
 import me.shkschneider.dropbearserver.Pages.SettingsPage;
-
 import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-
-import com.astuetz.viewpagertabs.ViewPagerTabProvider;
 
 public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 
@@ -113,7 +112,6 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	public void startUpdate(View container) {
 	}
 
-	@Override
 	public String getTitle(int position) {
 		final int len = mTitles.length;
 		return (position >= 0 && position < len ? mTitles[position] : "");

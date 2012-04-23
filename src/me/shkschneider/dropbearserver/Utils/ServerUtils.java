@@ -79,4 +79,20 @@ public abstract class ServerUtils
 		}
 		return false;
 	}
+
+	public static boolean generateRsaPrivateKey(String path) {
+		ShellUtils.commands.add("dropbearkey -t rsa -f " + path);
+		return ShellUtils.execute();
+	}
+
+	public static boolean generateDssPrivateKey(String path) {
+		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
+		return ShellUtils.execute();
+	}
+
+	public static boolean generatePublicKey(String privatePath, String publicPath) {
+		ShellUtils.commands.add("dropbearkey -f " + privatePath + " -y > " + publicPath);
+		return ShellUtils.execute();
+	}
+	
 }

@@ -89,7 +89,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 		checker.execute();
 	}
 
-	@Override
 	public void onCheckerComplete(Boolean result) {
 		update();
 	}

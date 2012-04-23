@@ -6,6 +6,7 @@ import me.shkschneider.dropbearserver.SettingsHelper;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemover;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +22,7 @@ import android.widget.LinearLayout;
 public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "SettingsPage";
-
+	
 	private Context mContext;
 	private View mView;
 	private SettingsHelper mSettingsHelper;
@@ -50,8 +51,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mPublicKeysContentError;
 
 	public SettingsPage(Context context) {
-		Log.d(TAG, "SettingsPage()");
-		
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.settings, null);
@@ -125,7 +124,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		return mView;
 	}
 
-	@Override
 	public void onClick(View v) {
 		// mGeneral
 		if (v == mGeneral) {
@@ -153,7 +151,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 	}
 
-	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// mGeneral
 		if (buttonView == mStartAtBoot) {
@@ -179,7 +176,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 	}
 
-	@Override
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
 			// mDropbearRemover
@@ -188,8 +184,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 	}
 
-	@Override
 	public void onDropbearRemoverComplete(Boolean result) {
+		Log.i(TAG, "onDropbearRemoverComplete(" + result + ")");
 		if (result == true) {
 			// do not check for dropbear
 			RootUtils.hasDropbear = false;

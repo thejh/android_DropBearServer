@@ -5,11 +5,8 @@ import me.shkschneider.dropbearserver.Utils.RootUtils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class Checker extends AsyncTask<Void, String, Boolean> {
-	
-	public static final String TAG = "Checker";
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
@@ -17,8 +14,6 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 	private CheckerCallback<Boolean> mCallback;
 
 	public Checker(Context context, CheckerCallback<Boolean> callback) {
-		Log.d(TAG, "Checker()");
-		
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
@@ -58,9 +53,11 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 		// root
 		publishProgress("" + step++, "" + steps, "Root access");
 		RootUtils.checkRootAccess();
+		
 		// busybox
 		publishProgress("" + step++, "" + steps, "Busybox");
 		RootUtils.checkBusybox();
+		
 		// dropbear
 		publishProgress("" + step++, "" + steps, "Dropbear");
 		RootUtils.checkDropbear();
@@ -70,9 +67,7 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		if (mProgressDialog != null) {
-			mProgressDialog.dismiss();
-		}
+		mProgressDialog.dismiss();
 		if (mCallback != null) {
 			mCallback.onCheckerComplete(result);
 		}
