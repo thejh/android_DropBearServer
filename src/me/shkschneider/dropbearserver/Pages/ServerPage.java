@@ -244,22 +244,36 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			RootUtils.checkDropbear();
 			((MainActivity) mContext).update();
 		}
+		else {
+			// TODO: Toast
+		}
 	}
 
 	public void onServerStarterComplete(Boolean result) {
 		Log.i(TAG, "onStartServerComplete(" + result + ")");
+		if (result == false) {
+			// TODO: Toast
+		}
 		updateServerStatusCode();
 		updateServerStatus();
 	}
 
 	public void onServerStopperComplete(Boolean result) {
 		Log.i(TAG, "onStopServerComplete(" + result + ")");
+		if (result == false) {
+			// TODO: Toast
+		}
 		updateServerStatusCode();
 		updateServerStatus();
 	}
 
 	public void onCheckerComplete(Boolean result) {
-		update();
+		if (result == true) {
+			update();
+		}
+		else {
+			// TODO: Toast
+		}
 	}
 	
 	public void check() {

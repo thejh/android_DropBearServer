@@ -190,6 +190,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			// do not check for dropbear
 			RootUtils.hasDropbear = false;
 			((MainActivity) mContext).update();
+			((MainActivity) mContext).goToDefaultPage();
+		}
+		else {
+			// TODO: Toast
 		}
 	}
 }
