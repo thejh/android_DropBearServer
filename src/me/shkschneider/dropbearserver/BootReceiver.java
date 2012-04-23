@@ -1,5 +1,5 @@
 /*
- * augusto <http://code.google.com/p/droidsshd/source/browse/src/br/com/bott/droidsshd/system/BootReceiver.java>
+ * Mestre <http://code.google.com/p/droidsshd/source/browse/src/br/com/bott/droidsshd/system/BootReceiver.java>
  */
 package me.shkschneider.dropbearserver;
 
