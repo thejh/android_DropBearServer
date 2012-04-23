@@ -28,18 +28,17 @@ import android.widget.TextView;
 
 public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>, CheckerCallback<Boolean>
 {
-	public static final String TAG = "ServerPage";
+	private static final String TAG = "ServerPage";
 
-	public static final int STATUS_ERROR	= 0x00;
-	public static final int STATUS_STOPPED	= 0x01;
-	public static final int STATUS_STARTING	= 0x02;
-	public static final int STATUS_STARTED	= 0x03;
-	public static final int STATUS_STOPPING	= 0x04;
+	private static final int STATUS_ERROR	= 0x00;
+	private static final int STATUS_STOPPED	= 0x01;
+	private static final int STATUS_STARTING	= 0x02;
+	private static final int STATUS_STARTED	= 0x03;
+	private static final int STATUS_STOPPING	= 0x04;
 
 	private Context mContext;
 	private View mView;
 	private int mServerStatusCode;
-	private int mPid = 0;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -142,18 +141,16 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	}
 
 	public void updateServerStatusCode() {
-		if (RootUtils.hasRootAccess == false) {
-			mServerStatusCode = STATUS_ERROR;
-		}
-		else if (RootUtils.hasDropbear == false) {
+		if (RootUtils.hasRootAccess == false || RootUtils.hasDropbear == false) {
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
-			mPid = ServerUtils.getServerPid();
-			if (mPid < 0) {
+			Integer pid = ServerUtils.getServerPidFromPs();
+			Log.d(TAG, "DEBUG: " + pid);
+			if (pid < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
-			else if (mPid == 0) {
+			else if (pid == 0) {
 				mServerStatusCode = STATUS_STOPPED;
 			}
 			else {
@@ -187,7 +184,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatus.setTextColor(Color.GREEN);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOP SERVER");
-			mServerLaunchPid.setText("PID " + mPid);
+			mServerLaunchPid.setText("PID " + ServerUtils.getServerPidFromPs());
 			mInfos.setVisibility(View.VISIBLE);
 			mInfosLabel.setText("ssh " + ServerUtils.getLocalIpAddress() + "\n" + "ssh root@" + ServerUtils.getLocalIpAddress());
 			break;
@@ -319,15 +316,5 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		// Checker
 		Checker checker = new Checker(mContext, this);
 		checker.execute();
-	}
-
-	public void stop() {
-		if (mServerStatusCode != STATUS_STOPPED) {
-			mServerStatusCode = STATUS_STOPPING;
-			updateServerStatus();
-			// StopServer
-			ServerStopper serverStopper = new ServerStopper(mContext, this);
-			serverStopper.execute();
-		}
 	}
 }

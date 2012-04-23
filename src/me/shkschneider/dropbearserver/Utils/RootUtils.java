@@ -1,7 +1,6 @@
 package me.shkschneider.dropbearserver.Utils;
 
 import java.io.File;
-import java.util.concurrent.TimeoutException;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,13 +9,13 @@ import com.stericson.RootTools.RootTools;
 
 public abstract class RootUtils {
 
-	public static final String TAG = "RootUtils";
+	private static final String TAG = "RootUtils";
 
 	public static Boolean hasRootAccess = false;
 	public static Boolean hasBusybox = false;
 	public static Boolean hasDropbear = false;
 
-	public static boolean checkRootAccess() {
+	public static final Boolean checkRootAccess() {
 		hasRootAccess = false;
 		if (RootTools.isRootAvailable()) {
 			try {
@@ -27,8 +26,8 @@ public abstract class RootUtils {
 					Log.w(TAG, "checkRootAccess(): access rejected");
 				}
 			}
-			catch (TimeoutException e) {
-				Log.w(TAG, "checkRootAccess(): " + e.getMessage());
+			catch (Exception e) {
+				Log.e(TAG, "checkRootAccess(): " + e.getMessage());
 			}
 		}
 		else {
@@ -37,7 +36,7 @@ public abstract class RootUtils {
 		return hasRootAccess;
 	}
 
-	public static boolean checkBusybox() {
+	public static final Boolean checkBusybox() {
 		hasBusybox = false;
 		if (RootTools.checkUtil("busybox")) {
 			hasBusybox = true;
@@ -48,11 +47,11 @@ public abstract class RootUtils {
 		return hasBusybox;
 	}
 
-	public static boolean checkDropbear(Context context) {
+	public static final Boolean checkDropbear(Context context) {
 		hasDropbear = false;
 		File f = null;
 
-		f = new File(ServerUtils.getLocalBin(context) + "/dropbearmulti");
+		f = new File(ServerUtils.getLocalDir(context) + "/dropbearmulti");
 		if (f.exists() == false || f.isFile() == false || f.canExecute() == false) {
 			Log.w(TAG, "checkDropear(): dropbearmulti");
 			return false;
@@ -72,11 +71,11 @@ public abstract class RootUtils {
 				hasDropbear = true;
 			}
 			else {
-				Log.w(TAG, "checkDropbear(): dropbearkey not found");
+				Log.w(TAG, "checkDropbear(): dropbearkey");
 			}
 		}
 		else {
-			Log.w(TAG, "checkDropbear(): dropbear not found");
+			Log.w(TAG, "checkDropbear(): dropbear");
 		}
 		return hasDropbear;
 	}

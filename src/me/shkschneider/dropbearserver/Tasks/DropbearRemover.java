@@ -31,7 +31,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPreExecute() {
-		if (ServerUtils.getServerPid() > 0) {
+		if (ServerUtils.getServerPidFromPs() > 0) {
 			// ServerStopper
 			ServerStopper serverStopper = new ServerStopper(mContext, null);
 			serverStopper.execute();
@@ -55,7 +55,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		int step = 0;
-		int steps = 8;
+		int steps = 9;
 
 		// read-write
 		publishProgress("" + step++, "" + steps, "/system read-write");
@@ -67,8 +67,8 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		ShellUtils.rmRecursive("/data/dropbear");
 		
 		// data/data
-		publishProgress("" + step++, "" + steps, ServerUtils.getLocalBin(mContext) + "/dropbearmulti");
-		ShellUtils.rmRecursive(ServerUtils.getLocalBin(mContext));
+		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
+		ShellUtils.rm(ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
 		
 		// system/xbin
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");

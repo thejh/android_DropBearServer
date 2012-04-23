@@ -70,23 +70,23 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 			return false;
 
 		// system/xbin
-		publishProgress("" + step++, "" + steps, ServerUtils.getLocalBin(mContext) + "/dropbearmulti");
-		if (Utils.copyRawFile(mContext, R.raw.dropbearmulti, ServerUtils.getLocalBin(mContext) + "/dropbearmulti") == false)
+		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
+		if (Utils.copyRawFile(mContext, R.raw.dropbearmulti, ServerUtils.getLocalDir(mContext) + "/dropbearmulti") == false)
 			return false;
-		publishProgress("" + step++, "" + steps, ServerUtils.getLocalBin(mContext) + "/dropbearmulti");
-		if (ShellUtils.chmod(ServerUtils.getLocalBin(mContext) + "/dropbearmulti", "755") == false)
+		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
+		if (ShellUtils.chmod(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "755") == false)
 			return false;
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (ShellUtils.lnSymbolic(ServerUtils.getLocalBin(mContext) + "/dropbearmulti", "/system/xbin/dropbear") == false)
+		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/dropbear") == false)
 			return false;
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (ShellUtils.lnSymbolic(ServerUtils.getLocalBin(mContext) + "/dropbearmulti", "/system/xbin/dropbearkey") == false)
+		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/dropbearkey") == false)
 			return false;
 		publishProgress("" + step++, "" + steps, "/system/xbin/ssh");
-		if (ShellUtils.lnSymbolic(ServerUtils.getLocalBin(mContext) + "/dropbearmulti", "/system/xbin/ssh") == false)
+		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/ssh") == false)
 			return false;
 		publishProgress("" + step++, "" + steps, "/system/xbin/scp");
-		if (ShellUtils.lnSymbolic(ServerUtils.getLocalBin(mContext) + "/dropbearmulti", "/system/xbin/scp") == false)
+		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/scp") == false)
 			return false;
 		
 		// data/dropbear/rsa

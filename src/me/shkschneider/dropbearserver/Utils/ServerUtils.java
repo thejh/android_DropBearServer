@@ -6,11 +6,9 @@ package me.shkschneider.dropbearserver.Utils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -22,20 +20,18 @@ import android.util.Log;
 
 public abstract class ServerUtils {
 
-	public static final String TAG = "ServerUtils";
+	private static final String TAG = "ServerUtils";
 
+	public static String localDir = null;
 	public static String ipAddress = null;
-	public static String dropbearPath = null;
 
-	public static String getLocalBin(Context context) {
-		if (dropbearPath == null) {
-			if (context != null) {
-				dropbearPath = context.getDir("bin", Context.MODE_PRIVATE).toString();
-			}
+	public static final String getLocalDir(Context context) {
+		if (localDir == null) {
+			localDir = context.getDir("data", Context.MODE_PRIVATE).toString();
 		}
-		return dropbearPath;
+		return localDir;
 	}
-	public static String getLocalIpAddress() {
+	public static final String getLocalIpAddress() {
 		if (ipAddress == null) {
 			try {
 				for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -51,15 +47,45 @@ public abstract class ServerUtils {
 					}
 				}
 			}
-			catch (SocketException ex) {
-				Log.e(TAG, ex.getMessage());
+			catch (Exception e) {
+				Log.e(TAG, e.getMessage());
 			}
-			return null;
+			ipAddress = null;
 		}
 		return ipAddress;
 	}
 
-	public static int getServerPid() {
+	/*
+	 * Dropbear seems to take some time to write the pidFile, which makes this useless
+	 *
+	public static final Integer getServerPidFromFile(Context context) {
+		try {
+			FileInputStream fis = new FileInputStream(ServerUtils.getLocalDir(context) + "/pid");
+			DataInputStream dis = new DataInputStream(fis);
+			BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+			String line = br.readLine();
+			dis.close();
+			if (line != null) {
+				try {
+					Integer pid = Integer.parseInt(line);
+					Log.i(TAG, "PID #" + pid);
+					return pid;
+				}
+				catch (Exception e) {
+					Log.e(TAG, e.getMessage());
+					return -1;
+				}
+			}
+		}
+		catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+			return -1;
+		}
+		return 0;
+	}
+	*/
+
+	public static final Integer getServerPidFromPs() {
 		try {
 			Process suProcess = Runtime.getRuntime().exec("su");
 
@@ -93,7 +119,7 @@ public abstract class ServerUtils {
 				if (line != null) {
 					line = line.replaceFirst("^^\\S+\\s+([0-9]+)\\s+.+\\sdropbear(\\s.+)?$", "$1");
 					if (line.matches("^[0-9]+$")) {
-						int pid = Integer.parseInt(line);
+						Integer pid = Integer.parseInt(line);
 						Log.i(TAG, "PID #" + pid);
 						return pid;
 					}
@@ -101,40 +127,20 @@ public abstract class ServerUtils {
 			}
 			return 0;
 		}
-		catch (IOException ex) {
-			Log.w(TAG, "Can't get root access");
-		}
-		catch (SecurityException ex) {
-			Log.w(TAG, "Can't get root access");
-		}
-		catch (Exception ex) {
-			Log.w(TAG, "Error executing internal operation");
+		catch (Exception e) {
+			Log.e(TAG, e.getMessage());
 		}
 
 		return -1;
 	}
 
-	public static final Boolean killServer(int pid) {
-		if (pid <= 0)
-			pid = getServerPid();
-		if (pid > 0) {
-			return ShellUtils.kill(9, pid);
-		}
-		return false;
-	}
-
-	public static boolean generateRsaPrivateKey(String path) {
+	public static final Boolean generateRsaPrivateKey(String path) {
 		ShellUtils.commands.add("dropbearkey -t rsa -f " + path);
 		return ShellUtils.execute();
 	}
 
-	public static boolean generateDssPrivateKey(String path) {
+	public static final Boolean generateDssPrivateKey(String path) {
 		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
-		return ShellUtils.execute();
-	}
-
-	public static boolean generatePublicKey(String privatePath, String publicPath) {
-		ShellUtils.commands.add("dropbearkey -f " + privatePath + " -y > " + publicPath);
 		return ShellUtils.execute();
 	}
 

@@ -36,8 +36,25 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		// dropbear
-		ShellUtils.commands.add("dropbear -A root -N root -C 42 -r /data/dropbear/host_rsa -d /data/dropbear/host_dss -R /data/dropbear/authorized_keys -U 0 -G 0 -p 22");
+		String login = "root";
+		String passwd = "42";
+		String hostRsa = "/data/dropbear/host_rsa";
+		String hostDss = "/data/dropbear/host_dss";
+		String authorizedKeys = "/data/dropbear/authorized_keys";
+		String uid = "0";
+		String listeningPort = "22";
+		String pidFile = "/data/dropbear/pid";
+		
+		String command = "dropbear";
+		command = command.concat(" -A " + login + " -N " + login);
+		command = command.concat(" -C " + passwd);
+		command = command.concat(" -r " + hostRsa + " -d " + hostDss);
+		command = command.concat(" -R " + authorizedKeys);
+		command = command.concat(" -U " + uid + " -G " + uid);
+		command = command.concat(" -p " + listeningPort);
+		command = command.concat(" -P " + pidFile);
+		
+		ShellUtils.commands.add(command);
 		if (ShellUtils.execute() == false)
 			return false;
 		

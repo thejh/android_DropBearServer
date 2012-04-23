@@ -13,7 +13,7 @@ import com.stericson.RootTools.RootTools;
 
 public abstract class Utils {
 	
-	public static final String TAG = "Utils";
+	private static final String TAG = "Utils";
 
 	public static void marketNotFound(Context context) {
 		Toast.makeText(context, "Market not found!", Toast.LENGTH_SHORT).show();

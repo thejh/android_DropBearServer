@@ -1,5 +1,6 @@
 package me.shkschneider.dropbearserver.Tasks;
 
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,10 +37,9 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		// dropbear
-		ShellUtils.commands.add("killall dropbear");
-		if (ShellUtils.execute() == false)
-			return false;
+		
+		ShellUtils.kill(9, ServerUtils.getServerPidFromPs());
+		//ShelUtils.killall("dropbear");
 		
 		return true;
 	}
