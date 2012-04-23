@@ -13,28 +13,24 @@ public class HelpPage implements OnClickListener {
 	private View mView;
 
 	private LinearLayout mWhatIsRoot;
-	private LinearLayout mWhatisRootContent;
+	private LinearLayout mWhatIsRootContent;
 	private LinearLayout mWhatIsDropbear;
-	private LinearLayout mWhatisDropbearContent;
+	private LinearLayout mWhatIsDropbearContent;
 
 	public HelpPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.help, null);
 
-		// mWhatIsRoot mWhatisRootContent
+		// mWhatIsRoot mWhatIsRootContent
 		mWhatIsRoot = (LinearLayout) mView.findViewById(R.id.what_is_root);
 		mWhatIsRoot.setOnClickListener(this);
-		mWhatisRootContent = (LinearLayout) mView.findViewById(R.id.what_is_root_content);
+		mWhatIsRootContent = (LinearLayout) mView.findViewById(R.id.what_is_root_content);
 
-		// mWhatIsDropbear mWhatisDropbearContent
+		// mWhatIsDropbear mWhatIsDropbearContent
 		mWhatIsDropbear = (LinearLayout) mView.findViewById(R.id.what_is_dropbear);
 		mWhatIsDropbear.setOnClickListener(this);
-		mWhatisDropbearContent = (LinearLayout) mView.findViewById(R.id.what_is_dropbear_content);
-	}
-	
-	public void update() {
-		// ...
+		mWhatIsDropbearContent = (LinearLayout) mView.findViewById(R.id.what_is_dropbear_content);
 	}
 
 	public View getView() {
@@ -44,10 +40,10 @@ public class HelpPage implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v == mWhatIsRoot) {
-			mWhatisRootContent.setVisibility(mWhatisRootContent.getVisibility() == LinearLayout.VISIBLE ? LinearLayout.GONE : LinearLayout.VISIBLE);
+			mWhatIsRootContent.setVisibility(mWhatIsRootContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}
 		else if (v == mWhatIsDropbear) {
-			mWhatisDropbearContent.setVisibility(mWhatisDropbearContent.getVisibility() == LinearLayout.VISIBLE ? LinearLayout.GONE : LinearLayout.VISIBLE);
+			mWhatIsDropbearContent.setVisibility(mWhatIsDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}
 	}
 }

@@ -6,6 +6,7 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class DropbearRemover extends AsyncTask<Void, String, Boolean>
 {
@@ -17,6 +18,8 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean>
 	private DropbearRemoverCallback<Boolean> mCallback;
 
 	public DropbearRemover(Context context, DropbearRemoverCallback<Boolean> callback) {
+		Log.d(TAG, "DropbearRemover()");
+		
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {

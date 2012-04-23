@@ -15,6 +15,8 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean>
 	private ServerStopperCallback<Boolean> mCallback;
 
 	public ServerStopper(Context context, ServerStopperCallback<Boolean> callback) {
+		Log.d(TAG, "ServerStopper()");
+		
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {

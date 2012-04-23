@@ -2,8 +2,6 @@ package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
-import me.shkschneider.dropbearserver.Tasks.Checker;
-import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstaller;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstallerCallback;
 import me.shkschneider.dropbearserver.Tasks.ServerStarter;
@@ -26,7 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>, CheckerCallback<Boolean>
+public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>
 {
 	public static final String TAG = "ServerPage";
 
@@ -50,6 +48,8 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private TextView mServerLaunchLabel;
 
 	public ServerPage(Context context) {
+		Log.d(TAG, "ServerPage()");
+		
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.server, null);
@@ -241,18 +241,14 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 
 	@Override
 	public void onDropbearInstallerComplete(Boolean result) {
-		Log.i(TAG, "onDropbearInstallerComplete(" + result + ")");
 		if (result == true) {
 			RootUtils.checkDropbear();
-			updateDropbearStatus();
-			updateServerStatusCode();
-			updateServerStatus();
+			((MainActivity) mContext).update();
 		}
 	}
 
 	@Override
 	public void onServerStarterComplete(Boolean result) {
-		Log.i(TAG, "onStartServerComplete(" + result + ")");
 		if (result == true) {
 			mServerStatusCode = STATUS_STARTED;
 		}
@@ -264,7 +260,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 
 	@Override
 	public void onServerStopperComplete(Boolean result) {
-		Log.i(TAG, "onStopServerComplete(" + result + ")");
 		if (result == true) {
 			mServerStatusCode = STATUS_STOPPED;
 		}
@@ -272,18 +267,5 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatusCode = STATUS_ERROR;
 		}
 		updateServerStatus();
-	}
-
-	@Override
-	public void onCheckerComplete(Boolean result) {
-		update();
-    	((MainActivity) mContext).setActionBarProgressBarVisibility(View.GONE);
-	}
-	
-	public void check(Boolean visible) {
-    	((MainActivity) mContext).setActionBarProgressBarVisibility(View.VISIBLE);
-		// Checker
-		Checker checker = new Checker((visible ? mContext : null), this);
-		checker.execute();
 	}
 }

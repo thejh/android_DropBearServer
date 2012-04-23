@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources> 
+<resources>
+    
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="sugreen">#FF91A438</color>
+    <color name="sugray">#FF3B3B3B</color>
+    <color name="background">#FF333333</color>
+    <color name="red">#FFFF0000</color>
+    
     <!-- viewpagertabs -->
     <color name="rounded_container_border">#00000000</color>
     <color name="base_start_color_default">#FF3B3B3B</color>
@@ -8,13 +16,10 @@
     <color name="base_end_color_pressed">#FF91A438</color>
     <color name="text_color_default">#FF91A438</color>
     <color name="text_color_pressed">#FF3B3B3B</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#FF000000</color>
-    <color name="sugreen">#FF91A438</color>
-    <color name="sugray">#FF3B3B3B</color>
-    <color name="background">#FF333333</color>
+    
     <!-- actionbar -->
     <color name="actionbar_separator">#FF3B3B3B</color>
     <color name="actionbar_background_start">#FF333333</color>
     <color name="actionbar_background_end">#FF333333</color>
+    
 </resources>

@@ -15,6 +15,8 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean>
 	private ServerStarterCallback<Boolean> mCallback;
 
 	public ServerStarter(Context context, ServerStarterCallback<Boolean> callback) {
+		Log.d(TAG, "ServerStarter()");
+		
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {

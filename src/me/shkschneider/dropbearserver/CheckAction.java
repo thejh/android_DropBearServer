@@ -9,7 +9,7 @@ import android.content.Context;
 import android.view.View;
 
 class CheckAction implements Action {
-
+	
 	private Context mContext;
 	
 	public CheckAction(Context context) {
@@ -23,7 +23,7 @@ class CheckAction implements Action {
 
     @Override
     public void performAction(View view) {
-    	((MainActivity) mContext).check(false);
+    	((MainActivity) mContext).check();
     }
 
 }

@@ -38,10 +38,6 @@ public class AboutPage implements OnClickListener {
 		mVisitMyWebsite.setOnClickListener(this);
 	}
 	
-	public void update() {
-		// ...
-	}
-	
 	public View getView() {
 		return mView;
 	}

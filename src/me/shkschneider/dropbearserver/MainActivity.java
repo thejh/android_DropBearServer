@@ -4,6 +4,8 @@ import com.astuetz.viewpagertabs.ViewPagerTabs;
 import com.markupartist.android.widget.ActionBar;
 
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Tasks.Checker;
+import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,13 +17,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 
 	private static final String TAG = "MainActivity";
-	private static final int DEFAULT_PAGE = 1;
 
+	private static Boolean needToCheckDependencies = true;
+	
 	private ViewPager mPager;
 	private ViewPagerTabs mPagerTabs;
 	private MainAdapter mAdapter;
@@ -31,9 +33,8 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.main);
-
+		
 		// Introduction
 		String appName = getResources().getString(R.string.app_name);
 		String appVersion = "0";
@@ -48,10 +49,9 @@ public class MainActivity extends Activity {
 
 		// Header
 		mActionBar = (ActionBar) findViewById(R.id.actionbar);
-		mActionBar.setTitle("DropBear Server");
+		mActionBar.setTitle(getResources().getString(R.string.app_name));
 		mActionBar.setHomeAction(new HomeAction(this));
 		mActionBar.addAction(new CheckAction(this));
-	    mActionBar.setProgressBarVisibility(View.VISIBLE);
 
 		// ViewPagerTabs
 		mAdapter = new MainAdapter(this);
@@ -60,9 +60,17 @@ public class MainActivity extends Activity {
 		mPagerTabs = (ViewPagerTabs) findViewById(R.id.tabs);
 		mPagerTabs.setViewPager(mPager);
 		goToDefaultPage();
-
-		// Root dependencies
-		check(true);
+	}
+	
+	@Override
+	public void onResume() {
+		Log.d(TAG, "onResume()");
+		super.onResume();
+		if (needToCheckDependencies == true) {
+			// Root dependencies
+			check();
+			needToCheckDependencies = false;
+		}
 	}
 
 	public static Intent createIntent(Context context) {
@@ -71,49 +79,23 @@ public class MainActivity extends Activity {
 		return i;
 	}
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		Log.d(TAG, "onStart()");
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		Log.d(TAG, "onResume()");
-
-		// Root dependencies
-		check(false);
-		
-		// Pages
-		mAdapter.update();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		Log.d(TAG, "onStop()");
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		Log.d(TAG, "onDestroy()");
-	}
-
 	public void goToDefaultPage() {
-		mPager.setCurrentItem(DEFAULT_PAGE);
+		mPager.setCurrentItem(MainAdapter.DEFAULT_PAGE);
 	}
 	
-	public void setActionBarProgressBarVisibility(int visibility) {
-		mActionBar.setProgressBarVisibility(visibility);
+	public void check() {
+		// Checker
+		Checker checker = new Checker(this, this);
+		checker.execute();
+	}
+
+	@Override
+	public void onCheckerComplete(Boolean result) {
+		update();
 	}
 	
-	public void check(Boolean visible) {
-		mAdapter.check(visible);
-	}
-	
-	public void updateServer() {
-		mAdapter.updateServer();
+	public void update() {
+		Log.d(TAG, "update()");
+		mAdapter.update();
 	}
 }

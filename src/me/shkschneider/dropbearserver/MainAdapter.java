@@ -12,12 +12,17 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.astuetz.viewpagertabs.ViewPagerTabProvider;
 
 public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 
+	private static final String TAG = "MainAdapter";
+	
+	public static final int DEFAULT_PAGE = 1;
+	
 	private static final int SETTINGS_INDEX = 0;
 	private static final int SERVER_INDEX = 1;
 	private static final int HELP_INDEX = 2;
@@ -37,6 +42,8 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	};
 
 	public MainAdapter(Context context) {
+		Log.d(TAG, "MainAdapter()");
+		
 		mContext = context;
 		mSettingsPage = new SettingsPage(mContext);
 		mServerPage = new ServerPage(mContext);
@@ -47,8 +54,6 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	public void update() {
 		mSettingsPage.update();
 		mServerPage.update();
-		mHelpPage.update();
-		mAboutPage.update();
 	}
 
 	@Override
@@ -112,13 +117,5 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	public String getTitle(int position) {
 		final int len = mTitles.length;
 		return (position >= 0 && position < len ? mTitles[position] : "");
-	}
-	
-	public void check(Boolean visible) {
-		mServerPage.check(visible);
-	}
-	
-	public void updateServer() {
-		mServerPage.update();
 	}
 }

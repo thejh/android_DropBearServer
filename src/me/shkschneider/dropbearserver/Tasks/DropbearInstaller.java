@@ -7,6 +7,7 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 {
@@ -18,6 +19,8 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean>
 	private DropbearInstallerCallback<Boolean> mCallback;
 
 	public DropbearInstaller(Context context, DropbearInstallerCallback<Boolean> callback) {
+		Log.d(TAG, "DropbearInstaller()");
+		
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
