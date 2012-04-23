@@ -55,10 +55,6 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		mServerPage.update();
 	}
 
-	public void stop() {
-		mServerPage.stop();
-	}
-
 	@Override
 	public Object instantiateItem(View container, int position) {
 		View v = null;

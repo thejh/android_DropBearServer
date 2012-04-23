@@ -28,8 +28,10 @@ public abstract class ServerUtils {
 	public static String dropbearPath = null;
 
 	public static String getLocalBin(Context context) {
-		if (dropbearPath == null && context != null) {
-			dropbearPath = context.getDir("bin", Context.MODE_PRIVATE).toString();
+		if (dropbearPath == null) {
+			if (context != null) {
+				dropbearPath = context.getDir("bin", Context.MODE_PRIVATE).toString();
+			}
 		}
 		return dropbearPath;
 	}

@@ -31,6 +31,11 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPreExecute() {
+		if (ServerUtils.getServerPid() > 0) {
+			// ServerStopper
+			ServerStopper serverStopper = new ServerStopper(mContext, null);
+			serverStopper.execute();
+		}
 		super.onPreExecute();
 		if (mProgressDialog != null) {
 			mProgressDialog.show();

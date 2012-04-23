@@ -192,7 +192,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
-			((MainActivity) mContext).stop();
 			// mDropbearRemover
 			DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
 			dropbearRemover.execute();

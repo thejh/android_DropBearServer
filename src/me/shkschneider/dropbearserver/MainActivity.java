@@ -97,9 +97,4 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 		Log.d(TAG, "update()");
 		mAdapter.update();
 	}
-
-	public void stop() {
-		Log.d(TAG, "stop()");
-		mAdapter.stop();
-	}
 }
