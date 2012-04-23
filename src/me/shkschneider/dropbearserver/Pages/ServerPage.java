@@ -146,7 +146,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 		else {
 			Integer pid = ServerUtils.getServerPidFromPs();
-			Log.d(TAG, "DEBUG: " + pid);
 			if (pid < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
