@@ -18,7 +18,7 @@ public abstract class Utils {
 	private static final String TAG = "Utils";
 
 	public static void marketNotFound(Context context) {
-		Toast.makeText(context, "Market not found!", Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "Google Play could not be found", Toast.LENGTH_SHORT).show();
 	}
 	
 	public static final Boolean copyRawFile(Context context, int rawId, String path) {

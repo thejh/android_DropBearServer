@@ -127,13 +127,12 @@ public abstract class ServerUtils {
 					}
 				}
 			}
-			return 0;
 		}
 		catch (Exception e) {
 			Log.e(TAG, e.getMessage());
+			return -1;
 		}
-
-		return -1;
+		return 0;
 	}
 
 	public static final Boolean generateRsaPrivateKey(String path) {

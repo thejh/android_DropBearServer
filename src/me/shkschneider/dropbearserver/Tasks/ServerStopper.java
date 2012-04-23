@@ -5,8 +5,11 @@ import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ServerStopper extends AsyncTask<Void, String, Boolean> {
+	
+	private static final String TAG = "ServerStopper";
 
 	public Context mContext = null;
 	public ProgressDialog mProgressDialog = null;
@@ -37,9 +40,16 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		
-		ShellUtils.kill(9, ServerUtils.getServerPidFromPs());
-		//ShelUtils.killall("dropbear");
+		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
+		if (ShellUtils.echoToFile("0", pidFile) == false)
+			Log.d(TAG, "echoToFile(0, " + pidFile + ")");
+
+		// TODO: killall?
+		Integer pid = ServerUtils.getServerPidFromPs();
+		if (ShellUtils.kill(9, pid) == false) {
+			Log.d(TAG, "kill(9, " + pid + ")");
+			return false;
+		}
 		
 		return true;
 	}

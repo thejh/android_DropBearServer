@@ -232,11 +232,12 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			// do not check for dropbear
 			RootUtils.hasDropbear = false;
 			((MainActivity) mContext).update();
-			// TODO: remove?
+			Toast.makeText(mContext, "Dropbear successfully removed", Toast.LENGTH_SHORT).show();
+			mGeneralContent.setVisibility(View.GONE);
 			((MainActivity) mContext).goToDefaultPage();
 		}
 		else {
-			Toast.makeText(mContext, "DropbearRemover failed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Dropbear could not be removed", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

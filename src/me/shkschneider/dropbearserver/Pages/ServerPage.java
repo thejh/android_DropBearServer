@@ -281,14 +281,14 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			((MainActivity) mContext).update();
 		}
 		else {
-			Toast.makeText(mContext, "DropbearInstaller failed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Dropbear failed to get installed", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void onServerStarterComplete(Boolean result) {
 		Log.i(TAG, "onStartServerComplete(" + result + ")");
 		if (result == false) {
-			Toast.makeText(mContext, "ServerStarter failed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Dropbear failed to start", Toast.LENGTH_SHORT).show();
 		}
 		updateServerStatusCode();
 		updateServerStatus();
@@ -297,7 +297,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	public void onServerStopperComplete(Boolean result) {
 		Log.i(TAG, "onStopServerComplete(" + result + ")");
 		if (result == false) {
-			Toast.makeText(mContext, "ServerStopper failed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Dropbear failed to stop", Toast.LENGTH_SHORT).show();
 		}
 		updateServerStatusCode();
 		updateServerStatus();
