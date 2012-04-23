@@ -31,6 +31,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mGeneralContent;
 
 	private CheckBox mStartAtBoot;
+	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
 	private CheckBox mOnlyOverWifi;
 	private LinearLayout mCompleteRemoval;
@@ -39,6 +40,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mDropbearContent;
 	private LinearLayout mDropbearContentError;
 	
+	private LinearLayout mBanner;
 	private CheckBox mDisallowRootLogins;
 	private CheckBox mDisablePasswordLogins;
 	private CheckBox mDisablePasswordLoginsForRoot;
@@ -65,6 +67,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		mStartAtBoot = (CheckBox) mView.findViewById(R.id.start_at_boot);
 		mStartAtBoot.setOnCheckedChangeListener(this);
+		mOnlyIfRunningBefore = (CheckBox) mView.findViewById(R.id.only_if_running_before);
+		mOnlyIfRunningBefore.setOnCheckedChangeListener(this);
 		mKeepScreenOn = (CheckBox) mView.findViewById(R.id.keep_screen_on);
 		mKeepScreenOn.setOnCheckedChangeListener(this);
 		mOnlyOverWifi = (CheckBox) mView.findViewById(R.id.only_over_wifi);
@@ -78,6 +82,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mDropbearContent = (LinearLayout) mView.findViewById(R.id.dropbear_content);
 		mDropbearContentError = (LinearLayout) mView.findViewById(R.id.dropbear_content_error);
 
+		mBanner = (LinearLayout) mView.findViewById(R.id.banner);
+		mBanner.setOnClickListener(this);
 		mDisallowRootLogins = (CheckBox) mView.findViewById(R.id.disallow_root_logins);
 		mDisallowRootLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLogins = (CheckBox) mView.findViewById(R.id.disable_password_logins);
@@ -125,12 +131,22 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		
 		// mGeneral
 		mStartAtBoot.setChecked(mSettingsHelper.getStartAtBoot());
+		mOnlyIfRunningBefore.setChecked(mSettingsHelper.getOnlyIfRunningBefore());
 		mKeepScreenOn.setChecked(mSettingsHelper.getKeepScreenOn());
 		mOnlyOverWifi.setChecked(mSettingsHelper.getOnlyOverWifi());
 		
 		// mDropbear
+		// TODO: setBanner
+		mDisallowRootLogins.setChecked(mSettingsHelper.getDisallowRootLogins());
+		mDisablePasswordLogins.setChecked(mSettingsHelper.getDisablePasswordLogins());
+		mDisablePasswordLoginsForRoot.setChecked(mSettingsHelper.getDisablePasswordLoginsForRoot());
+		// TODO: setListeningPort
+		
+		// mAccounts
+		// TODO: setAccounts
 		
 		// mPublicKeys
+		// TODO: setPublicKeys
 	}
 
 	public View getView() {
@@ -155,16 +171,21 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (v == mDropbear) {
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}
+		else if (v == mBanner) {
+			// TODO: changeBanner
+		}
 		else if (v == mListeningPort) {
-			// TODO: alert with number
+			// TODO: changeListeningPort
 		}
 		// mAccounts
 		else if (v == mAccounts) {
 			mAccountsContent.setVisibility(mAccountsContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+			// TODO: changeAccounts
 		}
 		// mPublicKeys
 		else if (v == mPublicKeys) {
 			mPublicKeysContent.setVisibility(mPublicKeysContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+			// TODO: changePublicKeys
 		}
 	}
 

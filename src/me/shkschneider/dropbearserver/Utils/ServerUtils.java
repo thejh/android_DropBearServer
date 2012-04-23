@@ -5,7 +5,9 @@
 package me.shkschneider.dropbearserver.Utils;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -56,8 +58,9 @@ public abstract class ServerUtils {
 	}
 
 	/*
-	 * Dropbear seems to take some time to write the pidFile, which makes this useless
-	 *
+	 * Dropbear seems to take some time to write the pidFile
+	 * As a consequence, this is only used by the BootReceiver
+	 */
 	public static final Integer getServerPidFromFile(Context context) {
 		try {
 			FileInputStream fis = new FileInputStream(ServerUtils.getLocalDir(context) + "/pid");
@@ -83,7 +86,6 @@ public abstract class ServerUtils {
 		}
 		return 0;
 	}
-	*/
 
 	public static final Integer getServerPidFromPs() {
 		try {

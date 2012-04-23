@@ -1,5 +1,6 @@
 package me.shkschneider.dropbearserver.Tasks;
 
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -43,7 +44,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		String authorizedKeys = "/data/dropbear/authorized_keys";
 		String uid = "0";
 		String listeningPort = "22";
-		String pidFile = "/data/dropbear/pid";
+		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
 		
 		String command = "dropbear";
 		command = command.concat(" -A " + login + " -N " + login);
