@@ -51,7 +51,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		int step = 0;
-		int steps = 23;
+		int steps = 20;
 		
 		// read-write
 		publishProgress("" + step++, "" + steps, "/system read-write");
@@ -68,69 +68,58 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		if (ShellUtils.chmod("/data/dropbear", "755") == false)
 			return false;
-		
-		// data/dropbear/.ssh
-		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh");
-		if (ShellUtils.mkdir("/data/dropbear/.ssh") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh");
-		if (ShellUtils.chown("/data/dropbear/.ssh", "0:0") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh");
-		if (ShellUtils.chmod("/data/dropbear/.ssh", "700") == false)
-			return false;
-
-		// data/dropbear/.ssh/authorized_keys
-		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh/authorized_keys");
-		if (ShellUtils.touch("/data/dropbear/.ssh/authorized_keys") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh/authorized_keys");
-		if (ShellUtils.chown("/data/dropbear/.ssh/authorized_keys", "0:0") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/data/dropbear/.ssh/authorized_keys");
-		if (ShellUtils.chmod("/data/dropbear/.ssh/authorized_keys", "600") == false)
-			return false;
 
 		// system/xbin
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (Utils.copyRawFile(mContext, R.raw.dropbear, mContext.getCacheDir() + "/dropbear") == false)
+		publishProgress("" + step++, "" + steps, mContext.getCacheDir() + "/dropbearmulti");
+		if (Utils.copyRawFile(mContext, R.raw.dropbearmulti, mContext.getCacheDir() + "/dropbearmulti") == false)
+			return false;
+		publishProgress("" + step++, "" + steps, mContext.getCacheDir() + "/dropbearmulti");
+		if (ShellUtils.chmod(mContext.getCacheDir() + "/dropbearmulti", "755") == false)
 			return false;
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (ShellUtils.mv(mContext.getCacheDir() + "/dropbear", "/system/xbin/dropbear") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (ShellUtils.chown("/system/xbin/dropbear", "0:0") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (ShellUtils.chmod("/system/xbin/dropbear", "755") == false)
+		if (ShellUtils.lnSymbolic(mContext.getCacheDir() + "/dropbearmulti", "/system/xbin/dropbear") == false)
 			return false;
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (Utils.copyRawFile(mContext, R.raw.dropbearkey, mContext.getCacheDir() + "/dropbearkey") == false)
+		if (ShellUtils.lnSymbolic(mContext.getCacheDir() + "/dropbearmulti", "/system/xbin/dropbearkey") == false)
 			return false;
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (ShellUtils.mv(mContext.getCacheDir() + "/dropbearkey", "/system/xbin/dropbearkey") == false)
+		publishProgress("" + step++, "" + steps, "/system/xbin/ssh");
+		if (ShellUtils.lnSymbolic(mContext.getCacheDir() + "/dropbearmulti", "/system/xbin/ssh") == false)
 			return false;
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (ShellUtils.chown("/system/xbin/dropbearkey", "0:0") == false)
-			return false;
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (ShellUtils.chmod("/system/xbin/dropbearkey", "755") == false)
+		publishProgress("" + step++, "" + steps, "/system/xbin/scp");
+		if (ShellUtils.lnSymbolic(mContext.getCacheDir() + "/dropbearmulti", "/system/xbin/scp") == false)
 			return false;
 		
-		// data/dropbear/dropbear_rsa_host_key
-		publishProgress("" + step++, "" + steps, "/data/dropbear/dropbear_rsa_host_key");
-		if (ServerUtils.generateRsaPrivateKey("/data/dropbear/dropbear_rsa_host_key") == false)
+		// data/dropbear/rsa
+		publishProgress("" + step++, "" + steps, "/data/dropbear/host_rsa");
+		if (ServerUtils.generateRsaPrivateKey("/data/dropbear/host_rsa") == false)
 			return false;
-		publishProgress("" + step++, "" + steps, "/data/dropbear/dropbear_rsa_host_key");
-		if (ShellUtils.chmod("/data/dropbear/dropbear_rsa_host_key", "644") == false)
+		publishProgress("" + step++, "" + steps, "/data/dropbear/host_rsa");
+		if (ShellUtils.chown("/data/dropbear/host_rsa", "0:0") == false)
+			return false;
+		publishProgress("" + step++, "" + steps, "/data/dropbear/host_rsa");
+		if (ShellUtils.chmod("/data/dropbear/host_rsa", "644") == false)
 			return false;
 		
-		// data/dropbear/dropbear_dss_host_key
-		publishProgress("" + step++, "" + steps, "/data/dropbear/dropbear_dss_host_key");
-		if (ServerUtils.generateDssPrivateKey("/data/dropbear/dropbear_dss_host_key") == false)
+		// data/dropbear/dss
+		publishProgress("" + step++, "" + steps, "/data/dropbear/host_dss");
+		if (ServerUtils.generateDssPrivateKey("/data/dropbear/host_dss") == false)
 			return false;
-		publishProgress("" + step++, "" + steps, "/data/dropbear/dropbear_dss_host_key");
-		if (ShellUtils.chmod("/data/dropbear/dropbear_dss_host_key", "644") == false)
+		publishProgress("" + step++, "" + steps, "/data/dropbear/host_dss");
+		if (ShellUtils.chown("/data/dropbear/host_dss", "0:0") == false)
+			return false;
+		publishProgress("" + step++, "" + steps, "/data/dropbear/host_dss");
+		if (ShellUtils.chmod("/data/dropbear/host_dss", "644") == false)
+			return false;
+
+		// data/dropbear/authorized_keys
+		publishProgress("" + step++, "" + steps, "/data/dropbear/authorized_keys");
+		if (ShellUtils.touch("/data/dropbear/authorized_keys") == false)
+			return false;
+		publishProgress("" + step++, "" + steps, "/data/dropbear/authorized_keys");
+		if (ShellUtils.chown("/data/dropbear/authorized_keys", "0:0") == false)
+			return false;
+		publishProgress("" + step++, "" + steps, "/data/dropbear/authorized_keys");
+		if (ShellUtils.chmod("/data/dropbear/authorized_keys", "600") == false)
 			return false;
 
 		// read-only

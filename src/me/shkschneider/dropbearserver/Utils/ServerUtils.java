@@ -1,5 +1,6 @@
 /*
  * Sherif elKhatib <http://stackoverflow.com/questions/6896618/read-command-output-inside-su-process>
+ * Martin <http://www.droidnova.com/get-the-ip-address-of-your-device,304.html>
  */
 package me.shkschneider.dropbearserver.Utils;
 
@@ -7,14 +8,40 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
+
+import org.apache.http.conn.util.InetAddressUtils;
 
 import android.util.Log;
 
-public abstract class ServerUtils
-{
-	public static String TAG = "ServerUtils";
+public abstract class ServerUtils {
+	
+	public static final String TAG = "ServerUtils";
+	
+	public static String getLocalIpAddress() {
+	    try {
+	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+	            NetworkInterface intf = en.nextElement();
+	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+	                InetAddress inetAddress = enumIpAddr.nextElement();
+	                String ip4 = inetAddress.getHostAddress().toString();
+	                if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
+	                	Log.d(TAG, inetAddress.getHostAddress().toString());
+	                    return ip4;
+	                }
+	            }
+	        }
+	    }
+	    catch (SocketException ex) {
+	        Log.e(TAG, ex.getMessage());
+	    }
+	    return null;
+	}
 	
 	public static int getServerPid() {
 		try {

@@ -12,82 +12,87 @@ import android.util.Log;
 
 import com.stericson.RootTools.RootTools;
 
-public abstract class ShellUtils
-{
-	public static String TAG = "ShellUtils";
+public abstract class ShellUtils {
+
+	public static final String TAG = "ShellUtils";
 
 	public static ArrayList<String> commands = new ArrayList<String>();
-	
+
 	public static final Boolean mkdir(String path) {
 		commands.add("busybox mkdir " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean mkdirRecursive(String path) {
 		commands.add("busybox mkdir -p " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean chown(String path, String owner) {
 		commands.add("busybox chown " + owner + " " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean chownRecursive(String path, String owner) {
 		commands.add("busybox chown -R " + owner + " " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean chmod(String path, String chmod) {
 		commands.add("busybox chmod " + chmod + " " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean chmodRecursive(String path, String chmod) {
 		commands.add("busybox chmod -R " + chmod + " " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean touch(String path) {
 		commands.add("busybox echo -n '' > " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean rm(String path) {
 		commands.add("busybox rm -f " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean rmRecursive(String path) {
 		commands.add("busybox rm -rf " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean mv(String srcPath, String destPath) {
 		commands.add("busybox mv " + srcPath + " " + destPath);
 		return execute();
 	}
-	
+
 	public static final Boolean cp(String srcPath, String destPath) {
 		commands.add("busybox cp " + srcPath + " " + destPath);
 		return execute();
 	}
-	
+
 	public static final Boolean cpRecursive(String srcPath, String destPath) {
 		commands.add("busybox cp -r " + srcPath + " " + destPath);
 		return execute();
 	}
-	
+
 	public static final Boolean echoToFile(String text, String path) {
 		commands.add("busybox echo '" + text + "' > " + path);
 		return execute();
 	}
-	
+
 	public static final Boolean echoAppendToFile(String text, String path) {
 		commands.add("busybox echo '" + text + "' >> " + path);
 		return execute();
 	}
-	
+
+	public static final Boolean lnSymbolic(String srcPath, String destPath) {
+		commands.add("busybox ln -s " + srcPath + " " + destPath);
+		return execute();
+	}
+
 	public static final Boolean kill(int signal, int pid) {
 		if (signal > 0 && pid > 0) {
 			commands.add("busybox kill -" + signal + " " + pid);
@@ -138,11 +143,11 @@ public abstract class ShellUtils
 		commands.clear();
 		return retval;
 	}
-	
+
 	public static final Boolean remountReadWrite(String path) {
 		return RootTools.remount(path, "RW");
 	}
-	
+
 	public static final Boolean remountReadOnly(String path) {
 		return RootTools.remount(path, "RO");
 	}
@@ -187,13 +192,13 @@ public abstract class ShellUtils
         }
         return true;
     }
-	
+
 	public static final String md5sum(String s) {
 	    try {
 	        MessageDigest digest = java.security.MessageDigest.getInstance("MD5");
 	        digest.update(s.getBytes());
 	        byte messageDigest[] = digest.digest();
-	 
+
 	        StringBuffer hexString = new StringBuffer();
 	        for (int i = 0; i < messageDigest.length; i++) {
 	            String h = Integer.toHexString(0xFF & messageDigest[i]);
@@ -202,7 +207,7 @@ public abstract class ShellUtils
 	            hexString.append(h);
 	        }
 	        return hexString.toString();
-	 
+
 	    }
 	    catch (NoSuchAlgorithmException e) {
 	        Log.e(TAG, "md5sum(): " + e.getMessage());
@@ -215,7 +220,7 @@ public abstract class ShellUtils
             Log.e(TAG, "Busybox not present");
             return false;
         }
-        
+
         Process process = null;
         try {
             process = Runtime.getRuntime().exec(new String[] { mBusyboxPath, "md5sum", path});
@@ -254,16 +259,16 @@ public abstract class ShellUtils
         }
         return true;
     }
-	*/
-    
+	 */
+
 	public static String which(String binaryName) {
-        String path = System.getenv("PATH");
-        for (String s : path.split(File.pathSeparator)) {
-            File file = new File(s, binaryName);
-            if (file.exists()) {
-                return file.getAbsolutePath();
-            }
-        }
-        return null;
-    }
+		String path = System.getenv("PATH");
+		for (String s : path.split(File.pathSeparator)) {
+			File file = new File(s, binaryName);
+			if (file.exists()) {
+				return file.getAbsolutePath();
+			}
+		}
+		return null;
+	}
 }

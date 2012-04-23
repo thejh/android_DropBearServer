@@ -17,22 +17,18 @@ public class SettingsHelper {
 	private static final String PREF_KEEP_SCREEN_ON = "keepScreenOn";
 	private static final String PREF_ONLY_OVER_WIFI = "onlyOverWifi";
 	private static final String PREF_BANNER = "banner";
-	private static final String PREF_MESSAGE_OF_THE_DAY = "messageOfTheDay";
 	private static final String PREF_DISALLOW_ROOT_LOGINS = "disallowRootLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS = "disablePasswordLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT = "disablePasswordLoginsForRoot";
-	private static final String PREF_ENABLE_MASTER_PASSWORD = "enableMasterPassword";
 	private static final String PREF_LISTENING_PORT = "listeningPort";
 	
 	public static final Boolean START_AT_BOOT_DEFAULT = false;
 	public static final Boolean KEEP_SCREEN_ON_DEFAULT = false;
 	public static final Boolean ONLY_OVER_WIFI_DEFAULT = false;
 	public static final String BANNER_DEFAULT = "";
-	public static final String MESSAGE_OF_THE_DAY_DEFAULT = "";
 	public static final Boolean DISALLOW_ROOT_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
-	public static final Boolean ENABLE_MASTER_PASSWORD_DEFAULT = true;
 	public static final Integer LISTENING_PORT_DEFAULT = 22;
 	
     private SharedPreferences mSharedPreferences;
@@ -85,16 +81,6 @@ public class SettingsHelper {
     	mEditor.commit();
     }
     
-    // messageOfTheDay
-    public String getMessageOfTheDay() {
-    	return mSharedPreferences.getString(PREF_MESSAGE_OF_THE_DAY, MESSAGE_OF_THE_DAY_DEFAULT);
-    }
-    
-    public void setMessageOfTheDay(String s) {
-    	mEditor.putString(PREF_MESSAGE_OF_THE_DAY, s);
-    	mEditor.commit();
-    }
-    
     // disallowRootLogins
     public Boolean getDisallowRootLogins() {
     	return mSharedPreferences.getBoolean(PREF_DISALLOW_ROOT_LOGINS, DISABLE_PASSWORD_LOGINS_DEFAULT);
@@ -122,16 +108,6 @@ public class SettingsHelper {
     
     public void setDisablePasswordLoginsForRoot(Boolean b) {
     	mEditor.putBoolean(PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT, b);
-    	mEditor.commit();
-    }
-    
-    // enableMasterPassword
-    public Boolean getEnableMasterPassword() {
-    	return mSharedPreferences.getBoolean(PREF_ENABLE_MASTER_PASSWORD, ENABLE_MASTER_PASSWORD_DEFAULT);
-    }
-    
-    public void setEnableMasterPassword(Boolean b) {
-    	mEditor.putBoolean(PREF_ENABLE_MASTER_PASSWORD, b);
     	mEditor.commit();
     }
     

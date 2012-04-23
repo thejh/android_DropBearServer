@@ -39,16 +39,18 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mDropbearContent;
 	private LinearLayout mDropbearContentError;
 	
-	// ...
 	private CheckBox mDisallowRootLogins;
 	private CheckBox mDisablePasswordLogins;
 	private CheckBox mDisablePasswordLoginsForRoot;
-	private CheckBox mEnableMasterPassword;
 	private LinearLayout mListeningPort;
 
 	private LinearLayout mPublicKeys;
 	private LinearLayout mPublicKeysContent;
 	private LinearLayout mPublicKeysContentError;
+
+	private LinearLayout mAccounts;
+	private LinearLayout mAccountsContent;
+	private LinearLayout mAccountsContentError;
 
 	public SettingsPage(Context context) {
 		mContext = context;
@@ -76,36 +78,47 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mDropbearContent = (LinearLayout) mView.findViewById(R.id.dropbear_content);
 		mDropbearContentError = (LinearLayout) mView.findViewById(R.id.dropbear_content_error);
 
-		// ...
 		mDisallowRootLogins = (CheckBox) mView.findViewById(R.id.disallow_root_logins);
 		mDisallowRootLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLogins = (CheckBox) mView.findViewById(R.id.disable_password_logins);
 		mDisablePasswordLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLoginsForRoot = (CheckBox) mView.findViewById(R.id.disable_password_logins_for_root);
 		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(this);
-		mEnableMasterPassword = (CheckBox) mView.findViewById(R.id.enable_master_password);
-		mEnableMasterPassword.setOnCheckedChangeListener(this);
 		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
 		mListeningPort.setOnClickListener(this);
+		
+		// mAccounts mAccountsContent
+		mAccounts = (LinearLayout) mView.findViewById(R.id.accounts);
+		mAccounts.setOnClickListener(this);
+		mAccountsContent = (LinearLayout) mView.findViewById(R.id.accounts_content);
+		mAccountsContentError = (LinearLayout) mView.findViewById(R.id.accounts_content_error);
 		
 		// mPublicKeys mPublicKeysContent
 		mPublicKeys = (LinearLayout) mView.findViewById(R.id.public_keys);
 		mPublicKeys.setOnClickListener(this);
 		mPublicKeysContent = (LinearLayout) mView.findViewById(R.id.public_keys_content);
 		mPublicKeysContentError = (LinearLayout) mView.findViewById(R.id.public_keys_content_error);
-		
-		// ...
 	}
 
 	public void update() {
 		if (RootUtils.hasRootAccess == true && RootUtils.hasBusybox == true && RootUtils.hasDropbear == true) {
+			mDropbear.setClickable(true);
 			mDropbearContentError.setVisibility(View.GONE);
+			mAccounts.setClickable(true);
+			mAccountsContent.setVisibility(View.VISIBLE);
+			mAccountsContentError.setVisibility(View.GONE);
+			mPublicKeys.setClickable(true);
 			mPublicKeysContent.setVisibility(View.VISIBLE);
 			mPublicKeysContentError.setVisibility(View.GONE);
 		}
 		else {
+			mDropbear.setClickable(false);
 			mDropbearContent.setVisibility(View.GONE);
 			mDropbearContentError.setVisibility(View.VISIBLE);
+			mAccounts.setClickable(false);
+			mAccountsContent.setVisibility(View.GONE);
+			mAccountsContentError.setVisibility(View.VISIBLE);
+			mPublicKeys.setClickable(false);
 			mPublicKeysContent.setVisibility(View.GONE);
 			mPublicKeysContentError.setVisibility(View.VISIBLE);
 		}
@@ -145,6 +158,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (v == mListeningPort) {
 			// TODO: alert with number
 		}
+		// mAccounts
+		else if (v == mAccounts) {
+			mAccountsContent.setVisibility(mAccountsContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+		}
 		// mPublicKeys
 		else if (v == mPublicKeys) {
 			mPublicKeysContent.setVisibility(mPublicKeysContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
@@ -171,13 +188,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (buttonView == mDisablePasswordLoginsForRoot) {
 			mSettingsHelper.setDisablePasswordLoginsForRoot(buttonView.isChecked());
 		}
-		else if (buttonView == mEnableMasterPassword) {
-			mSettingsHelper.setEnableMasterPassword(buttonView.isChecked());
-		}
 	}
 
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
+			((MainActivity) mContext).stop();
 			// mDropbearRemover
 			DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
 			dropbearRemover.execute();

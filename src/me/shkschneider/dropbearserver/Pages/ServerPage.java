@@ -40,7 +40,9 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private View mView;
 	private int mServerStatusCode;
 	private int mPid = 0;
+	private String mIpAddress = null;
 
+	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
 	private LinearLayout mGetSuperuser;
 	private LinearLayout mGetBusybox;
@@ -49,12 +51,18 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private TextView mServerStatus;
 	private LinearLayout mServerLaunch;
 	private TextView mServerLaunchLabel;
+	private TextView mServerLaunchPid;
+	private LinearLayout mInfos;
+	private TextView mInfosLabel;
 
 	public ServerPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.server, null);
 		mServerStatusCode = STATUS_ERROR;
+
+		// mNetworkConnexions
+		mNetworkConnexion = (TextView) mView.findViewById(R.id.network_connexion);
 
 		// mSuperuserStatus mGetSuperuser
 		mRootStatus = (TextView) mView.findViewById(R.id.superuser_status);
@@ -68,18 +76,36 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		mGetDropbear = (LinearLayout) mView.findViewById(R.id.get_dropbear);
 		mGetDropbear.setOnClickListener(this);
 
-		// mServerStatus mServerLaunch mServerLaunchLabel
+		// mServerStatus mServerLaunch mServerLaunchLabel mServerLaunchPid
 		mServerStatus = (TextView) mView.findViewById(R.id.server_status);
 		mServerLaunch = (LinearLayout) mView.findViewById(R.id.server_launch);
 		mServerLaunch.setOnClickListener(this);
 		mServerLaunchLabel = (TextView) mView.findViewById(R.id.launch_label);
+		mServerLaunchPid = (TextView) mView.findViewById(R.id.launch_pid);
+
+		// mInfos mInfosLabel
+		mInfos = (LinearLayout) mView.findViewById(R.id.infos);
+		mInfosLabel = (TextView) mView.findViewById(R.id.infos_label);
 	}
 
 	public void update() {
+		updateNetworkStatus();
 		updateRootStatus();
 		updateDropbearStatus();
 		updateServerStatusCode();
 		updateServerStatus();
+	}
+
+	public void updateNetworkStatus() {
+		mIpAddress = ServerUtils.getLocalIpAddress();
+		if (mIpAddress != null) {
+			mNetworkConnexion.setText("OK");
+			mNetworkConnexion.setTextColor(Color.GREEN);
+		}
+		else {
+			mNetworkConnexion.setText("KO");
+			mNetworkConnexion.setTextColor(Color.RED);
+		}
 	}
 
 	public void updateRootStatus() {
@@ -145,30 +171,45 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatus.setTextColor(Color.RED);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("START SERVER");
+			mServerLaunchPid.setText("");
+			mInfos.setVisibility(View.GONE);
+			mInfosLabel.setText("");
 			break;
 		case STATUS_STARTING:
 			mServerStatus.setText("STARTING");
 			mServerStatus.setTextColor(Color.YELLOW);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STARTING...");
+			mServerLaunchPid.setText("");
+			mInfos.setVisibility(View.GONE);
+			mInfosLabel.setText("");
 			break;
 		case STATUS_STARTED:
 			mServerStatus.setText("STARTED");
 			mServerStatus.setTextColor(Color.GREEN);
 			mServerLaunch.setVisibility(View.VISIBLE);
-			mServerLaunchLabel.setText("STOP SERVER (PID " + mPid + ")");
+			mServerLaunchLabel.setText("STOP SERVER");
+			mServerLaunchPid.setText("PID " + mPid);
+			mInfos.setVisibility(View.VISIBLE);
+			mInfosLabel.setText("ssh " + mIpAddress + "\n" + "ssh root@" + mIpAddress);
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");
 			mServerStatus.setTextColor(Color.YELLOW);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOPPING...");
+			mServerLaunchPid.setText("");
+			mInfos.setVisibility(View.GONE);
+			mInfosLabel.setText("");
 			break;
 		case STATUS_ERROR:
 			mServerStatus.setText("ERROR");
 			mServerStatus.setTextColor(Color.RED);
 			mServerLaunch.setVisibility(View.GONE);
 			mServerLaunchLabel.setText("ERROR");
+			mServerLaunchPid.setText("");
+			mInfos.setVisibility(View.GONE);
+			mInfosLabel.setText("");
 			break;
 		default:
 			break;
@@ -241,7 +282,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 
 	public void onDropbearInstallerComplete(Boolean result) {
 		if (result == true) {
-			RootUtils.checkDropbear();
+			RootUtils.checkDropbear(mContext);
 			((MainActivity) mContext).update();
 		}
 		else {
@@ -275,10 +316,20 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			// TODO: Toast
 		}
 	}
-	
+
 	public void check() {
 		// Checker
 		Checker checker = new Checker(mContext, this);
 		checker.execute();
+	}
+
+	public void stop() {
+		if (mServerStatusCode != STATUS_STOPPED) {
+			mServerStatusCode = STATUS_STOPPING;
+			updateServerStatus();
+			// StopServer
+			ServerStopper serverStopper = new ServerStopper(mContext, this);
+			serverStopper.execute();
+		}
 	}
 }

@@ -60,7 +60,7 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 		
 		// dropbear
 		publishProgress("" + step++, "" + steps, "Dropbear");
-		RootUtils.checkDropbear();
+		RootUtils.checkDropbear(mContext);
 
 		return (RootUtils.hasRootAccess && RootUtils.hasBusybox && RootUtils.hasDropbear);
 	}

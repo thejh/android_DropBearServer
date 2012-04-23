@@ -187,29 +187,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/message_of_the_day"
-                style="@style/list_item_middle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:orientation="horizontal"
-                android:visibility="visible" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="Message Of The Day"
-                    android:textColor="@color/white" />
-
-                <ImageView
-                    style="@style/list_item_chevron"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="chevron" />
-            </LinearLayout>
-
-            <LinearLayout
                 style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -276,28 +253,6 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/list_item_middle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:orientation="horizontal"
-                android:visibility="visible" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="Enable master password to any account"
-                    android:textColor="@color/white" />
-
-                <CheckBox
-                    android:id="@+id/enable_master_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/listening_port"
                 style="@style/list_item_bottom"
                 android:layout_width="fill_parent"
@@ -324,6 +279,67 @@
 
         <LinearLayout
             android:id="@+id/dropbear_content_error"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/list_item_single"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="You need DropBear to configure this."
+                    android:textColor="@color/red" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/accounts"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/content_page_large_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="Accounts" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/accounts_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                style="@style/list_item_single"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="root:42"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/accounts_content_error"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -378,7 +394,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    android:text="..."
+                    android:text="/data/dropbear/authorized_keys"
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>

@@ -49,7 +49,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		int step = 0;
-		int steps = 5;
+		int steps = 8;
 
 		// read-write
 		publishProgress("" + step++, "" + steps, "/system read-write");
@@ -59,12 +59,20 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		// data/dropbear
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		ShellUtils.rmRecursive("/data/dropbear");
-
+		
+		// data/data
+		publishProgress("" + step++, "" + steps, "/data/data");
+		ShellUtils.rm(mContext.getCacheDir() + "/dropbearmulti");
+		
 		// system/xbin
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
 		ShellUtils.rm("/system/xbin/dropbear");
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
 		ShellUtils.rm("/system/xbin/dropbearkey");
+		publishProgress("" + step++, "" + steps, "/system/xbin/ssh");
+		ShellUtils.rm("/system/xbin/ssh");
+		publishProgress("" + step++, "" + steps, "/system/xbin/scp");
+		ShellUtils.rm("/system/xbin/scp");
 
 		// read-only
 		publishProgress("" + step++, "" + steps, "/system read-only");

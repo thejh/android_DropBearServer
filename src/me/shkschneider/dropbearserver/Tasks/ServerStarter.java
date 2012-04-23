@@ -37,7 +37,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		// dropbear
-		ShellUtils.commands.add("dropbear -s");
+		ShellUtils.commands.add("dropbear -A root -N root -C 42 -r /data/dropbear/host_rsa -d /data/dropbear/host_dss -R /data/dropbear/authorized_keys -U 0 -G 0 -p 22");
 		if (ShellUtils.execute() == false)
 			return false;
 		
