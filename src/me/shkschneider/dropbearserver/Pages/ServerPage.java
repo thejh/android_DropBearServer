@@ -40,7 +40,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private View mView;
 	private int mServerStatusCode;
 	private int mPid = 0;
-	private String mIpAddress = null;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -97,8 +96,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	}
 
 	public void updateNetworkStatus() {
-		mIpAddress = ServerUtils.getLocalIpAddress();
-		if (mIpAddress != null) {
+		if (ServerUtils.getLocalIpAddress() != null) {
 			mNetworkConnexion.setText("OK");
 			mNetworkConnexion.setTextColor(Color.GREEN);
 		}
@@ -191,7 +189,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerLaunchLabel.setText("STOP SERVER");
 			mServerLaunchPid.setText("PID " + mPid);
 			mInfos.setVisibility(View.VISIBLE);
-			mInfosLabel.setText("ssh " + mIpAddress + "\n" + "ssh root@" + mIpAddress);
+			mInfosLabel.setText("ssh " + ServerUtils.getLocalIpAddress() + "\n" + "ssh root@" + ServerUtils.getLocalIpAddress());
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");

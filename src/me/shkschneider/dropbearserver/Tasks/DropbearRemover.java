@@ -1,5 +1,6 @@
 package me.shkschneider.dropbearserver.Tasks;
 
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 
@@ -61,8 +62,8 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		ShellUtils.rmRecursive("/data/dropbear");
 		
 		// data/data
-		publishProgress("" + step++, "" + steps, "/data/data");
-		ShellUtils.rm(mContext.getCacheDir() + "/dropbearmulti");
+		publishProgress("" + step++, "" + steps, ServerUtils.getLocalBin(mContext) + "/dropbearmulti");
+		ShellUtils.rmRecursive(ServerUtils.getLocalBin(mContext));
 		
 		// system/xbin
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");

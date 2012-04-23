@@ -52,7 +52,7 @@ public abstract class RootUtils {
 		hasDropbear = false;
 		File f = null;
 
-		f = new File(context.getCacheDir() + "/dropbearmulti");
+		f = new File(ServerUtils.getLocalBin(context) + "/dropbearmulti");
 		if (f.exists() == false || f.isFile() == false || f.canExecute() == false) {
 			Log.w(TAG, "checkDropear(): dropbearmulti");
 			return false;

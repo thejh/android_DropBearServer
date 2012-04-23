@@ -17,32 +17,46 @@ import java.util.Iterator;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
+import android.content.Context;
 import android.util.Log;
 
 public abstract class ServerUtils {
-	
+
 	public static final String TAG = "ServerUtils";
-	
-	public static String getLocalIpAddress() {
-	    try {
-	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-	            NetworkInterface intf = en.nextElement();
-	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-	                InetAddress inetAddress = enumIpAddr.nextElement();
-	                String ip4 = inetAddress.getHostAddress().toString();
-	                if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
-	                	Log.d(TAG, inetAddress.getHostAddress().toString());
-	                    return ip4;
-	                }
-	            }
-	        }
-	    }
-	    catch (SocketException ex) {
-	        Log.e(TAG, ex.getMessage());
-	    }
-	    return null;
+
+	public static String ipAddress = null;
+	public static String dropbearPath = null;
+
+	public static String getLocalBin(Context context) {
+		if (dropbearPath == null && context != null) {
+			dropbearPath = context.getDir("bin", Context.MODE_PRIVATE).toString();
+		}
+		return dropbearPath;
 	}
-	
+	public static String getLocalIpAddress() {
+		if (ipAddress == null) {
+			try {
+				for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+					NetworkInterface intf = en.nextElement();
+					for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+						InetAddress inetAddress = enumIpAddr.nextElement();
+						String ip4 = inetAddress.getHostAddress().toString();
+						if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
+							Log.d(TAG, inetAddress.getHostAddress().toString());
+							ipAddress = ip4;
+							return ipAddress;
+						}
+					}
+				}
+			}
+			catch (SocketException ex) {
+				Log.e(TAG, ex.getMessage());
+			}
+			return null;
+		}
+		return ipAddress;
+	}
+
 	public static int getServerPid() {
 		try {
 			Process suProcess = Runtime.getRuntime().exec("su");
@@ -97,7 +111,7 @@ public abstract class ServerUtils {
 
 		return -1;
 	}
-	
+
 	public static final Boolean killServer(int pid) {
 		if (pid <= 0)
 			pid = getServerPid();
@@ -121,5 +135,5 @@ public abstract class ServerUtils {
 		ShellUtils.commands.add("dropbearkey -f " + privatePath + " -y > " + publicPath);
 		return ShellUtils.execute();
 	}
-	
+
 }
