@@ -6,6 +6,7 @@ import com.markupartist.android.widget.ActionBar;
 import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.Tasks.Checker;
 import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
+import me.shkschneider.dropbearserver.Utils.RootUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -65,7 +66,13 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (needToCheckDependencies == true) {
+		if (SettingsHelper.getInstance(getBaseContext()).getAssumeRootAccess() == true) {
+			RootUtils.hasRootAccess = true;
+			RootUtils.hasBusybox = true;
+			RootUtils.checkDropbear(this);
+			update();
+		}
+		else if (needToCheckDependencies == true) {
 			// Root dependencies
 			check();
 			needToCheckDependencies = false;

@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
@@ -38,6 +39,12 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		if (mProgressDialog != null) {
 			mProgressDialog.show();
 		}
+	}
+	
+	private Boolean falseWithError(String error) {
+		Log.d(TAG, "ServerStarter: " + error);
+		Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
+		return false;
 	}
 
 	@Override
@@ -78,7 +85,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		
 		ShellUtils.commands.add(command);
 		if (ShellUtils.execute() == false)
-			return false;
+			return falseWithError("execute(" + command + ")");
 		
 		return true;
 	}

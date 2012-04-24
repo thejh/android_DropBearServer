@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 
@@ -51,7 +52,11 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		}
 	}
 	
-	// TODO: log error
+	private Boolean falseWithError(String error) {
+		Log.d(TAG, "DropBearInstall: " + error);
+		Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
+		return false;
+	}
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
@@ -63,76 +68,76 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		// read-write
 		publishProgress("" + step++, "" + steps, "/system read-write");
 		if (Utils.remountReadWrite("/system") == false)
-			return false;
+			return falseWithError("/system read-write");
 
 		// data/dropbear
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		if (ShellUtils.mkdir("/data/dropbear") == false)
-			return false;
+			return falseWithError("/data/dropbear");
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		if (ShellUtils.chown("/data/dropbear", "0:0") == false)
-			return false;
+			return falseWithError("/data/dropbear");
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
 		if (ShellUtils.chmod("/data/dropbear", "755") == false)
-			return false;
+			return falseWithError("/data/dropbear");
 
 		// system/xbin
 		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
 		if (Utils.copyRawFile(mContext, R.raw.dropbearmulti, ServerUtils.getLocalDir(mContext) + "/dropbearmulti") == false)
-			return false;
+			return falseWithError(ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
 		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
 		if (ShellUtils.chmod(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "755") == false)
-			return false;
+			return falseWithError(ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
 		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/dropbear") == false)
-			return false;
+			return falseWithError("/system/xbin/dropbear");
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
 		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/dropbearkey") == false)
-			return false;
+			return falseWithError("/system/xbin/dropbearkey");
 		publishProgress("" + step++, "" + steps, "/system/xbin/ssh");
 		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/ssh") == false)
-			return false;
+			return falseWithError("/system/xbin/ssh");
 		publishProgress("" + step++, "" + steps, "/system/xbin/scp");
 		if (ShellUtils.lnSymbolic(ServerUtils.getLocalDir(mContext) + "/dropbearmulti", "/system/xbin/scp") == false)
-			return false;
+			return falseWithError("/system/xbin/scp");
 		
 		// data/dropbear/rsa
 		publishProgress("" + step++, "" + steps, "/data/dropbear/host_rsa");
 		if (ServerUtils.generateRsaPrivateKey("/data/dropbear/host_rsa") == false)
-			return false;
+			return falseWithError("/data/dropbear/host_rsa");
 		publishProgress("" + step++, "" + steps, "/data/dropbear/host_rsa");
 		if (ShellUtils.chown("/data/dropbear/host_rsa", "0:0") == false)
-			return false;
+			return falseWithError("/data/dropbear/host_rsa");
 		publishProgress("" + step++, "" + steps, "/data/dropbear/host_rsa");
 		if (ShellUtils.chmod("/data/dropbear/host_rsa", "644") == false)
-			return false;
+			return falseWithError("/data/dropbear/host_rsa");
 		
 		// data/dropbear/dss
 		publishProgress("" + step++, "" + steps, "/data/dropbear/host_dss");
 		if (ServerUtils.generateDssPrivateKey("/data/dropbear/host_dss") == false)
-			return false;
+			return falseWithError("/data/dropbear/host_dss");
 		publishProgress("" + step++, "" + steps, "/data/dropbear/host_dss");
 		if (ShellUtils.chown("/data/dropbear/host_dss", "0:0") == false)
-			return false;
+			return falseWithError("/data/dropbear/host_dss");
 		publishProgress("" + step++, "" + steps, "/data/dropbear/host_dss");
 		if (ShellUtils.chmod("/data/dropbear/host_dss", "644") == false)
-			return false;
+			return falseWithError("/data/dropbear/host_dss");
 
 		// data/dropbear/authorized_keys
 		publishProgress("" + step++, "" + steps, "/data/dropbear/authorized_keys");
 		if (ShellUtils.touch("/data/dropbear/authorized_keys") == false)
-			return false;
+			return falseWithError("/data/dropbear/authorized_keys");
 		publishProgress("" + step++, "" + steps, "/data/dropbear/authorized_keys");
 		if (ShellUtils.chown("/data/dropbear/authorized_keys", "0:0") == false)
-			return false;
+			return falseWithError("/data/dropbear/authorized_keys");
 		publishProgress("" + step++, "" + steps, "/data/dropbear/authorized_keys");
 		if (ShellUtils.chmod("/data/dropbear/authorized_keys", "600") == false)
-			return false;
+			return falseWithError("/data/dropbear/authorized_keys");
 
 		// read-only
 		publishProgress("" + step++, "" + steps, "/system read-only");
 		if (Utils.remountReadOnly("/system") == false)
-			return false;
+			return falseWithError("/system read-only");
 		
 		return true;
 	}

@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
@@ -54,8 +55,12 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.setMessage(progress[2]);
 		}
 	}
-	
-	// TODO: log errors
+
+	private Boolean falseWithError(String error) {
+		Log.d(TAG, "DropBearRemover: " + error);
+		Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
+		return false;
+	}
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
@@ -67,30 +72,36 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		// read-write
 		publishProgress("" + step++, "" + steps, "/system read-write");
 		if (Utils.remountReadWrite("/system") == false)
-			return false;
+			return falseWithError("/system read-write");
 
 		// data/dropbear
 		publishProgress("" + step++, "" + steps, "/data/dropbear");
-		ShellUtils.rmRecursive("/data/dropbear");
+		if (ShellUtils.rmRecursive("/data/dropbear") == false)
+			return falseWithError("/data/dropbear");
 		
 		// data/data
 		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
-		ShellUtils.rm(ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
+		if (ShellUtils.rm(ServerUtils.getLocalDir(mContext) + "/dropbearmulti") == false)
+			return falseWithError(ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
 		
 		// system/xbin
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		ShellUtils.rm("/system/xbin/dropbear");
+		if (ShellUtils.rm("/system/xbin/dropbear") == false)
+			return falseWithError("/system/xbin/dropbear");
 		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		ShellUtils.rm("/system/xbin/dropbearkey");
+		if (ShellUtils.rm("/system/xbin/dropbearkey") == false)
+			return falseWithError("/system/xbin/dropbearkey");
 		publishProgress("" + step++, "" + steps, "/system/xbin/ssh");
-		ShellUtils.rm("/system/xbin/ssh");
+		if (ShellUtils.rm("/system/xbin/ssh") == false)
+			return falseWithError("/system/xbin/ssh");
 		publishProgress("" + step++, "" + steps, "/system/xbin/scp");
-		ShellUtils.rm("/system/xbin/scp");
+		if (ShellUtils.rm("/system/xbin/scp") == false)
+			return falseWithError("/system/xbin/scp");
 
 		// read-only
 		publishProgress("" + step++, "" + steps, "/system read-only");
 		if (Utils.remountReadOnly("/system") == false)
-			return false;
+			return falseWithError("/system read-only");
 		
 		return true;
 	}

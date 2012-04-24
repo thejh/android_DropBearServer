@@ -13,6 +13,7 @@ public class SettingsHelper {
 	
 	private static final String TAG = "DropBearServer";
 
+	private static final String PREF_ASSUME_ROOT_ACCESS = "assumeRootAccess";
 	private static final String PREF_START_AT_BOOT = "startAtBoot";
 	private static final String PREF_ONLY_IF_RUNNING_BEFORE = "onlyIfRunningBefore";
 	private static final String PREF_KEEP_SCREEN_ON = "keepScreenOn";
@@ -23,6 +24,7 @@ public class SettingsHelper {
 	private static final String PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT = "disablePasswordLoginsForRoot";
 	private static final String PREF_LISTENING_PORT = "listeningPort";
 
+	public static final Boolean ASSUME_ROOT_ACCESS_DEFAULT = false;
 	public static final Boolean START_AT_BOOT_DEFAULT = false;
 	public static final Boolean ONLY_IF_RUNNING_BEFORE_DEFAULT = true;
 	public static final Boolean KEEP_SCREEN_ON_DEFAULT = false;
@@ -50,6 +52,18 @@ public class SettingsHelper {
     	else {
     		Log.e(TAG, "SettingsHelper: SettingsHelper(): Context is null");
     	}
+    }
+    
+    // assumeRootAccess
+    public Boolean getAssumeRootAccess() {
+    	return mSharedPreferences.getBoolean(PREF_ASSUME_ROOT_ACCESS, ASSUME_ROOT_ACCESS_DEFAULT);
+    }
+    
+    public void setAssumeRootAccess(Boolean b) {
+    	Log.d(TAG, "SettingsHelper: setAssumeRootAccess(" + b + ")");
+    	Editor editor = mSharedPreferences.edit();
+    	editor.putBoolean(PREF_ASSUME_ROOT_ACCESS, b);
+    	editor.commit();
     }
     
     // startAtBoot

@@ -34,7 +34,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mGeneral;
 	private LinearLayout mGeneralContent;
 
-	// TODO: assume root access
+	private CheckBox mAssumeRootAccess;
 	private CheckBox mStartAtBoot;
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
@@ -79,6 +79,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mGeneral.setOnClickListener(this);
 		mGeneralContent = (LinearLayout) mView.findViewById(R.id.general_content);
 
+		mAssumeRootAccess = (CheckBox) mView.findViewById(R.id.assume_root_access);
+		mAssumeRootAccess.setOnCheckedChangeListener(null);
 		mStartAtBoot = (CheckBox) mView.findViewById(R.id.start_at_boot);
 		mStartAtBoot.setOnCheckedChangeListener(null);
 		mOnlyIfRunningBefore = (CheckBox) mView.findViewById(R.id.only_if_running_before);
@@ -162,6 +164,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 
 		// mGeneral
+		mAssumeRootAccess.setChecked(SettingsHelper.getInstance(mContext).getAssumeRootAccess());
+		mAssumeRootAccess.setOnCheckedChangeListener(this);
 		mStartAtBoot.setChecked(SettingsHelper.getInstance(mContext).getStartAtBoot());
 		mStartAtBoot.setOnCheckedChangeListener(this);
 		mOnlyIfRunningBefore.setChecked(SettingsHelper.getInstance(mContext).getOnlyIfRunningBefore());
@@ -245,7 +249,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// mGeneral
-		if (buttonView == mStartAtBoot) {
+		if (buttonView == mAssumeRootAccess) {
+			SettingsHelper.getInstance(mContext).setAssumeRootAccess(buttonView.isChecked());
+		}
+		else if (buttonView == mStartAtBoot) {
 			SettingsHelper.getInstance(mContext).setStartAtBoot(buttonView.isChecked());
 		}
 		else if (buttonView == mKeepScreenOn) {
@@ -260,6 +267,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (buttonView == mOnlyOverWifi) {
 			SettingsHelper.getInstance(mContext).setOnlyOverWifi(buttonView.isChecked());
 		}
+		
+		// mDropbear
 		else if (buttonView == mDisallowRootLogins) {
 			SettingsHelper.getInstance(mContext).setDisallowRootLogins(buttonView.isChecked());
 		}
@@ -320,9 +329,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			Toast.makeText(mContext, "Dropbear successfully removed", Toast.LENGTH_SHORT).show();
 			mGeneralContent.setVisibility(View.GONE);
 			((MainActivity) mContext).goToDefaultPage();
-		}
-		else {
-			Toast.makeText(mContext, "Dropbear could not be removed", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

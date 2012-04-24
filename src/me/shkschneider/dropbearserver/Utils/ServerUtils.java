@@ -7,6 +7,7 @@ package me.shkschneider.dropbearserver.Utils;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -62,27 +63,30 @@ public abstract class ServerUtils {
 	 * As a consequence, this is only used by the BootReceiver
 	 */
 	public static final Integer getServerPidFromFile(Context context) {
-		try {
-			FileInputStream fis = new FileInputStream(ServerUtils.getLocalDir(context) + "/pid");
-			DataInputStream dis = new DataInputStream(fis);
-			BufferedReader br = new BufferedReader(new InputStreamReader(dis));
-			String line = br.readLine();
-			dis.close();
-			if (line != null) {
-				try {
-					Integer pid = Integer.parseInt(line);
-					Log.i(TAG, "ServerUtils: PID #" + pid);
-					return pid;
-				}
-				catch (Exception e) {
-					Log.e(TAG, "ServerUtils: getServerPidFromFile(): " + e.getMessage());
-					return -1;
+		File f = new File(ServerUtils.getLocalDir(context) + "/pid");
+		if (f.exists() == true && f.isFile() == true) {
+			try {
+				FileInputStream fis = new FileInputStream(ServerUtils.getLocalDir(context) + "/pid");
+				DataInputStream dis = new DataInputStream(fis);
+				BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+				String line = br.readLine();
+				dis.close();
+				if (line != null) {
+					try {
+						Integer pid = Integer.parseInt(line);
+						Log.i(TAG, "ServerUtils: PID #" + pid);
+						return pid;
+					}
+					catch (Exception e) {
+						Log.e(TAG, "ServerUtils: getServerPidFromFile(): " + e.getMessage());
+						return -1;
+					}
 				}
 			}
-		}
-		catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-			return -1;
+			catch (Exception e) {
+				Log.e(TAG, e.getMessage());
+				return -1;
+			}
 		}
 		return 0;
 	}
