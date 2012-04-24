@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -25,12 +27,14 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private static final String TAG = "SettingsPage";
 
 	private Context mContext;
+	private LayoutInflater mLayoutInflater;
 	private View mView;
 	private SettingsHelper mSettingsHelper;
 
 	private LinearLayout mGeneral;
 	private LinearLayout mGeneralContent;
 
+	// TODO: disable root checks
 	private CheckBox mStartAtBoot;
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
@@ -42,10 +46,18 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mDropbearContentError;
 
 	private LinearLayout mBanner;
+	private TextView mBannerInfos;
+	private AlertDialog mBannerAlertDialog;
+	private View mBannerView;
+	
 	private CheckBox mDisallowRootLogins;
 	private CheckBox mDisablePasswordLogins;
 	private CheckBox mDisablePasswordLoginsForRoot;
+	
 	private LinearLayout mListeningPort;
+	private TextView mListeningPortInfos;
+	private AlertDialog mListeningPortAlertDialog;
+	private View mListeningPortView;
 
 	private LinearLayout mPublicKeys;
 	private LinearLayout mPublicKeysContent;
@@ -54,12 +66,14 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mAccounts;
 	private LinearLayout mAccountsContent;
 	private LinearLayout mAccountsContentError;
+	
+	private AlertDialog.Builder mAlertDialogBuilder;
 
 	// TODO: X.setChecked(mSettingsHelper.get()) called SettingsHelper.set()
 	public SettingsPage(Context context) {
 		mContext = context;
-		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		mView = inflater.inflate(R.layout.settings, null);
+		mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mView = mLayoutInflater.inflate(R.layout.settings, null);
 		mSettingsHelper = SettingsHelper.getInstance(mContext);
 
 		// mGeneral mGeneralContent
@@ -86,6 +100,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		mBanner = (LinearLayout) mView.findViewById(R.id.banner);
 		mBanner.setOnClickListener(this);
+		mBannerInfos = (TextView) mView.findViewById(R.id.banner_infos);
 		mDisallowRootLogins = (CheckBox) mView.findViewById(R.id.disallow_root_logins);
 		mDisallowRootLogins.setOnCheckedChangeListener(null);
 		mDisablePasswordLogins = (CheckBox) mView.findViewById(R.id.disable_password_logins);
@@ -94,6 +109,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(null);
 		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
 		mListeningPort.setOnClickListener(this);
+		mListeningPortInfos = (TextView) mView.findViewById(R.id.listening_port_infos);
 
 		// mAccounts mAccountsContent
 		mAccounts = (LinearLayout) mView.findViewById(R.id.accounts);
@@ -106,6 +122,22 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mPublicKeys.setOnClickListener(this);
 		mPublicKeysContent = (LinearLayout) mView.findViewById(R.id.public_keys_content);
 		mPublicKeysContentError = (LinearLayout) mView.findViewById(R.id.public_keys_content_error);
+
+		// mAlertDialogBuilder mBannerAlertDialog mListeningPortAlertDialog
+		mAlertDialogBuilder = new AlertDialog.Builder(mContext);
+		mAlertDialogBuilder.setCancelable(false);
+		mAlertDialogBuilder.setPositiveButton("Okay", this);
+		mAlertDialogBuilder.setNegativeButton("Cancel", this);
+
+		mBannerAlertDialog = mAlertDialogBuilder.create();
+		mBannerAlertDialog.setTitle("Banner");
+		mBannerView = mLayoutInflater.inflate(R.layout.settings_banner, null);
+		mBannerAlertDialog.setView(mBannerView);
+
+		mListeningPortAlertDialog = mAlertDialogBuilder.create();
+		mListeningPortAlertDialog.setTitle("Listening port");
+		mListeningPortView = mLayoutInflater.inflate(R.layout.settings_listening_port, null);
+		mListeningPortAlertDialog.setView(mListeningPortView);
 	}
 
 	public void update() {
@@ -182,10 +214,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}
 		else if (v == mBanner) {
-			// TODO: changeBanner
+			mBannerAlertDialog.show();
 		}
 		else if (v == mListeningPort) {
-			// TODO: changeListeningPort
+			mListeningPortAlertDialog.show();
 		}
 
 		// mAccounts
@@ -231,9 +263,21 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
-			// mDropbearRemover
-			DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
-			dropbearRemover.execute();
+			if (dialog == mBannerAlertDialog) {
+				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
+				String settings_banner = editText.getText().toString();
+				mBannerInfos.setText(settings_banner);
+			}
+			else if (dialog == mListeningPortAlertDialog) {
+				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_listening_port);
+				String settings_listening_port = editText.getText().toString();
+				mListeningPortInfos.setText(settings_listening_port);
+			}
+			else {
+				// mDropbearRemover
+				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
+				dropbearRemover.execute();
+			}
 		}
 	}
 

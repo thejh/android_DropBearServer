@@ -194,17 +194,35 @@
                 android:orientation="horizontal"
                 android:visibility="visible" >
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    android:text="Banner"
-                    android:textColor="@color/white" />
+                    android:duplicateParentState="true"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="left"
+                        android:text="Banner"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/banner_infos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text=""
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
                 <ImageView
                     style="@style/list_item_chevron"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:contentDescription="chevron" />
             </LinearLayout>
 
@@ -283,13 +301,31 @@
                 android:orientation="horizontal"
                 android:visibility="visible" >
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    android:inputType="number"
-                    android:text="Listening port"
-                    android:textColor="@color/white" />
+                    android:duplicateParentState="true"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:gravity="left"
+                        android:inputType="number"
+                        android:text="Listening port"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/listening_port_infos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:inputType="number"
+                        android:text="22"
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
                 <ImageView
                     style="@style/list_item_chevron"
