@@ -19,7 +19,7 @@ class CheckAction implements Action {
 	}
 	
     public int getDrawable() {
-        return R.drawable.ic_launcher;
+        return android.R.drawable.ic_menu_rotate;
     }
 
     public void performAction(View view) {

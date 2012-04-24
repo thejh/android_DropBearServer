@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
 public class AboutPage implements OnClickListener {
-
+	
 	private Context mContext;
 	private View mView;
 	
@@ -56,7 +56,7 @@ public class AboutPage implements OnClickListener {
 			}
 		}
 		else if (v == mDonate) {
-			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getResources().getString(R.string.app_donate))));
+			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FP4JTHPKJPKS6&lc=GB&item_name=shkschneider&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted")));
 		}
 		else if (v == mVisitMyWebsite) {
 			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getResources().getString(R.string.app_website))));

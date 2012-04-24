@@ -37,6 +37,16 @@ ic_donate.png: Iconshock (Free)
 ic_web.png: Ever (Free)
 ic_web_alt.png: Ever (Free)
 
+Compatibility
+-------------
+
+* Android 2.1+ (API 7+)
+* Screens:
+  * ldpi (36x36)
+  * mdpi (48x48)
+  * hdpi (72x72)
+  * xhdpi (96x96)
+
 Thanks
 ------
 
