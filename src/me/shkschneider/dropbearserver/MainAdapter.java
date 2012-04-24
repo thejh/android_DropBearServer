@@ -6,7 +6,6 @@ package me.shkschneider.dropbearserver;
 import com.astuetz.viewpagertabs.ViewPagerTabProvider;
 
 import me.shkschneider.dropbearserver.Pages.AboutPage;
-import me.shkschneider.dropbearserver.Pages.HelpPage;
 import me.shkschneider.dropbearserver.Pages.ServerPage;
 import me.shkschneider.dropbearserver.Pages.SettingsPage;
 import android.content.Context;
@@ -23,19 +22,16 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	
 	private static final int SETTINGS_INDEX = 0;
 	private static final int SERVER_INDEX = 1;
-	private static final int HELP_INDEX = 2;
-	private static final int ABOUT_INDEX = 3;
+	private static final int ABOUT_INDEX = 2;
 
 	private Context mContext;
 	private SettingsPage mSettingsPage;
 	private ServerPage mServerPage;
-	private HelpPage mHelpPage;
 	private AboutPage mAboutPage;
 
 	private String[] mTitles = {
 			"SETTINGS",
 			"SERVER",
-			"HELP",
 			"ABOUT"
 	};
 
@@ -43,7 +39,6 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		mContext = context;
 		mSettingsPage = new SettingsPage(mContext);
 		mServerPage = new ServerPage(mContext);
-		mHelpPage = new HelpPage(mContext);
 		mAboutPage = new AboutPage(mContext);
 	}
 
@@ -63,10 +58,6 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		case SERVER_INDEX:
 			//mServerPage.update();
 			v = mServerPage.getView();
-			break;
-		case HELP_INDEX:
-			//mHelpPage.update();
-			v = mHelpPage.getView();
 			break;
 		case ABOUT_INDEX:
 			//mAboutPage.update();
