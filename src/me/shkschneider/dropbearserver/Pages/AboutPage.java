@@ -1,6 +1,7 @@
 package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.Utils.Utils;
+import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
 
 import android.content.ActivityNotFoundException;
@@ -11,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class AboutPage implements OnClickListener {
 	
 	private Context mContext;
 	private View mView;
 	
+	private TextView mAppVersion;
 	private LinearLayout mRateThisApp;
 	private LinearLayout mDonate;
 	private LinearLayout mVisitMyWebsite;
@@ -26,6 +29,10 @@ public class AboutPage implements OnClickListener {
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.about, null);
 
+		// mAppVersion
+		mAppVersion = (TextView) mView.findViewById(R.id.about_app_version);
+		mAppVersion.setText("Version " + MainActivity.getAppVersion());
+		
 		// mRateThisApp
 		mRateThisApp = (LinearLayout) mView.findViewById(R.id.go_rate);
 		mRateThisApp.setOnClickListener(this);

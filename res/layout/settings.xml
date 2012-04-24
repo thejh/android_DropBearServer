@@ -24,7 +24,7 @@
 
             <TextView
                 style="@style/content_page_large_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text="General" />
@@ -52,7 +52,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Assume root access"
@@ -74,7 +74,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Start at boot"
@@ -96,7 +96,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Only if running before"
@@ -118,7 +118,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Keep screen ON"
@@ -140,7 +140,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Only over Wi-Fi"
@@ -163,7 +163,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Complete removal"
@@ -188,7 +188,7 @@
 
             <TextView
                 style="@style/content_page_large_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text="DropBear" />
@@ -217,7 +217,7 @@
                 android:visibility="visible" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:duplicateParentState="true"
@@ -254,7 +254,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Disallow root logins"
@@ -276,7 +276,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Disable password logins"
@@ -298,7 +298,7 @@
                 android:visibility="visible" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="Disable password logins for root"
@@ -321,7 +321,7 @@
                 android:visibility="visible" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:duplicateParentState="true"
@@ -330,7 +330,6 @@
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
                         android:text="Listening port"
                         android:textColor="@color/white" />
 
@@ -338,7 +337,6 @@
                         android:id="@+id/listening_port_infos"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="number"
                         android:text=""
                         android:textColor="@color/white"
                         android:textStyle="italic" />
@@ -366,7 +364,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="You need DropBear to configure this."
@@ -385,7 +383,7 @@
 
             <TextView
                 style="@style/content_page_large_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text="Accounts" />
@@ -405,7 +403,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="root:42"
@@ -427,7 +425,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="You need DropBear to configure this."
@@ -446,7 +444,7 @@
 
             <TextView
                 style="@style/content_page_large_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text="Public keys" />
@@ -466,7 +464,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="/data/dropbear/authorized_keys"
@@ -488,7 +486,7 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="You need DropBear to configure this."
