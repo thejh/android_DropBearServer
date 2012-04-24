@@ -40,7 +40,8 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 
 	private Context mContext;
 	private View mView;
-	private int mServerStatusCode;
+	private Integer mServerStatusCode;
+	private Integer mListeningPort;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -55,13 +56,12 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private LinearLayout mInfos;
 	private TextView mInfosLabel;
 
-	// TODO: prevent settings to defer from ServerPage (listeningPort)
-	
 	public ServerPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.server, null);
 		mServerStatusCode = STATUS_ERROR;
+		mListeningPort = SettingsHelper.LISTENING_PORT_DEFAULT;
 
 		// mNetworkConnexions
 		mNetworkConnexion = (TextView) mView.findViewById(R.id.network_connexion);
@@ -191,10 +191,10 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mInfos.setVisibility(View.VISIBLE);
 			
 			String infos = "ssh " + ServerUtils.getLocalIpAddress();
-			if (SettingsHelper.getInstance(mContext).getListeningPort() != SettingsHelper.LISTENING_PORT_DEFAULT)
+			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT)
 				infos = infos.concat(" -p " + SettingsHelper.getInstance(mContext).getListeningPort());
 			infos = infos.concat("\n" + "ssh root@" + ServerUtils.getLocalIpAddress());
-			if (SettingsHelper.getInstance(mContext).getListeningPort() != SettingsHelper.LISTENING_PORT_DEFAULT)
+			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT)
 				infos = infos.concat(" -p " + SettingsHelper.getInstance(mContext).getListeningPort());
 			
 			mInfosLabel.setText(infos);
@@ -232,6 +232,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			case STATUS_STOPPED:
 				mServerStatusCode = STATUS_STARTING;
 				updateServerStatus();
+				mListeningPort = SettingsHelper.getInstance(mContext).getListeningPort();
 				// StartServer
 				ServerStarter serverStarter = new ServerStarter(mContext, this);
 				serverStarter.execute();
