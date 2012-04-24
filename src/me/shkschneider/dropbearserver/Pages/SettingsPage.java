@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "SettingsPage";
-	
+
 	private Context mContext;
 	private View mView;
 	private SettingsHelper mSettingsHelper;
@@ -68,13 +68,13 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mGeneralContent = (LinearLayout) mView.findViewById(R.id.general_content);
 
 		mStartAtBoot = (CheckBox) mView.findViewById(R.id.start_at_boot);
-		mStartAtBoot.setOnCheckedChangeListener(this);
+		mStartAtBoot.setOnCheckedChangeListener(null);
 		mOnlyIfRunningBefore = (CheckBox) mView.findViewById(R.id.only_if_running_before);
-		mOnlyIfRunningBefore.setOnCheckedChangeListener(this);
+		mOnlyIfRunningBefore.setOnCheckedChangeListener(null);
 		mKeepScreenOn = (CheckBox) mView.findViewById(R.id.keep_screen_on);
-		mKeepScreenOn.setOnCheckedChangeListener(this);
+		mKeepScreenOn.setOnCheckedChangeListener(null);
 		mOnlyOverWifi = (CheckBox) mView.findViewById(R.id.only_over_wifi);
-		mOnlyOverWifi.setOnCheckedChangeListener(this);
+		mOnlyOverWifi.setOnCheckedChangeListener(null);
 		mCompleteRemoval = (LinearLayout) mView.findViewById(R.id.complete_removal);
 		mCompleteRemoval.setOnClickListener(this);
 
@@ -87,11 +87,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mBanner = (LinearLayout) mView.findViewById(R.id.banner);
 		mBanner.setOnClickListener(this);
 		mDisallowRootLogins = (CheckBox) mView.findViewById(R.id.disallow_root_logins);
-		mDisallowRootLogins.setOnCheckedChangeListener(this);
+		mDisallowRootLogins.setOnCheckedChangeListener(null);
 		mDisablePasswordLogins = (CheckBox) mView.findViewById(R.id.disable_password_logins);
-		mDisablePasswordLogins.setOnCheckedChangeListener(this);
+		mDisablePasswordLogins.setOnCheckedChangeListener(null);
 		mDisablePasswordLoginsForRoot = (CheckBox) mView.findViewById(R.id.disable_password_logins_for_root);
-		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(this);
+		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(null);
 		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
 		mListeningPort.setOnClickListener(this);
 
@@ -133,15 +133,22 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		// mGeneral
 		mStartAtBoot.setChecked(mSettingsHelper.getStartAtBoot());
+		mStartAtBoot.setOnCheckedChangeListener(this);
 		mOnlyIfRunningBefore.setChecked(mSettingsHelper.getOnlyIfRunningBefore());
+		mOnlyIfRunningBefore.setOnCheckedChangeListener(this);
 		mKeepScreenOn.setChecked(mSettingsHelper.getKeepScreenOn());
+		mKeepScreenOn.setOnCheckedChangeListener(this);
 		mOnlyOverWifi.setChecked(mSettingsHelper.getOnlyOverWifi());
+		mOnlyOverWifi.setOnCheckedChangeListener(this);
 
 		// mDropbear
 		// TODO: setBanner
 		mDisallowRootLogins.setChecked(mSettingsHelper.getDisallowRootLogins());
+		mDisallowRootLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLogins.setChecked(mSettingsHelper.getDisablePasswordLogins());
+		mDisablePasswordLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLoginsForRoot.setChecked(mSettingsHelper.getDisablePasswordLoginsForRoot());
+		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(this);
 		// TODO: setListeningPort
 
 		// mAccounts
@@ -169,7 +176,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			.setNegativeButton("Cancel", this)
 			.show();
 		}
-		
+
 		// mDropbear
 		else if (v == mDropbear) {
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
@@ -180,13 +187,13 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (v == mListeningPort) {
 			// TODO: changeListeningPort
 		}
-		
+
 		// mAccounts
 		else if (v == mAccounts) {
 			mAccountsContent.setVisibility(mAccountsContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 			// TODO: changeAccounts
 		}
-		
+
 		// mPublicKeys
 		else if (v == mPublicKeys) {
 			mPublicKeysContent.setVisibility(mPublicKeysContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
