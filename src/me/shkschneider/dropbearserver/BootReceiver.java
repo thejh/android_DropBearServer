@@ -20,10 +20,9 @@ public class BootReceiver extends BroadcastReceiver {
 		if (intent.getAction().equals(android.content.Intent.ACTION_BOOT_COMPLETED)) {
 			Log.d(TAG, "onReceive(ACTION_BOOT_COMPLETED)");
 
-			SettingsHelper settingsHelper = SettingsHelper.getInstance(context);
 			Boolean hasPid = (ServerUtils.getServerPidFromFile(context) > 0 ? true : false);
-			Boolean startAtBoot = settingsHelper.getStartAtBoot();
-			Boolean onlyIfRunningbefore = settingsHelper.getOnlyIfRunningBefore();
+			Boolean startAtBoot = SettingsHelper.getInstance(context).getStartAtBoot();
+			Boolean onlyIfRunningbefore = SettingsHelper.getInstance(context).getOnlyIfRunningBefore();
 
 			if (hasPid) {
 				ShellUtils.rm(ServerUtils.getLocalDir(context) + "/pid");

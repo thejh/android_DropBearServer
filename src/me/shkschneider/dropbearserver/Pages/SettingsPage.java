@@ -6,6 +6,7 @@ import me.shkschneider.dropbearserver.SettingsHelper;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemover;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
+import me.shkschneider.dropbearserver.Utils.Utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +30,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
 	private View mView;
-	private SettingsHelper mSettingsHelper;
 
 	private LinearLayout mGeneral;
 	private LinearLayout mGeneralContent;
@@ -69,12 +69,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	
 	private AlertDialog.Builder mAlertDialogBuilder;
 
-	// TODO: X.setChecked(mSettingsHelper.get()) called SettingsHelper.set()
 	public SettingsPage(Context context) {
 		mContext = context;
 		mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = mLayoutInflater.inflate(R.layout.settings, null);
-		mSettingsHelper = SettingsHelper.getInstance(mContext);
 
 		// mGeneral mGeneralContent
 		mGeneral = (LinearLayout) mView.findViewById(R.id.general);
@@ -164,24 +162,24 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 
 		// mGeneral
-		mStartAtBoot.setChecked(mSettingsHelper.getStartAtBoot());
+		mStartAtBoot.setChecked(SettingsHelper.getInstance(mContext).getStartAtBoot());
 		mStartAtBoot.setOnCheckedChangeListener(this);
-		mOnlyIfRunningBefore.setChecked(mSettingsHelper.getOnlyIfRunningBefore());
+		mOnlyIfRunningBefore.setChecked(SettingsHelper.getInstance(mContext).getOnlyIfRunningBefore());
 		mOnlyIfRunningBefore.setOnCheckedChangeListener(this);
-		mKeepScreenOn.setChecked(mSettingsHelper.getKeepScreenOn());
+		mKeepScreenOn.setChecked(SettingsHelper.getInstance(mContext).getKeepScreenOn());
 		mKeepScreenOn.setOnCheckedChangeListener(this);
-		mOnlyOverWifi.setChecked(mSettingsHelper.getOnlyOverWifi());
+		mOnlyOverWifi.setChecked(SettingsHelper.getInstance(mContext).getOnlyOverWifi());
 		mOnlyOverWifi.setOnCheckedChangeListener(this);
 
 		// mDropbear
-		// TODO: setBanner
-		mDisallowRootLogins.setChecked(mSettingsHelper.getDisallowRootLogins());
+		mBannerInfos.setText(SettingsHelper.getInstance(mContext).getBanner());
+		mDisallowRootLogins.setChecked(SettingsHelper.getInstance(mContext).getDisallowRootLogins());
 		mDisallowRootLogins.setOnCheckedChangeListener(this);
-		mDisablePasswordLogins.setChecked(mSettingsHelper.getDisablePasswordLogins());
+		mDisablePasswordLogins.setChecked(SettingsHelper.getInstance(mContext).getDisablePasswordLogins());
 		mDisablePasswordLogins.setOnCheckedChangeListener(this);
-		mDisablePasswordLoginsForRoot.setChecked(mSettingsHelper.getDisablePasswordLoginsForRoot());
+		mDisablePasswordLoginsForRoot.setChecked(SettingsHelper.getInstance(mContext).getDisablePasswordLoginsForRoot());
 		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(this);
-		// TODO: setListeningPort
+		mListeningPortInfos.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 
 		// mAccounts
 		// TODO: setAccounts
@@ -214,9 +212,13 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 		}
 		else if (v == mBanner) {
+			EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
+			editText.setText(SettingsHelper.getInstance(mContext).getBanner());
 			mBannerAlertDialog.show();
 		}
 		else if (v == mListeningPort) {
+			EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
+			editText.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
 		}
 
@@ -236,7 +238,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// mGeneral
 		if (buttonView == mStartAtBoot) {
-			mSettingsHelper.setStartAtBoot(buttonView.isChecked());
+			SettingsHelper.getInstance(mContext).setStartAtBoot(buttonView.isChecked());
 		}
 		else if (buttonView == mKeepScreenOn) {
 			if (isChecked == true) {
@@ -245,19 +247,19 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			else {
 				((MainActivity) mContext).getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 			}
-			mSettingsHelper.setKeepScreenOn(buttonView.isChecked());
+			SettingsHelper.getInstance(mContext).setKeepScreenOn(buttonView.isChecked());
 		}
 		else if (buttonView == mOnlyOverWifi) {
-			mSettingsHelper.setOnlyOverWifi(buttonView.isChecked());
+			SettingsHelper.getInstance(mContext).setOnlyOverWifi(buttonView.isChecked());
 		}
 		else if (buttonView == mDisallowRootLogins) {
-			mSettingsHelper.setDisallowRootLogins(buttonView.isChecked());
+			SettingsHelper.getInstance(mContext).setDisallowRootLogins(buttonView.isChecked());
 		}
 		else if (buttonView == mDisablePasswordLogins) {
-			mSettingsHelper.setDisablePasswordLogins(buttonView.isChecked());
+			SettingsHelper.getInstance(mContext).setDisablePasswordLogins(buttonView.isChecked());
 		}
 		else if (buttonView == mDisablePasswordLoginsForRoot) {
-			mSettingsHelper.setDisablePasswordLoginsForRoot(buttonView.isChecked());
+			SettingsHelper.getInstance(mContext).setDisablePasswordLoginsForRoot(buttonView.isChecked());
 		}
 	}
 
@@ -266,11 +268,31 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			if (dialog == mBannerAlertDialog) {
 				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
 				String settings_banner = editText.getText().toString();
+				if (settings_banner.length() == 0) {
+					settings_banner = "" + SettingsHelper.BANNER_DEFAULT;
+				}
+				SettingsHelper.getInstance(mContext).setBanner(settings_banner);
 				mBannerInfos.setText(settings_banner);
 			}
 			else if (dialog == mListeningPortAlertDialog) {
 				EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 				String settings_listening_port = editText.getText().toString();
+				if (settings_listening_port.length() == 0) {
+					settings_listening_port = "" + SettingsHelper.LISTENING_PORT_DEFAULT;
+				}
+				if (Utils.isNumeric(settings_listening_port) == true) {
+					Integer port = Integer.parseInt(settings_listening_port);
+					if (port > 0) {
+						SettingsHelper.getInstance(mContext).setListeningPort(port);
+					}
+					else {
+						Log.d(TAG, "Wrong value for listeningPort: " + port);
+						Toast.makeText(mContext, "Wrong value", Toast.LENGTH_SHORT).show();
+					}
+				}
+				else {
+					Log.d(TAG, "Wrong type for listeningPort: " + settings_listening_port);
+				}
 				mListeningPortInfos.setText(settings_listening_port);
 			}
 			else {

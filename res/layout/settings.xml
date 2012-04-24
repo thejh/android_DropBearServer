@@ -211,7 +211,7 @@
                         android:id="@+id/banner_infos"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="No banner set"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textStyle="italic" />
                 </LinearLayout>
@@ -317,7 +317,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:inputType="number"
-                        android:text="22"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textStyle="italic" />
                 </LinearLayout>

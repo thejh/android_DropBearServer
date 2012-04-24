@@ -39,8 +39,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		SettingsHelper settingsHelper = SettingsHelper.getInstance(mContext);
-		if (settingsHelper.getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
+		if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
 			return false;
 		}
 		
@@ -50,7 +49,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		String hostDss = "/data/dropbear/host_dss";
 		String authorizedKeys = "/data/dropbear/authorized_keys";
 		String uid = "0";
-		String listeningPort = "22";
+		String listeningPort = "" + SettingsHelper.getInstance(mContext).getListeningPort();
 		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
 		
 		String command = "dropbear";
@@ -62,13 +61,13 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		command = command.concat(" -p " + listeningPort);
 		command = command.concat(" -P " + pidFile);
 		
-		if (settingsHelper.getDisallowRootLogins() == true) {
+		if (SettingsHelper.getInstance(mContext).getDisallowRootLogins() == true) {
 			command = command.concat(" -w");
 		}
-		if (settingsHelper.getDisablePasswordLogins() == true) {
+		if (SettingsHelper.getInstance(mContext).getDisablePasswordLogins() == true) {
 			command = command.concat(" -s");
 		}
-		if (settingsHelper.getDisablePasswordLoginsForRoot() == true) {
+		if (SettingsHelper.getInstance(mContext).getDisablePasswordLoginsForRoot() == true) {
 			command = command.concat(" -g");
 		}
 		

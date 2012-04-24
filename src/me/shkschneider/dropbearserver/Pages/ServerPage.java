@@ -2,6 +2,7 @@ package me.shkschneider.dropbearserver.Pages;
 
 import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.SettingsHelper;
 import me.shkschneider.dropbearserver.Tasks.Checker;
 import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Tasks.DropbearInstaller;
@@ -54,6 +55,8 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private LinearLayout mInfos;
 	private TextView mInfosLabel;
 
+	// TODO: prevent settings to defer from ServerPage (listeningPort)
+	
 	public ServerPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -186,7 +189,15 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerLaunchLabel.setText("STOP SERVER");
 			mServerLaunchPid.setText("PID " + ServerUtils.getServerPidFromPs());
 			mInfos.setVisibility(View.VISIBLE);
-			mInfosLabel.setText("ssh " + ServerUtils.getLocalIpAddress() + "\n" + "ssh root@" + ServerUtils.getLocalIpAddress());
+			
+			String infos = "ssh " + ServerUtils.getLocalIpAddress();
+			if (SettingsHelper.getInstance(mContext).getListeningPort() != SettingsHelper.LISTENING_PORT_DEFAULT)
+				infos = infos.concat(" -p " + SettingsHelper.getInstance(mContext).getListeningPort());
+			infos = infos.concat("\n" + "ssh root@" + ServerUtils.getLocalIpAddress());
+			if (SettingsHelper.getInstance(mContext).getListeningPort() != SettingsHelper.LISTENING_PORT_DEFAULT)
+				infos = infos.concat(" -p " + SettingsHelper.getInstance(mContext).getListeningPort());
+			
+			mInfosLabel.setText(infos);
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");
