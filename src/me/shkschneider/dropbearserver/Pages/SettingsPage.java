@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "SettingsPage";
-
+	
 	private Context mContext;
 	private View mView;
 	private SettingsHelper mSettingsHelper;
@@ -55,11 +55,12 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mAccountsContent;
 	private LinearLayout mAccountsContentError;
 
+	// TODO: X.setChecked(mSettingsHelper.get()) called SettingsHelper.set()
 	public SettingsPage(Context context) {
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		mView = inflater.inflate(R.layout.settings, null);
-		mSettingsHelper = new SettingsHelper(mContext);
+		mSettingsHelper = SettingsHelper.getInstance(mContext);
 
 		// mGeneral mGeneralContent
 		mGeneral = (LinearLayout) mView.findViewById(R.id.general);
@@ -168,6 +169,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			.setNegativeButton("Cancel", this)
 			.show();
 		}
+		
 		// mDropbear
 		else if (v == mDropbear) {
 			mDropbearContent.setVisibility(mDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
@@ -178,11 +180,13 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (v == mListeningPort) {
 			// TODO: changeListeningPort
 		}
+		
 		// mAccounts
 		else if (v == mAccounts) {
 			mAccountsContent.setVisibility(mAccountsContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 			// TODO: changeAccounts
 		}
+		
 		// mPublicKeys
 		else if (v == mPublicKeys) {
 			mPublicKeysContent.setVisibility(mPublicKeysContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);

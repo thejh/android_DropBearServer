@@ -50,7 +50,7 @@ public abstract class ServerUtils {
 				}
 			}
 			catch (Exception e) {
-				Log.e(TAG, e.getMessage());
+				Log.e(TAG, "getLocalIpAddress(): " + e.getMessage());
 			}
 			ipAddress = null;
 		}
@@ -75,7 +75,7 @@ public abstract class ServerUtils {
 					return pid;
 				}
 				catch (Exception e) {
-					Log.e(TAG, e.getMessage());
+					Log.e(TAG, "getServerPidFromFile(): " + e.getMessage());
 					return -1;
 				}
 			}
@@ -129,7 +129,7 @@ public abstract class ServerUtils {
 			}
 		}
 		catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "getServerPidFromPs(): " + e.getMessage());
 			return -1;
 		}
 		return 0;

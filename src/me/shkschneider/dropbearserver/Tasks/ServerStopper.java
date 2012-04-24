@@ -56,7 +56,9 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		mProgressDialog.dismiss();
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
+		}
 		if (mCallback != null) {
 			mCallback.onServerStopperComplete(result);
 		}

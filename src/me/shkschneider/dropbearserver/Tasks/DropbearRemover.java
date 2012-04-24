@@ -90,7 +90,9 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		mProgressDialog.dismiss();
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
+		}
 		if (mCallback != null) {
 			mCallback.onDropbearRemoverComplete(result);
 		}

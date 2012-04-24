@@ -31,6 +31,8 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "onCreate()");
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
@@ -43,7 +45,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			appVersion = packageInfo.versionName.toString();
 		}
 		catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "onCreate(): " + e.getMessage());
 		}
 		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ") Android " + Build.VERSION.RELEASE + " (API-" + Build.VERSION.SDK + ")");
 		
@@ -65,6 +67,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	@Override
 	public void onResume() {
 		Log.d(TAG, "onResume()");
+		
 		super.onResume();
 		if (needToCheckDependencies == true) {
 			// Root dependencies
@@ -84,6 +87,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 	
 	public void check() {
+		Log.d(TAG, "check()");
 		// Checker
 		Checker checker = new Checker(this, this);
 		checker.execute();

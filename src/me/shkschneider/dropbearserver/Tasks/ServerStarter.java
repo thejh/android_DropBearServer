@@ -39,7 +39,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
-		SettingsHelper settingsHelper = new SettingsHelper(mContext);
+		SettingsHelper settingsHelper = SettingsHelper.getInstance(mContext);
 		if (settingsHelper.getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
 			return false;
 		}
@@ -81,7 +81,9 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-		mProgressDialog.dismiss();
+		if (mProgressDialog != null) {
+			mProgressDialog.dismiss();
+		}
 		if (mCallback != null) {
 			mCallback.onServerStarterComplete(result);
 		}
