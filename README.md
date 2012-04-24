@@ -41,11 +41,17 @@ Compatibility
 -------------
 
 * Android 2.1+ (API 7+)
-* Screens:
+
+* Density:
   * ldpi (36x36)
   * mdpi (48x48)
   * hdpi (72x72)
   * xhdpi (96x96)
+
+* Screens:
+  * small
+  * normal
+  * large
 
 Thanks
 ------
