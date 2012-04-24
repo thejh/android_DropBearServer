@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
+                android:singleLine="false"
                 android:text="What is root?" />
 
             <ImageView
@@ -51,7 +52,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="false"
-                android:text="Lorem ipsum..."
+                android:text="'Root' is the highest ranked users on systems like Android.\n
+Having your device rooted allows you to access new features.\n
+'su' is a binary giving you the userId of 0 (the root).\n
+'Superuser' is a frontend that allows some apps to call 'su' (and gain root privileges).)"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -69,7 +73,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:text="What is dropbear?" />
+                android:singleLine="false"
+                android:text="What is DropBear" />
 
             <ImageView
                 style="@style/list_item_chevron"
@@ -93,7 +98,200 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="false"
-                android:text="Lorem ipsum..."
+                android:text="'dropbear' is a small, minimalist yet configuration SSH server.\n
+SSH is a secured (encrypted) protocol to gain shell access over network.\n
+A SSH server allows you to get shell access and copy files over SSH or SFTP."
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/how_to_use_dropbear_server"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/content_page_large_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:singleLine="false"
+                android:text="HowTo: Use DropBear Server" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/how_to_use_dropbear_server_content"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:minHeight="60dp"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/content_page_small_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="You can gain shell access on to your smartphone right from any Terminal application:\n
+- Under GNU/Linux or MacOS you can use any terminal.\n
+- Under Windows try to use 'PuTTY' or 'KiTTY'.\n
+You can also copy files over network: SSH/SFTP Protocol\n
+\n
+You will have two possible authentication systems: public keys and password.\n
+- Public keys allows you to connect without password, but by generating a private key.\n
+- Passwords have to be input at each connexion."
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/how_to_generate_publickey"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/content_page_large_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:singleLine="false"
+                android:text="HowTo: generate a PublicKey" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/how_to_generate_publickey_content"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:minHeight="60dp"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/content_page_small_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="One key will be private and should never leave your computer.\n
+One key will be public and can be distributed.\n
+\n
+Under GNU/Linux or MacOS try to use 'ssh-keygen -t rsa' to generate a RSA key pair.\n
+  Keys are located in ~/.ssh/\n
+Under Windows try to use 'PuTTY' to generate a key pair easily."
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error_permission_denied"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/content_page_large_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:singleLine="false"
+                android:text="Error: &apos;Permission denied&apos;" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error_permission_denied_content"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:minHeight="60dp"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/content_page_small_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="Permission denied (publickey,password)\n
+  This means that you don't have a registered key nor do you have provided a valid password.\n
+Permission denied (publickey)\n
+  This means that the server does not allow password authentication and that you did not provide a registered key."
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error_host_identification_changed"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/content_page_large_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:singleLine="false"
+                android:text="Error: &apos;Host identification changed&apos;" />
+
+            <ImageView
+                style="@style/list_item_chevron"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="chevron" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/error_host_identification_changed_content"
+            style="@style/list_item_single"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:minHeight="60dp"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <TextView
+                style="@style/content_page_small_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="This will happen if your changed your private host key on your smartphone.\n
+When this happens, SSH remarks that the remote host key changed, which should never happend.\n
+This is a simple securirty warning.\n
+\n
+To fix this 'issue', under GNU/Linux or MacOS, empty your ~/.known_hosts file."
                 android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>

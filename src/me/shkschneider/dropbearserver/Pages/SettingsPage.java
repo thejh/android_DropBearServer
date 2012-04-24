@@ -233,18 +233,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			editText.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
 		}
-
-		// mAccounts
-		else if (v == mAccounts) {
-			hideAllBut(mAccountsContent);
-			// TODO: changeAccounts
-		}
-
-		// mPublicKeys
-		else if (v == mPublicKeys) {
-			hideAllBut(mPublicKeysContent);
-			// TODO: changePublicKeys
-		}
 	}
 
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
