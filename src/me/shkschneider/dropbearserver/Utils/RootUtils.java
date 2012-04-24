@@ -9,7 +9,7 @@ import com.stericson.RootTools.RootTools;
 
 public abstract class RootUtils {
 
-	private static final String TAG = "RootUtils";
+	private static final String TAG = "DropBearServer";
 
 	public static Boolean hasRootAccess = false;
 	public static Boolean hasBusybox = false;
@@ -23,15 +23,15 @@ public abstract class RootUtils {
 					hasRootAccess = true;
 				}
 				else {
-					Log.w(TAG, "checkRootAccess(): access rejected");
+					Log.w(TAG, "RootUtils: checkRootAccess(): access rejected");
 				}
 			}
 			catch (Exception e) {
-				Log.e(TAG, "checkRootAccess(): " + e.getMessage());
+				Log.e(TAG, "RootUtils: checkRootAccess(): " + e.getMessage());
 			}
 		}
 		else {
-			Log.w(TAG, "checkRootAccess(): su not found");
+			Log.w(TAG, "RootUtils: checkRootAccess(): su not found");
 		}
 		return hasRootAccess;
 	}
@@ -42,7 +42,7 @@ public abstract class RootUtils {
 			hasBusybox = true;
 		}
 		else {
-			Log.w(TAG, "checkBusybox(): busybox not found");
+			Log.w(TAG, "RootUtils: checkBusybox(): busybox not found");
 		}
 		return hasBusybox;
 	}
@@ -53,17 +53,17 @@ public abstract class RootUtils {
 
 		f = new File(ServerUtils.getLocalDir(context) + "/dropbearmulti");
 		if (f.exists() == false || f.isFile() == false || f.canExecute() == false) {
-			Log.w(TAG, "checkDropear(): dropbearmulti");
+			Log.w(TAG, "RootUtils: checkDropear(): dropbearmulti");
 			return false;
 		}
 		f = new File("/data/dropbear/host_rsa");
 		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
-			Log.w(TAG, "checkDropear(): host_rsa");
+			Log.w(TAG, "RootUtils: checkDropear(): host_rsa");
 			return false;
 		}
 		f = new File("/data/dropbear/host_dss");
 		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
-			Log.w(TAG, "checkDropear(): host_dss");
+			Log.w(TAG, "RootUtils: checkDropear(): host_dss");
 			return false;
 		}
 		if (RootTools.checkUtil("dropbear")) {
@@ -71,11 +71,11 @@ public abstract class RootUtils {
 				hasDropbear = true;
 			}
 			else {
-				Log.w(TAG, "checkDropbear(): dropbearkey");
+				Log.w(TAG, "RootUtils: checkDropbear(): dropbearkey");
 			}
 		}
 		else {
-			Log.w(TAG, "checkDropbear(): dropbear");
+			Log.w(TAG, "RootUtils: checkDropbear(): dropbear");
 		}
 		return hasDropbear;
 	}

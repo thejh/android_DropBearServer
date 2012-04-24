@@ -39,8 +39,6 @@ public class AboutPage implements OnClickListener {
 		mVisitMyWebsite.setOnClickListener(this);
 	}
 	
-	// TODO: hideAll
-	
 	public View getView() {
 		return mView;
 	}

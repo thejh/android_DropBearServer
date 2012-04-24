@@ -5,8 +5,6 @@ package me.shkschneider.dropbearserver;
 
 import com.markupartist.android.widget.ActionBar.Action;
 
-import me.shkschneider.dropbearserver.R;
-
 import android.content.Context;
 import android.view.View;
 

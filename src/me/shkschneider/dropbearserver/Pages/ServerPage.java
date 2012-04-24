@@ -30,13 +30,13 @@ import android.widget.Toast;
 
 public class ServerPage implements OnClickListener, DropbearInstallerCallback<Boolean>, ServerStarterCallback<Boolean>, ServerStopperCallback<Boolean>, CheckerCallback<Boolean>
 {
-	private static final String TAG = "ServerPage";
+	private static final String TAG = "DropBearServer";
 
-	private static final int STATUS_ERROR	= 0x00;
-	private static final int STATUS_STOPPED	= 0x01;
-	private static final int STATUS_STARTING	= 0x02;
-	private static final int STATUS_STARTED	= 0x03;
-	private static final int STATUS_STOPPING	= 0x04;
+	private static final int STATUS_ERROR = 0x00;
+	private static final int STATUS_STOPPED = 0x01;
+	private static final int STATUS_STARTING = 0x02;
+	private static final int STATUS_STARTED = 0x03;
+	private static final int STATUS_STOPPING = 0x04;
 
 	private Context mContext;
 	private View mView;
@@ -258,7 +258,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 		else if (v == mGetSuperuser) {
 			try {
-				Log.i(TAG, "market://details?id=" + mContext.getResources().getString(R.string.superuser_package));
+				Log.i(TAG, "ServerPage: onClick(): market://details?id=" + mContext.getResources().getString(R.string.superuser_package));
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.superuser_package))));
 			}
 			catch (ActivityNotFoundException e) {
@@ -269,7 +269,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 		else if (v == mGetBusybox) {
 			try {
-				Log.i(TAG, "market://details?id=" + mContext.getResources().getString(R.string.busybox_package));
+				Log.i(TAG, "ServerPage: onClick(): market://details?id=" + mContext.getResources().getString(R.string.busybox_package));
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.busybox_package))));
 			}
 			catch (ActivityNotFoundException e) {
@@ -279,7 +279,6 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			updateRootStatus();
 		}
 		else if (v == mGetDropbear) {
-			Log.i(TAG, "DropbearInstaller");
 			// DropbearInstaller
 			DropbearInstaller dropbearInstaller = new DropbearInstaller(mContext, this);
 			dropbearInstaller.execute();
@@ -287,34 +286,37 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	}
 
 	public void onDropbearInstallerComplete(Boolean result) {
-		if (result == true) {
-			RootUtils.checkDropbear(mContext);
-			((MainActivity) mContext).update();
+		Log.i(TAG, "ServerPage: onDropbearInstallerComplete(" + result + ")");
+		if (result == false) {
+			Toast.makeText(mContext, "DropBear could not be installed", Toast.LENGTH_SHORT).show();
 		}
 		else {
-			Toast.makeText(mContext, "Dropbear failed to get installed", Toast.LENGTH_SHORT).show();
+			RootUtils.checkDropbear(mContext);
+			((MainActivity) mContext).update();
+			Toast.makeText(mContext, "DropBear successfully installed", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void onServerStarterComplete(Boolean result) {
-		Log.i(TAG, "onStartServerComplete(" + result + ")");
+		Log.i(TAG, "ServerPage: onStartServerComplete(" + result + ")");
 		if (result == false) {
-			Toast.makeText(mContext, "Dropbear failed to start", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "DropBear could not be started", Toast.LENGTH_SHORT).show();
 		}
 		updateServerStatusCode();
 		updateServerStatus();
 	}
 
 	public void onServerStopperComplete(Boolean result) {
-		Log.i(TAG, "onStopServerComplete(" + result + ")");
+		Log.i(TAG, "ServerPage: onStopServerComplete(" + result + ")");
 		if (result == false) {
-			Toast.makeText(mContext, "Dropbear failed to stop", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "DropBear could not be stopped", Toast.LENGTH_SHORT).show();
 		}
 		updateServerStatusCode();
 		updateServerStatus();
 	}
 
 	public void onCheckerComplete(Boolean result) {
+		Log.i(TAG, "ServerPage: onCheckerComplete(" + result + ")");
 		if (result == true) {
 			update();
 		}

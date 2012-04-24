@@ -15,7 +15,7 @@ import com.stericson.RootTools.RootTools;
 
 public abstract class Utils {
 
-	private static final String TAG = "Utils";
+	private static final String TAG = "DropBearServer";
 
 	public static void marketNotFound(Context context) {
 		Toast.makeText(context, "Google Play could not be found", Toast.LENGTH_SHORT).show();
@@ -34,7 +34,7 @@ public abstract class Utils {
 			out.flush();
 			out.close();
 		} catch(Exception e) {
-			Log.e(TAG, "copyRawFile(): " + e.getMessage());
+			Log.e(TAG, "Utils: copyRawFile(): " + e.getMessage());
 			return false;
 		}
 		return true;

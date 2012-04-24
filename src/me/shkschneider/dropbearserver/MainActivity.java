@@ -19,7 +19,7 @@ import android.util.Log;
 
 public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 
-	private static final String TAG = "MainActivity";
+	private static final String TAG = "DropBearServer";
 
 	private static Boolean needToCheckDependencies = true;
 	
@@ -31,8 +31,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.d(TAG, "onCreate()");
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
@@ -45,7 +43,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			appVersion = packageInfo.versionName.toString();
 		}
 		catch (Exception e) {
-			Log.e(TAG, "onCreate(): " + e.getMessage());
+			Log.e(TAG, "MainActivity: onCreate(): " + e.getMessage());
 		}
 		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ") Android " + Build.VERSION.RELEASE + " (API-" + Build.VERSION.SDK + ")");
 		
@@ -66,13 +64,18 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	
 	@Override
 	public void onResume() {
-		Log.d(TAG, "onResume()");
-		
 		super.onResume();
 		if (needToCheckDependencies == true) {
 			// Root dependencies
 			check();
 			needToCheckDependencies = false;
+		}
+		
+		if (SettingsHelper.getInstance(getBaseContext()).getKeepScreenOn() == true) {
+			this.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
+		else {
+			this.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 	}
 
@@ -87,7 +90,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 	
 	public void check() {
-		Log.d(TAG, "check()");
 		// Checker
 		Checker checker = new Checker(this, this);
 		checker.execute();
@@ -98,7 +100,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 	
 	public void update() {
-		Log.d(TAG, "update()");
 		mAdapter.update();
 	}
 }

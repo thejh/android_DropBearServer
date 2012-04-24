@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class SettingsHelper {
 	
-	private static final String TAG = "SettingsHelper";
+	private static final String TAG = "DropBearServer";
 
 	private static final String PREF_START_AT_BOOT = "startAtBoot";
 	private static final String PREF_ONLY_IF_RUNNING_BEFORE = "onlyIfRunningBefore";
@@ -48,7 +48,7 @@ public class SettingsHelper {
     		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     	}
     	else {
-    		Log.e(TAG, "Context is null");
+    		Log.e(TAG, "SettingsHelper: SettingsHelper(): Context is null");
     	}
     }
     
@@ -58,7 +58,7 @@ public class SettingsHelper {
     }
     
     public void setStartAtBoot(Boolean b) {
-    	Log.d(TAG, "setStartAtBoot(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setStartAtBoot(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_START_AT_BOOT, b);
     	editor.commit();
@@ -70,7 +70,7 @@ public class SettingsHelper {
     }
     
     public void setOnlyIfRunningBefore(Boolean b) {
-    	Log.d(TAG, "setOnlyIfRunningBefore(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setOnlyIfRunningBefore(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_ONLY_IF_RUNNING_BEFORE, b);
     	editor.commit();
@@ -82,7 +82,7 @@ public class SettingsHelper {
     }
     
     public void setKeepScreenOn(Boolean b) {
-    	Log.d(TAG, "setKeepScreenOn(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setKeepScreenOn(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_KEEP_SCREEN_ON, b);
     	editor.commit();
@@ -94,7 +94,7 @@ public class SettingsHelper {
     }
     
     public void setOnlyOverWifi(Boolean b) {
-    	Log.d(TAG, "setOnlyOverWifi(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setOnlyOverWifi(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_ONLY_OVER_WIFI, b);
     	editor.commit();
@@ -106,7 +106,7 @@ public class SettingsHelper {
     }
     
     public void setBanner(String s) {
-    	Log.d(TAG, "setBanner(" + s + ")");
+    	Log.d(TAG, "SettingsHelper: setBanner(" + s + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putString(PREF_BANNER, s);
     	editor.commit();
@@ -118,7 +118,7 @@ public class SettingsHelper {
     }
     
     public void setDisallowRootLogins(Boolean b) {
-    	Log.d(TAG, "setDisallowRootLogins(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setDisallowRootLogins(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_DISALLOW_ROOT_LOGINS, b);
     	editor.commit();
@@ -130,7 +130,7 @@ public class SettingsHelper {
     }
     
     public void setDisablePasswordLogins(Boolean b) {
-    	Log.d(TAG, "setDisablePasswordLogins(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setDisablePasswordLogins(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_DISABLE_PASSWORD_LOGINS, b);
     	editor.commit();
@@ -142,7 +142,7 @@ public class SettingsHelper {
     }
     
     public void setDisablePasswordLoginsForRoot(Boolean b) {
-    	Log.d(TAG, "setDisablePasswordLoginsForRoot(" + b + ")");
+    	Log.d(TAG, "SettingsHelper: setDisablePasswordLoginsForRoot(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT, b);
     	editor.commit();
@@ -154,7 +154,7 @@ public class SettingsHelper {
     }
     
     public void setListeningPort(Integer i) {
-    	Log.d(TAG, "setListeningPort(" + i + ")");
+    	Log.d(TAG, "SettingsHelper: setListeningPort(" + i + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putInt(PREF_LISTENING_PORT, i);
     	editor.commit();

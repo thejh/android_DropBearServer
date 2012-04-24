@@ -243,7 +243,7 @@
         style="@style/list_item_single"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
+        android:clickable="false"
         android:orientation="horizontal"
         android:visibility="gone" >
 

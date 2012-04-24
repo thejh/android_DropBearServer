@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 	
-	private static final String TAG = "ServerStopper";
+	private static final String TAG = "DropBearServer";
 
 	public Context mContext = null;
 	public ProgressDialog mProgressDialog = null;
@@ -38,8 +38,12 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 		}
 	}
 
+	// TODO: log errors (in a better way)
+	
 	@Override
 	protected Boolean doInBackground(Void... params) {
+		Log.i(TAG, "ServerStopper: doInBackground()");
+		
 		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
 		if (ShellUtils.echoToFile("0", pidFile) == false)
 			Log.d(TAG, "echoToFile(0, " + pidFile + ")");

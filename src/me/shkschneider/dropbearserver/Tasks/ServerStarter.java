@@ -7,8 +7,11 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class ServerStarter extends AsyncTask<Void, String, Boolean> {
+
+	private static final String TAG = "DropBearServer";
 
 	public Context mContext = null;
 	public ProgressDialog mProgressDialog = null;
@@ -39,6 +42,8 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
+		Log.i(TAG, "ServerStarter: doInBackground()");
+		
 		if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
 			return false;
 		}

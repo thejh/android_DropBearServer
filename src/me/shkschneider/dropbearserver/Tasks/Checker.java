@@ -5,9 +5,12 @@ import me.shkschneider.dropbearserver.Utils.RootUtils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class Checker extends AsyncTask<Void, String, Boolean> {
 
+	private static final String TAG = "DropBearServer";
+	
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
 
@@ -47,6 +50,8 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
+		Log.i(TAG, "Checker: doInBackground()");
+		
 		int step = 0;
 		int steps = 3;
 

@@ -13,12 +13,12 @@ import android.util.Log;
 
 public class BootReceiver extends BroadcastReceiver {
 
-	private static final String TAG = "BootReceiver";
+	private static final String TAG = "DropBearServer";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(android.content.Intent.ACTION_BOOT_COMPLETED)) {
-			Log.d(TAG, "onReceive(ACTION_BOOT_COMPLETED)");
+			Log.d(TAG, "BootReceiver: onReceive(ACTION_BOOT_COMPLETED)");
 
 			Boolean hasPid = (ServerUtils.getServerPidFromFile(context) > 0 ? true : false);
 			Boolean startAtBoot = SettingsHelper.getInstance(context).getStartAtBoot();
@@ -30,7 +30,7 @@ public class BootReceiver extends BroadcastReceiver {
 
 			if (startAtBoot) {
 				if (!onlyIfRunningbefore || (onlyIfRunningbefore && hasPid)) {
-					Log.i(TAG, "Dropbear server starting at boot");
+					Log.i(TAG, "BootReceiver: DropBear Server starting at boot");
 					// ServerStarter
 					ServerStarter serverStarter = new ServerStarter(null, null);
 					serverStarter.execute();

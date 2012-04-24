@@ -33,6 +33,14 @@ public class HelpPage implements OnClickListener {
 		mWhatIsDropbear.setOnClickListener(this);
 		mWhatIsDropbearContent = (LinearLayout) mView.findViewById(R.id.what_is_dropbear_content);
 	}
+	
+	public void hideAllBut(LinearLayout oneLinearLayout) {
+		if (mWhatIsRootContent != oneLinearLayout)
+			mWhatIsRootContent.setVisibility(View.GONE);
+		if (mWhatIsDropbearContent != oneLinearLayout)
+			mWhatIsDropbearContent.setVisibility(View.GONE);
+		oneLinearLayout.setVisibility(oneLinearLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+	}
 
 	public View getView() {
 		return mView;
@@ -40,10 +48,10 @@ public class HelpPage implements OnClickListener {
 
 	public void onClick(View v) {
 		if (v == mWhatIsRoot) {
-			mWhatIsRootContent.setVisibility(mWhatIsRootContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+			hideAllBut(mWhatIsRootContent);
 		}
 		else if (v == mWhatIsDropbear) {
-			mWhatIsDropbearContent.setVisibility(mWhatIsDropbearContent.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+			hideAllBut(mWhatIsDropbearContent);
 		}
 	}
 }

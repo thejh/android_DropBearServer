@@ -18,8 +18,7 @@ import android.view.View;
 
 public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 
-	private static final String TAG = "MainAdapter";
-	
+	private static final String TAG = "DropBearServer";
 	public static final int DEFAULT_PAGE = 1;
 	
 	private static final int SETTINGS_INDEX = 0;
@@ -41,8 +40,6 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	};
 
 	public MainAdapter(Context context) {
-		Log.d(TAG, "MainAdapter()");
-		
 		mContext = context;
 		mSettingsPage = new SettingsPage(mContext);
 		mServerPage = new ServerPage(mContext);
@@ -74,6 +71,9 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 		case ABOUT_INDEX:
 			//mAboutPage.update();
 			v = mAboutPage.getView();
+			break;
+		default:
+			Log.e(TAG, "MainAdapter: instanciateItem(): default");
 			break;
 		}
 		((ViewPager) container).addView(v, 0);

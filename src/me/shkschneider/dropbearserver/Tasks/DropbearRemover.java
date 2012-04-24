@@ -7,8 +7,11 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
+
+	private static final String TAG = "DropBearServer";
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
@@ -51,9 +54,13 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.setMessage(progress[2]);
 		}
 	}
+	
+	// TODO: log errors
 
 	@Override
 	protected Boolean doInBackground(Void... params) {
+		Log.i(TAG, "DropbearRemover: doInBackground()");
+		
 		int step = 0;
 		int steps = 9;
 

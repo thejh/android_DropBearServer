@@ -13,7 +13,7 @@ import com.stericson.RootTools.RootTools;
 
 public abstract class ShellUtils {
 
-	private static final String TAG = "ShellUtils";
+	private static final String TAG = "DropBearServer";
 
 	public static ArrayList<String> commands = new ArrayList<String>();
 
@@ -114,7 +114,7 @@ public abstract class ShellUtils {
 				Process suProcess = Runtime.getRuntime().exec("su");
 				DataOutputStream os = new DataOutputStream(suProcess.getOutputStream());
 				for (String currCommand : ShellUtils.commands) {
-					Log.d(TAG, "# " + currCommand);
+					Log.d(TAG, "ShellUtils: execute(): # " + currCommand);
 					os.writeBytes(currCommand + "\n");
 					os.flush();
 				}
@@ -135,7 +135,7 @@ public abstract class ShellUtils {
 			}
 		}
 		catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "ShellUtils: execute(): " + e.getMessage());
 		}
 
 		ShellUtils.commands.clear();

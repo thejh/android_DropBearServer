@@ -22,7 +22,7 @@ import android.util.Log;
 
 public abstract class ServerUtils {
 
-	private static final String TAG = "ServerUtils";
+	private static final String TAG = "DropBearServer";
 
 	public static String localDir = null;
 	public static String ipAddress = null;
@@ -50,7 +50,7 @@ public abstract class ServerUtils {
 				}
 			}
 			catch (Exception e) {
-				Log.e(TAG, "getLocalIpAddress(): " + e.getMessage());
+				Log.e(TAG, "ServerUtils: getLocalIpAddress(): " + e.getMessage());
 			}
 			ipAddress = null;
 		}
@@ -71,11 +71,11 @@ public abstract class ServerUtils {
 			if (line != null) {
 				try {
 					Integer pid = Integer.parseInt(line);
-					Log.i(TAG, "PID #" + pid);
+					Log.i(TAG, "ServerUtils: PID #" + pid);
 					return pid;
 				}
 				catch (Exception e) {
-					Log.e(TAG, "getServerPidFromFile(): " + e.getMessage());
+					Log.e(TAG, "ServerUtils: getServerPidFromFile(): " + e.getMessage());
 					return -1;
 				}
 			}
@@ -93,7 +93,7 @@ public abstract class ServerUtils {
 
 			// stdin
 			DataOutputStream stdin = new DataOutputStream(suProcess.getOutputStream());
-			Log.d(TAG, "# ps dropbear");
+			Log.d(TAG, "ServerUtils: getServerPidFromPs(): # ps dropbear");
 			stdin.writeBytes("ps dropbear\n");
 			stdin.flush();
 			stdin.writeBytes("exit\n");
@@ -122,14 +122,14 @@ public abstract class ServerUtils {
 					line = line.replaceFirst("^^\\S+\\s+([0-9]+)\\s+.+\\sdropbear(\\s.+)?$", "$1");
 					if (Utils.isNumeric(line)) {
 						Integer pid = Integer.parseInt(line);
-						Log.i(TAG, "PID #" + pid);
+						Log.i(TAG, "ServerUtils: PID #" + pid);
 						return pid;
 					}
 				}
 			}
 		}
 		catch (Exception e) {
-			Log.e(TAG, "getServerPidFromPs(): " + e.getMessage());
+			Log.e(TAG, "ServerUtils: getServerPidFromPs(): " + e.getMessage());
 			return -1;
 		}
 		return 0;
