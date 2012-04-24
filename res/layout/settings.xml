@@ -199,30 +199,27 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:duplicateParentState="true"
-                    android:orientation="horizontal" >
+                    android:orientation="vertical" >
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0"
-                        android:gravity="left"
                         android:text="Banner"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/banner_infos"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:text=""
-                        android:textColor="@color/white" />
+                        android:text="No banner set"
+                        android:textColor="@color/white"
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <ImageView
                     style="@style/list_item_chevron"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
                     android:contentDescription="chevron" />
             </LinearLayout>
 
@@ -306,25 +303,23 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:duplicateParentState="true"
-                    android:orientation="horizontal" >
+                    android:orientation="vertical" >
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.0"
-                        android:gravity="left"
                         android:inputType="number"
                         android:text="Listening port"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/listening_port_infos"
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
                         android:inputType="number"
                         android:text="22"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <ImageView

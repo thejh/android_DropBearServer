@@ -7,6 +7,7 @@
         android:id="@+id/settings_listening_port"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:hint="22" />
 
 </RelativeLayout>

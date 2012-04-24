@@ -120,7 +120,7 @@ public abstract class ServerUtils {
 				}
 				if (line != null) {
 					line = line.replaceFirst("^^\\S+\\s+([0-9]+)\\s+.+\\sdropbear(\\s.+)?$", "$1");
-					if (line.matches("^[0-9]+$")) {
+					if (Utils.isNumeric(line)) {
 						Integer pid = Integer.parseInt(line);
 						Log.i(TAG, "PID #" + pid);
 						return pid;

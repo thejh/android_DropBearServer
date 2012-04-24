@@ -269,7 +269,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 				mBannerInfos.setText(settings_banner);
 			}
 			else if (dialog == mListeningPortAlertDialog) {
-				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_listening_port);
+				EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 				String settings_listening_port = editText.getText().toString();
 				mListeningPortInfos.setText(settings_listening_port);
 			}

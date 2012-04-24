@@ -14,13 +14,13 @@ import android.widget.Toast;
 import com.stericson.RootTools.RootTools;
 
 public abstract class Utils {
-	
+
 	private static final String TAG = "Utils";
 
 	public static void marketNotFound(Context context) {
 		Toast.makeText(context, "Google Play could not be found", Toast.LENGTH_SHORT).show();
 	}
-	
+
 	public static final Boolean copyRawFile(Context context, int rawId, String path) {
 		try {
 			InputStream in = context.getResources().openRawResource(rawId);
@@ -39,19 +39,26 @@ public abstract class Utils {
 		}
 		return true;
 	}
-	
+
 	public static final Boolean remountReadWrite(String path) {
 		return RootTools.remount(path, "RW");
 	}
-	
+
 	public static final Boolean remountReadOnly(String path) {
 		return RootTools.remount(path, "RO");
 	}
-	
-	public static Boolean isConnectedToWiFi(Context context) {
-	    ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo netInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-	    return netInfo.isConnected();
+	public static Boolean isConnectedToWiFi(Context context) {
+		ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		return netInfo.isConnected();
+	}
+
+	public static Boolean isNumeric(String string) {
+		if (string.matches("^[0-9]+$")) {
+			return true;
+		}
+		return false;
 	}
 }
