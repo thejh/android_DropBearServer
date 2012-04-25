@@ -55,12 +55,14 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 			return false;
 		}
 		
-		String login = "root";
-		String passwd = "42";
+		String login = SettingsHelper.getInstance(mContext).getAccountsLogin();
+		String passwd = SettingsHelper.getInstance(mContext).getAccountsPasswd();
 		String hostRsa = "/data/dropbear/host_rsa";
 		String hostDss = "/data/dropbear/host_dss";
 		String authorizedKeys = "/data/dropbear/authorized_keys";
 		String uid = "0";
+		// TODO: 1015 is 'sdcard_rw', but I should retrieve it
+		String gid = (login.equals("root") ? "0" : "1015");
 		String listeningPort = "" + SettingsHelper.getInstance(mContext).getListeningPort();
 		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
 		
@@ -69,7 +71,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		command = command.concat(" -C " + passwd);
 		command = command.concat(" -r " + hostRsa + " -d " + hostDss);
 		command = command.concat(" -R " + authorizedKeys);
-		command = command.concat(" -U " + uid + " -G " + uid);
+		command = command.concat(" -U " + uid + " -G " + gid);
 		command = command.concat(" -p " + listeningPort);
 		command = command.concat(" -P " + pidFile);
 		
@@ -84,8 +86,10 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		}
 		
 		ShellUtils.commands.add(command);
-		if (ShellUtils.execute() == false)
+		
+		if (ShellUtils.execute() == false) {
 			return falseWithError("execute(" + command + ")");
+		}
 		
 		return true;
 	}

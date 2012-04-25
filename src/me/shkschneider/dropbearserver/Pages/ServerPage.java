@@ -192,13 +192,10 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 			
-			String localIpAddress = ServerUtils.getLocalIpAddress();
-			String infos = "ssh " + localIpAddress;
-			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT)
+			String infos = "ssh " + SettingsHelper.getInstance(mContext).getAccountsLogin() + "@" + ServerUtils.getLocalIpAddress();
+			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
-			infos = infos.concat("\n" + "ssh root@" + localIpAddress);
-			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT)
-				infos = infos.concat(" -p " + mListeningPort);
+			}
 			
 			mInfosLabel.setText(infos);
 			break;
