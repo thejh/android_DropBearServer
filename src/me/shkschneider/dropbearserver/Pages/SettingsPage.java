@@ -7,6 +7,7 @@ import me.shkschneider.dropbearserver.Explorer.ExplorerActivity;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemover;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 
 import android.app.Activity;
@@ -29,8 +30,6 @@ import android.widget.LinearLayout;
 public class SettingsPage extends Activity implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "DropBearServer";
-
-	private static final int RESULT_CODE = 1;
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
@@ -252,17 +251,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case RESULT_CODE:
-			if(resultCode == Activity.RESULT_OK) {
-				Toast.makeText(mContext, data.getData().getPath(), Toast.LENGTH_SHORT);
-			}
-			break;
-		}
-	}
-
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// mGeneral
 		if (buttonView == mAssumeRootAccess) {
@@ -330,7 +318,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 			}
 			else {
 				// mDropbearRemover
-				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
+				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this, ServerUtils.getServerPidFromPs());
 				dropbearRemover.execute();
 			}
 		}
@@ -346,10 +334,5 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 			mGeneralContent.setVisibility(View.GONE);
 			((MainActivity) mContext).goToDefaultPage();
 		}
-	}
-
-	public void onFileSelectedComplete(String result) {
-		// TODO: ...
-		Toast.makeText(mContext, result, Toast.LENGTH_SHORT);
 	}
 }

@@ -42,6 +42,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private View mView;
 	private Integer mServerStatusCode;
 	private Integer mListeningPort;
+	private Integer mServerPid;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -62,6 +63,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		mView = inflater.inflate(R.layout.server, null);
 		mServerStatusCode = STATUS_ERROR;
 		mListeningPort = SettingsHelper.LISTENING_PORT_DEFAULT;
+		mServerPid = 0;
 
 		// mNetworkConnexions
 		mNetworkConnexion = (TextView) mView.findViewById(R.id.network_connexion);
@@ -149,12 +151,11 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
-			// TODO: this is blocking
-			Integer pid = ServerUtils.getServerPidFromPs();
-			if (pid < 0) {
+			mServerPid = ServerUtils.getServerPidFromPs();
+			if (mServerPid < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
-			else if (pid == 0) {
+			else if (mServerPid == 0) {
 				mServerStatusCode = STATUS_STOPPED;
 			}
 			else {
@@ -188,15 +189,16 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatus.setTextColor(Color.GREEN);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOP SERVER");
-			mServerLaunchPid.setText("PID " + ServerUtils.getServerPidFromPs());
+			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 			
-			String infos = "ssh " + ServerUtils.getLocalIpAddress();
+			String localIpAddress = ServerUtils.getLocalIpAddress();
+			String infos = "ssh " + localIpAddress;
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT)
-				infos = infos.concat(" -p " + SettingsHelper.getInstance(mContext).getListeningPort());
-			infos = infos.concat("\n" + "ssh root@" + ServerUtils.getLocalIpAddress());
+				infos = infos.concat(" -p " + mListeningPort);
+			infos = infos.concat("\n" + "ssh root@" + localIpAddress);
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT)
-				infos = infos.concat(" -p " + SettingsHelper.getInstance(mContext).getListeningPort());
+				infos = infos.concat(" -p " + mListeningPort);
 			
 			mInfosLabel.setText(infos);
 			break;
@@ -245,7 +247,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 				mServerStatusCode = STATUS_STOPPING;
 				updateServerStatus();
 				// StopServer
-				ServerStopper serverStopper = new ServerStopper(mContext, this);
+				ServerStopper serverStopper = new ServerStopper(mContext, this, mServerPid);
 				serverStopper.execute();
 				break;
 			case STATUS_STOPPING:

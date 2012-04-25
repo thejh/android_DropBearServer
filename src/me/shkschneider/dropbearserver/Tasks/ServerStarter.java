@@ -14,8 +14,8 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	private static final String TAG = "DropBearServer";
 
-	public Context mContext = null;
-	public ProgressDialog mProgressDialog = null;
+	private Context mContext = null;
+	private ProgressDialog mProgressDialog = null;
 
 	private ServerStarterCallback<Boolean> mCallback;
 

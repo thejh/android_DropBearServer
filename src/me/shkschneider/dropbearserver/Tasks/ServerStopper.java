@@ -12,12 +12,13 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 	
 	private static final String TAG = "DropBearServer";
 
-	public Context mContext = null;
-	public ProgressDialog mProgressDialog = null;
+	private Context mContext = null;
+	private ProgressDialog mProgressDialog = null;
+	private Integer mServerPid;
 
 	private ServerStopperCallback<Boolean> mCallback;
 
-	public ServerStopper(Context context, ServerStopperCallback<Boolean> callback) {
+	public ServerStopper(Context context, ServerStopperCallback<Boolean> callback, Integer serverPid) {
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
@@ -29,6 +30,7 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.setMax(100);
 			mProgressDialog.setIcon(0);
 		}
+		mServerPid = serverPid;
 	}
 
 	@Override
@@ -53,9 +55,8 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 		if (ShellUtils.echoToFile("0", pidFile) == false)
 			return falseWithError("echoToFile(0, " + ServerUtils.getLocalDir(mContext) + "/pid" + ")");
 
-		Integer pid = ServerUtils.getServerPidFromPs();
-		if (ShellUtils.kill(9, pid) == false && ShellUtils.killall("dropbear") == false)
-			return falseWithError("kill(9, " + pid + ") + killall(dropbear)");
+		if (ShellUtils.kill(9, mServerPid) == false && ShellUtils.killall("dropbear") == false)
+			return falseWithError("kill(9, " + mServerPid + ") + killall(dropbear)");
 		
 		return true;
 	}

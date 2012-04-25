@@ -34,6 +34,8 @@ public abstract class ServerUtils {
 		}
 		return localDir;
 	}
+	
+	// WARNING: this is not threaded
 	public static final String getLocalIpAddress() {
 		if (ipAddress == null) {
 			try {
@@ -62,6 +64,7 @@ public abstract class ServerUtils {
 	 * Dropbear seems to take some time to write the pidFile
 	 * As a consequence, this is only used by the BootReceiver
 	 */
+	// WARNING: this is not threaded
 	public static final Integer getServerPidFromFile(Context context) {
 		File f = new File(ServerUtils.getLocalDir(context) + "/pid");
 		if (f.exists() == true && f.isFile() == true) {
@@ -91,6 +94,7 @@ public abstract class ServerUtils {
 		return 0;
 	}
 
+	// WARNING: this is not threaded
 	public static final Integer getServerPidFromPs() {
 		try {
 			Process suProcess = Runtime.getRuntime().exec("su");
@@ -138,12 +142,13 @@ public abstract class ServerUtils {
 		}
 		return 0;
 	}
-
+	// WARNING: this is not threaded
 	public static final Boolean generateRsaPrivateKey(String path) {
 		ShellUtils.commands.add("dropbearkey -t rsa -f " + path);
 		return ShellUtils.execute();
 	}
 
+	// WARNING: this is not threaded
 	public static final Boolean generateDssPrivateKey(String path) {
 		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
 		return ShellUtils.execute();

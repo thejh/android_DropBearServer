@@ -215,8 +215,9 @@
                 <TextView
                     android:id="@+id/launch_label"
                     style="@style/content_page_large_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                 	android:layout_weight="1.0"
                     android:gravity="left"
                     android:text="" />
 

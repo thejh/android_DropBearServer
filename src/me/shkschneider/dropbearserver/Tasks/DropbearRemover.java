@@ -16,10 +16,11 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
+	private Integer mServerPid;
 
 	private DropbearRemoverCallback<Boolean> mCallback;
 
-	public DropbearRemover(Context context, DropbearRemoverCallback<Boolean> callback) {
+	public DropbearRemover(Context context, DropbearRemoverCallback<Boolean> callback, Integer serverPid) {
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
@@ -31,13 +32,14 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.setMax(100);
 			mProgressDialog.setIcon(0);
 		}
+		mServerPid = serverPid;
 	}
 
 	@Override
 	protected void onPreExecute() {
-		if (ServerUtils.getServerPidFromPs() > 0) {
+		if (mServerPid > 0) {
 			// ServerStopper
-			ServerStopper serverStopper = new ServerStopper(mContext, null);
+			ServerStopper serverStopper = new ServerStopper(mContext, null, mServerPid);
 			serverStopper.execute();
 		}
 		super.onPreExecute();

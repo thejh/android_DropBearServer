@@ -71,6 +71,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
 		if (SettingsHelper.getInstance(getBaseContext()).getAssumeRootAccess() == true) {
 			RootUtils.hasRootAccess = true;
 			RootUtils.hasBusybox = true;
