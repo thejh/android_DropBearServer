@@ -245,6 +245,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 
 		// mPublicKeys
 		else if (view == mPublicKeys) {
+			MainActivity.needToCheckDropbear = false;
 			// ExplorerActivity
 			Intent intent = new Intent(mContext, ExplorerActivity.class);
 			mContext.startActivity(intent);

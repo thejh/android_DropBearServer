@@ -22,7 +22,8 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 
 	private static final String TAG = "DropBearServer";
 	
-	private static Boolean needToCheckDependencies = true;
+	public static Boolean needToCheckDependencies = true;
+	public static Boolean needToCheckDropbear = true;
 
 	private static String appVersion = "1.0";
 
@@ -75,8 +76,12 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 		if (SettingsHelper.getInstance(getBaseContext()).getAssumeRootAccess() == true) {
 			RootUtils.hasRootAccess = true;
 			RootUtils.hasBusybox = true;
-			RootUtils.checkDropbear(this);
-			update();
+			if (needToCheckDropbear == true) {
+				RootUtils.checkDropbear(this);
+				update();
+			}
+			else
+				needToCheckDropbear = true;
 		}
 		else if (needToCheckDependencies == true) {
 			// Root dependencies
