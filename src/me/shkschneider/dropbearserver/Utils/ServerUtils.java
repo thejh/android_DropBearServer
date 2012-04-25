@@ -148,5 +148,9 @@ public abstract class ServerUtils {
 		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
 		return ShellUtils.execute();
 	}
+	
+	public static final Boolean addPublicKey(String publicKey) {
+		return ShellUtils.echoAppendToFile(publicKey, "/data/dropbear/authorized_keys");
+	}
 
 }

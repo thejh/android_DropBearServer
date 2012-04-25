@@ -23,7 +23,7 @@ class HomeAction implements Action {
     }
 
     public void performAction(View view) {
-    	((ExplorerActivity) mContext).dismiss();
+    	((ExplorerActivity) mContext).finish();
     }
 
 }

@@ -9,6 +9,7 @@ import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,9 +26,11 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 
-public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
+public class SettingsPage extends Activity implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "DropBearServer";
+
+	private static final int RESULT_CODE = 1;
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
@@ -51,11 +54,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private TextView mBannerInfos;
 	private AlertDialog mBannerAlertDialog;
 	private View mBannerView;
-	
+
 	private CheckBox mDisallowRootLogins;
 	private CheckBox mDisablePasswordLogins;
 	private CheckBox mDisablePasswordLoginsForRoot;
-	
+
 	private LinearLayout mListeningPort;
 	private TextView mListeningPortInfos;
 	private AlertDialog mListeningPortAlertDialog;
@@ -68,7 +71,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mAccounts;
 	private LinearLayout mAccountsContent;
 	private LinearLayout mAccountsContentError;
-	
+
 	private AlertDialog.Builder mAlertDialogBuilder;
 
 	public SettingsPage(Context context) {
@@ -193,7 +196,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		// mPublicKeys
 		// TODO: setPublicKeys
 	}
-	
+
 	public void hideAllBut(LinearLayout oneLinearLayout) {
 		if (mGeneralContent != oneLinearLayout)
 			mGeneralContent.setVisibility(View.GONE);
@@ -235,16 +238,28 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			editText.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
 		}
-		
+
 		// mAccounts
 		else if (view == mAccounts) {
 			// TODO: ...
 		}
-		
+
 		// mPublicKeys
 		else if (view == mPublicKeys) {
-			Intent i = new Intent(mContext, ExplorerActivity.class);
-			mContext.startActivity(i);
+			// ExplorerActivity
+			Intent intent = new Intent(mContext, ExplorerActivity.class);
+			mContext.startActivity(intent);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case RESULT_CODE:
+			if(resultCode == Activity.RESULT_OK) {
+				Toast.makeText(mContext, data.getData().getPath(), Toast.LENGTH_SHORT);
+			}
+			break;
 		}
 	}
 
@@ -268,7 +283,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (buttonView == mOnlyOverWifi) {
 			SettingsHelper.getInstance(mContext).setOnlyOverWifi(buttonView.isChecked());
 		}
-		
+
 		// mDropbear
 		else if (buttonView == mDisallowRootLogins) {
 			SettingsHelper.getInstance(mContext).setDisallowRootLogins(buttonView.isChecked());
@@ -331,5 +346,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			mGeneralContent.setVisibility(View.GONE);
 			((MainActivity) mContext).goToDefaultPage();
 		}
+	}
+
+	public void onFileSelectedComplete(String result) {
+		// TODO: ...
+		Toast.makeText(mContext, result, Toast.LENGTH_SHORT);
 	}
 }

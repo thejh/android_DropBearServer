@@ -3,7 +3,11 @@
  */
 package me.shkschneider.dropbearserver.Explorer;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,9 +16,11 @@ import java.util.Stack;
 import com.markupartist.android.widget.ActionBar;
 
 import me.shkschneider.dropbearserver.R;
-import me.shkschneider.dropbearserver.Utils.ShellUtils;
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -25,13 +31,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ExplorerActivity extends ListActivity {
+public class ExplorerActivity extends ListActivity implements DialogInterface.OnClickListener {
 
 	private static final String TAG = "DropBearServer";
 
 	private ActionBar mActionBar;
 	private TextView mCurrentPath;
-	
+	private String mPublicKey;
+
 	private File mDir;
 	private File mSdcard;
 	private ExplorerAdapter mExplorerAdapter;
@@ -40,30 +47,24 @@ public class ExplorerActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		ListView listView = getListView();
 		LayoutInflater layoutInflater = getLayoutInflater();
 		ViewGroup header = (ViewGroup) layoutInflater.inflate(R.layout.explorer_header, listView, false);
 		listView.addHeaderView(header, null, false);
-		
+
 		// Header
 		mActionBar = (ActionBar) header.findViewById(R.id.actionbar);
 		mActionBar.setTitle(getResources().getString(R.string.app_name));
 		mActionBar.setHomeAction(new HomeAction(this));
 		mActionBar.addAction(new CancelAction(this));
-		
+
 		mCurrentPath = (TextView) header.findViewById(R.id.current_path);
 		mCurrentPath.setText("SDCard: /");
-		
+
 		// Explorer
 		mSdcard = Environment.getExternalStorageDirectory();
 		mDir = new File(mSdcard.toString());
-
-		ShellUtils.touch("/sdcard/id_rsa.pub");
-		ShellUtils.mkdirRecursive("/sdcard/test/dir");
-		ShellUtils.touch("/sdcard/test/test.pub");
-		ShellUtils.touch("/sdcard/test/dir/dir.pub");
-		
 		fill(mDir);
 	}
 
@@ -72,7 +73,7 @@ public class ExplorerActivity extends ListActivity {
 		File[] content = path.listFiles();
 		List<ExplorerItem> dirs = new ArrayList<ExplorerItem>();
 		List<ExplorerItem> files = new ArrayList<ExplorerItem>();
-		
+
 		mCurrentPath.setText("SDCard: " + path.toString().replaceFirst("^" + mSdcard.toString() + "/?", "/"));
 
 		try {
@@ -96,7 +97,7 @@ public class ExplorerActivity extends ListActivity {
 
 		if (mCurrentPath.getText().equals("SDCard: /") == false)
 			dirs.add(0, new ExplorerItem("..", path.getParent(), true));
-		
+
 		mExplorerAdapter = new ExplorerAdapter(ExplorerActivity.this, R.layout.explorer_list, dirs);
 		this.setListAdapter(mExplorerAdapter);
 	}
@@ -104,12 +105,11 @@ public class ExplorerActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView listView, View view, int position, long id) {
 		super.onListItemClick(listView, view, position, id);
-		
+
 		/*
-		 * TODO: understand and explain
-		 * This is done because somehow the ".." path or the header takes one place
+		 * I did not understand why, but since I added the header, the position is 1 too big...
 		 */
-		position = position - 1;
+		position -= 1;
 
 		ExplorerItem item = mExplorerAdapter.getItem(position);
 		File f = new File(item.getPath());
@@ -126,10 +126,35 @@ public class ExplorerActivity extends ListActivity {
 			onFileClick(item);
 		}
 	}
-	
+
 	private void onFileClick(ExplorerItem item) {
-		Toast.makeText(this, item.getPath(), Toast.LENGTH_SHORT).show();
-	}   
+		mPublicKey = null;
+		try {
+			FileInputStream fis = new FileInputStream(item.getPath());
+			DataInputStream dis = new DataInputStream(fis);
+			BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+			String line = br.readLine();
+			dis.close();
+			// validates the PublicKey
+			if (line != null && line.startsWith("ssh-rsa ") == true)
+				mPublicKey = line;
+		}
+		catch (Exception e) {
+			Log.e(TAG, e.getMessage());
+		}
+		if (mPublicKey == null) {
+			Toast.makeText(this, "Error: Invalid public key", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			new AlertDialog.Builder(this)
+			.setTitle("Confirm")
+			.setMessage(mPublicKey)
+			.setCancelable(true)
+			.setPositiveButton("Okay", this)
+			.setNegativeButton("Cancel", this)
+			.show();
+		}
+	}
 
 	@Override
 	public void onBackPressed() {
@@ -138,9 +163,13 @@ public class ExplorerActivity extends ListActivity {
 			fill(mDir);
 		}
 	}
-	
-	public void dismiss() {
-		this.finish();
+
+	public void onClick(DialogInterface dialog, int button) {
+		if (button == DialogInterface.BUTTON_POSITIVE) {
+			ServerUtils.addPublicKey(mPublicKey);
+			Toast.makeText(this, "Public key successfully added", Toast.LENGTH_SHORT).show();
+			finish();
+		}
 	}
 
 }

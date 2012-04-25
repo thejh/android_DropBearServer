@@ -92,9 +92,9 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 
 	public static Intent createIntent(Context context) {
-		Intent i = new Intent(context, MainActivity.class);
-		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		return i;
+		Intent intent = new Intent(context, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		return intent;
 	}
 
 	public void goToDefaultPage() {
