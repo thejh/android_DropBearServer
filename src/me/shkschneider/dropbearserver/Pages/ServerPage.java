@@ -149,6 +149,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
+			// TODO: this is blocking
 			Integer pid = ServerUtils.getServerPidFromPs();
 			if (pid < 0) {
 				mServerStatusCode = STATUS_ERROR;
@@ -226,8 +227,8 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		return mView;
 	}
 
-	public void onClick(View v) {
-		if (v == mServerLaunch) {
+	public void onClick(View view) {
+		if (view == mServerLaunch) {
 			switch (mServerStatusCode) {
 			case STATUS_STOPPED:
 				mServerStatusCode = STATUS_STARTING;
@@ -257,7 +258,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 				break;
 			}
 		}
-		else if (v == mGetSuperuser) {
+		else if (view == mGetSuperuser) {
 			try {
 				Log.i(TAG, "ServerPage: onClick(): market://details?id=" + mContext.getResources().getString(R.string.superuser_package));
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.superuser_package))));
@@ -268,7 +269,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			RootUtils.checkRootAccess();
 			updateRootStatus();
 		}
-		else if (v == mGetBusybox) {
+		else if (view == mGetBusybox) {
 			try {
 				Log.i(TAG, "ServerPage: onClick(): market://details?id=" + mContext.getResources().getString(R.string.busybox_package));
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getResources().getString(R.string.busybox_package))));
@@ -279,7 +280,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			RootUtils.checkBusybox();
 			updateRootStatus();
 		}
-		else if (v == mGetDropbear) {
+		else if (view == mGetDropbear) {
 			// DropbearInstaller
 			DropbearInstaller dropbearInstaller = new DropbearInstaller(mContext, this);
 			dropbearInstaller.execute();

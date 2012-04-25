@@ -234,7 +234,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textColor="@color/white"
+             			android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="italic" />
                 </LinearLayout>
 
@@ -338,7 +338,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textColor="@color/white"
+             			android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="italic" />
                 </LinearLayout>
 

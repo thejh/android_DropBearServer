@@ -56,6 +56,7 @@ Compatibility
 Thanks
 ------
 
+* Michael Almyros (for file chooser)
 * Mestre (for dropbearmulti)
 * Johan Nilsson (for android-actionbar)
 * thiagolocatelli (for android-uitableview)

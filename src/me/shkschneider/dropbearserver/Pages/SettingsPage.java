@@ -3,6 +3,7 @@ package me.shkschneider.dropbearserver.Pages;
 import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
 import me.shkschneider.dropbearserver.SettingsHelper;
+import me.shkschneider.dropbearserver.Explorer.ExplorerActivity;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemover;
 import me.shkschneider.dropbearserver.Tasks.DropbearRemoverCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
@@ -11,6 +12,7 @@ import me.shkschneider.dropbearserver.Utils.Utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -204,12 +206,12 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		return mView;
 	}
 
-	public void onClick(View v) {
+	public void onClick(View view) {
 		// mGeneral
-		if (v == mGeneral) {
+		if (view == mGeneral) {
 			hideAllBut(mGeneralContent);
 		}
-		else if (v == mCompleteRemoval) {
+		else if (view == mCompleteRemoval) {
 			new AlertDialog.Builder(mContext)
 			.setTitle("Confirm")
 			.setMessage("This will remove dropbear and all its configuration (including public keys).")
@@ -220,18 +222,29 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 
 		// mDropbear
-		else if (v == mDropbear) {
+		else if (view == mDropbear) {
 			hideAllBut(mDropbearContent);
 		}
-		else if (v == mBanner) {
+		else if (view == mBanner) {
 			EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
 			editText.setText(SettingsHelper.getInstance(mContext).getBanner());
 			mBannerAlertDialog.show();
 		}
-		else if (v == mListeningPort) {
+		else if (view == mListeningPort) {
 			EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 			editText.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
+		}
+		
+		// mAccounts
+		else if (view == mAccounts) {
+			// TODO: ...
+		}
+		
+		// mPublicKeys
+		else if (view == mPublicKeys) {
+			Intent i = new Intent(mContext, ExplorerActivity.class);
+			mContext.startActivity(i);
 		}
 	}
 

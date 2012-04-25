@@ -50,8 +50,8 @@ public class AboutPage implements OnClickListener {
 		return mView;
 	}
 
-	public void onClick(View v) {
-		if (v == mRateThisApp) {
+	public void onClick(View view) {
+		if (view == mRateThisApp) {
 			try {
 				mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mContext.getApplicationInfo().packageName)));
 			}
@@ -60,10 +60,10 @@ public class AboutPage implements OnClickListener {
 				mRateThisApp.setEnabled(false);
 			}
 		}
-		else if (v == mDonate) {
+		else if (view == mDonate) {
 			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FP4JTHPKJPKS6&lc=GB&item_name=shkschneider&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted")));
 		}
-		else if (v == mVisitMyWebsite) {
+		else if (view == mVisitMyWebsite) {
 			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mContext.getResources().getString(R.string.app_website))));
 		}
 	}
