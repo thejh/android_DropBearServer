@@ -8,7 +8,9 @@ For Windows, MacOS and GNU/Linux systems.
 
 This is a SSH server using DropBear, allows you to easily install, configure and run a Secured SHell server. You will be able to SSH to your phone to gain shell access or copy files.
 
-SSH is a secured (encrypted) protocol that gives you shell access on a remote UNIX-like system. SSH can be used to browse, copy or execute commands.
+SSH is a secured (encrypted) protocol that gives you shell access on a remote UNIX-like system.
+
+SSH can be used to browse, copy or execute commands.
 
 This is similar to the Terminal app or `adb shell` but over the network.
 
@@ -30,12 +32,12 @@ This software is released under GNU GPLv2+.
     This is free software, and you are welcome to redistribute it
     under certain conditions.
 
-ic_launcher.png: Mfayas (Free)
-ic_market.png: DsynFLO Creations (Free)
-ic_rate.png: Andy Gongea (Free)
-ic_donate.png: Iconshock (Free)
-ic_web.png: Ever (Free)
-ic_web_alt.png: Ever (Free)
+* ic_launcher.png: Mfayas (Free)
+* ic_market.png: DsynFLO Creations (Free)
+* ic_rate.png: Andy Gongea (Free)
+* ic_donate.png: Iconshock (Free)
+* ic_web.png: Ever (Free)
+* ic_web_alt.png: Ever (Free)
 
 Compatibility
 -------------
