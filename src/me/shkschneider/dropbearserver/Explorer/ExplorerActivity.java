@@ -1,5 +1,5 @@
 /*
- * Michael Almyros <http://www.dreamincode.net/forums/topic/190013-creating-simple-file-chooser/page__st__15>
+ * Michael Almyros <http://www.dreamincode.net/forums/topic/190013-creating-simple-file-chooser/>
  */
 package me.shkschneider.dropbearserver.Explorer;
 
@@ -77,22 +77,25 @@ public class ExplorerActivity extends ListActivity {
 
 		try {
 			for (File file : content) {
-				if (file.isDirectory())
-					dirs.add(new ExplorerItem(file.getName(), "Folder", file.getAbsolutePath()));
-				else
-					files.add(new ExplorerItem(file.getName(), "File Size: " + file.length(), file.getAbsolutePath()));
+				if (file.getName().startsWith(".") == false) {
+					if (file.isDirectory() == true)
+						dirs.add(new ExplorerItem(file.getName(), file.getAbsolutePath(), true));
+					else
+						files.add(new ExplorerItem(file.getName(), file.getAbsolutePath(), false));
+				}
 			}
 		}
 		catch (Exception e) {
 			Log.e(TAG, "ExplorerActivity: fill(): " + e.getMessage());
 		}
 
+		// After this, files should be after directories
 		Collections.sort(dirs);
 		Collections.sort(files);
 		dirs.addAll(files);
 
-		if (mDirStack.size() > 0)
-			dirs.add(0, new ExplorerItem("..", "Parent Directory", path.getParent()));
+		if (mCurrentPath.getText().equals("SDCard: /") == false)
+			dirs.add(0, new ExplorerItem("..", path.getParent(), true));
 		
 		mExplorerAdapter = new ExplorerAdapter(ExplorerActivity.this, R.layout.explorer_list, dirs);
 		this.setListAdapter(mExplorerAdapter);
@@ -109,12 +112,13 @@ public class ExplorerActivity extends ListActivity {
 		position = position - 1;
 
 		ExplorerItem item = mExplorerAdapter.getItem(position);
-		if (item.getData().equalsIgnoreCase("folder")) {
+		File f = new File(item.getPath());
+		if (f.isDirectory() == true) {
 			mDirStack.push(mDir);
-			mDir = new File(item.getPath());
+			mDir = f;
 			fill(mDir);
 		}
-		else if (item.getData().equalsIgnoreCase("parent directory")) {
+		else if (item.getName().equals("..")) {
 			mDir = mDirStack.pop();
 			fill(mDir);
 		}
@@ -124,7 +128,7 @@ public class ExplorerActivity extends ListActivity {
 	}
 	
 	private void onFileClick(ExplorerItem item) {
-		Toast.makeText(this, "File Clicked: " + item.getName(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, item.getPath(), Toast.LENGTH_SHORT).show();
 	}   
 
 	@Override

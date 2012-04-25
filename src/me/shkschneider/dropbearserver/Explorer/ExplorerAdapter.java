@@ -1,7 +1,11 @@
+/*
+ * Michael Almyros <http://www.dreamincode.net/forums/topic/190013-creating-simple-file-chooser/>
+ */
 package me.shkschneider.dropbearserver.Explorer;
 
 import me.shkschneider.dropbearserver.R;
 
+import java.io.File;
 import java.util.List;
 
 import android.content.Context;
@@ -35,15 +39,17 @@ public class ExplorerAdapter extends ArrayAdapter<ExplorerItem> {
 			LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = vi.inflate(mId, null);
 		}
-		final ExplorerItem o = mItems.get(position);
-		if (o != null) {
-			TextView title = (TextView) view.findViewById(R.id.title);
-			TextView subtitle = (TextView) view.findViewById(R.id.subtitle);
-			if (title != null)
-				title.setText(o.getName());
-			if (subtitle != null)
-				subtitle.setText(o.getData());
-
+		final ExplorerItem item = mItems.get(position);
+		if (item != null) {
+			File file = new File(item.getPath());
+			TextView title = (TextView) view.findViewById(R.id.filename);
+			if (file.isDirectory()) {
+				title.setText(item.getName() + "/");
+				title.setTextColor(mContext.getResources().getColor(R.color.sugreen));
+			}
+			else {
+				title.setText(item.getName());
+			}
 		}
 		return view;
 	}
