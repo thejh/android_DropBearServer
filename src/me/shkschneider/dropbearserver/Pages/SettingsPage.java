@@ -70,6 +70,9 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 	private LinearLayout mAccounts;
 	private LinearLayout mAccountsContent;
 	private LinearLayout mAccountsContentError;
+	private TextView mAccountsInfos;
+	private AlertDialog mAccountsAlertDialog;
+	private View mAccountsView;
 
 	private AlertDialog.Builder mAlertDialogBuilder;
 
@@ -120,6 +123,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mAccounts.setOnClickListener(this);
 		mAccountsContent = (LinearLayout) mView.findViewById(R.id.accounts_content);
 		mAccountsContentError = (LinearLayout) mView.findViewById(R.id.accounts_content_error);
+		mAccountsInfos = (TextView) mView.findViewById(R.id.accounts_infos);
 
 		// mPublicKeys mPublicKeysContent
 		mPublicKeys = (LinearLayout) mView.findViewById(R.id.public_keys);
@@ -137,11 +141,24 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mBannerAlertDialog.setTitle("Banner");
 		mBannerView = mLayoutInflater.inflate(R.layout.settings_banner, null);
 		mBannerAlertDialog.setView(mBannerView);
+		EditText banner = (EditText) mBannerView.findViewById(R.id.settings_banner);
+		banner.setHint(SettingsHelper.BANNER_DEFAULT);
 
 		mListeningPortAlertDialog = mAlertDialogBuilder.create();
 		mListeningPortAlertDialog.setTitle("Listening port");
 		mListeningPortView = mLayoutInflater.inflate(R.layout.settings_listening_port, null);
 		mListeningPortAlertDialog.setView(mListeningPortView);
+		EditText listeningPort = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
+		listeningPort.setHint("" + SettingsHelper.LISTENING_PORT_DEFAULT);
+
+		mAccountsAlertDialog = mAlertDialogBuilder.create();
+		mAccountsAlertDialog.setTitle("Accounts");
+		mAccountsView = mLayoutInflater.inflate(R.layout.settings_accounts, null);
+		mAccountsAlertDialog.setView(mAccountsView);
+		EditText login = (EditText) mAccountsView.findViewById(R.id.settings_accounts_login);
+		login.setHint(SettingsHelper.ACCOUNTS_LOGIN_DEFAULT);
+		EditText passwd = (EditText) mAccountsView.findViewById(R.id.settings_accounts_passwd);
+		passwd.setHint(SettingsHelper.ACCOUNTS_PASSWD_DEFAULT);
 	}
 
 	public void update() {
@@ -190,17 +207,19 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mListeningPortInfos.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 
 		// mAccounts
-		// TODO: setAccounts
+		mAccountsInfos.setText(SettingsHelper.getInstance(mContext).getAccountsLogin() + ":" + SettingsHelper.getInstance(mContext).getAccountsPasswd());
 
 		// mPublicKeys
 		// TODO: setPublicKeys
 	}
 
 	public void hideAllBut(LinearLayout oneLinearLayout) {
-		if (mGeneralContent != oneLinearLayout)
+		if (oneLinearLayout != mGeneralContent) {
 			mGeneralContent.setVisibility(View.GONE);
-		if (mDropbearContent != oneLinearLayout)
+		}
+		if (oneLinearLayout != mDropbearContent) {
 			mDropbearContent.setVisibility(View.GONE);
+		}
 		oneLinearLayout.setVisibility(oneLinearLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
 	}
 
@@ -228,19 +247,23 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 			hideAllBut(mDropbearContent);
 		}
 		else if (view == mBanner) {
-			EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
-			editText.setText(SettingsHelper.getInstance(mContext).getBanner());
+			EditText banner = (EditText) mBannerView.findViewById(R.id.settings_banner);
+			banner.setText(SettingsHelper.getInstance(mContext).getBanner());
 			mBannerAlertDialog.show();
 		}
 		else if (view == mListeningPort) {
-			EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
-			editText.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
+			EditText listeningPort = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
+			listeningPort.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
 		}
 
 		// mAccounts
 		else if (view == mAccounts) {
-			// TODO: ...
+			EditText login = (EditText) mAccountsView.findViewById(R.id.settings_accounts_login);
+			login.setText(SettingsHelper.getInstance(mContext).getAccountsLogin());
+			EditText passwd = (EditText) mAccountsView.findViewById(R.id.settings_accounts_passwd);
+			passwd.setText(SettingsHelper.getInstance(mContext).getAccountsPasswd());
+			mAccountsAlertDialog.show();
 		}
 
 		// mPublicKeys
@@ -291,7 +314,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
 				String settings_banner = editText.getText().toString();
 				if (settings_banner.length() == 0) {
-					settings_banner = "" + SettingsHelper.BANNER_DEFAULT;
+					settings_banner = SettingsHelper.BANNER_DEFAULT;
 				}
 				SettingsHelper.getInstance(mContext).setBanner(settings_banner);
 				mBannerInfos.setText(settings_banner);
@@ -316,6 +339,20 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 					Log.d(TAG, "SettingsPage: onClick(): Wrong type [listeningPort: " + settings_listening_port + "]");
 				}
 				mListeningPortInfos.setText(settings_listening_port);
+			}
+			else if (dialog == mAccountsAlertDialog) {
+				// TODO: restrict characters
+				EditText login = (EditText) mAccountsView.findViewById(R.id.settings_accounts_login);
+				String settings_login = login.getText().toString();
+				EditText passwd = (EditText) mAccountsView.findViewById(R.id.settings_accounts_passwd);
+				String settings_passwd = passwd.getText().toString();
+				if (settings_login.length() == 0)
+					settings_login = SettingsHelper.ACCOUNTS_LOGIN_DEFAULT;
+				if (settings_passwd.length() == 0)
+					settings_passwd = SettingsHelper.ACCOUNTS_PASSWD_DEFAULT;
+				SettingsHelper.getInstance(mContext).setAccountsLogin(settings_login);
+				SettingsHelper.getInstance(mContext).setAccountsPasswd(settings_passwd);
+				mAccountsInfos.setText(settings_login + ":" + settings_passwd);
 			}
 			else {
 				// mDropbearRemover

@@ -23,6 +23,8 @@ public class SettingsHelper {
 	private static final String PREF_DISABLE_PASSWORD_LOGINS = "disablePasswordLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT = "disablePasswordLoginsForRoot";
 	private static final String PREF_LISTENING_PORT = "listeningPort";
+	private static final String PREF_ACCOUNTS_LOGIN = "accountsLogin";
+	private static final String PREF_ACCOUNTS_PASSWD = "accountsPasswd";
 
 	public static final Boolean ASSUME_ROOT_ACCESS_DEFAULT = false;
 	public static final Boolean START_AT_BOOT_DEFAULT = false;
@@ -34,6 +36,8 @@ public class SettingsHelper {
 	public static final Boolean DISABLE_PASSWORD_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
 	public static final Integer LISTENING_PORT_DEFAULT = 22;
+	public static final String ACCOUNTS_LOGIN_DEFAULT = "root";
+	public static final String ACCOUNTS_PASSWD_DEFAULT = "42";
 	
 	private static SettingsHelper mSettingsHelper = null;
 	private static SharedPreferences mSharedPreferences = null;
@@ -171,6 +175,30 @@ public class SettingsHelper {
     	Log.d(TAG, "SettingsHelper: setListeningPort(" + i + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putInt(PREF_LISTENING_PORT, i);
+    	editor.commit();
+    }
+    
+    // accountsLogin
+    public String getAccountsLogin() {
+    	return mSharedPreferences.getString(PREF_ACCOUNTS_LOGIN, ACCOUNTS_LOGIN_DEFAULT);
+    }
+    
+    public void setAccountsLogin(String s) {
+    	Log.d(TAG, "SettingsHelper: setAccountsLogin(" + s + ")");
+    	Editor editor = mSharedPreferences.edit();
+    	editor.putString(PREF_ACCOUNTS_LOGIN, s);
+    	editor.commit();
+    }
+    
+    // accountsPasswd
+    public String getAccountsPasswd() {
+    	return mSharedPreferences.getString(PREF_ACCOUNTS_PASSWD, ACCOUNTS_PASSWD_DEFAULT);
+    }
+    
+    public void setAccountsPasswd(String s) {
+    	Log.d(TAG, "SettingsHelper: setAccountsPasswd(" + s + ")");
+    	Editor editor = mSharedPreferences.edit();
+    	editor.putString(PREF_ACCOUNTS_PASSWD, s);
     	editor.commit();
     }
     
