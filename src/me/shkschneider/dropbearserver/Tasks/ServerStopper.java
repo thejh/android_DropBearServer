@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 	
@@ -43,7 +42,7 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 	
 	private Boolean falseWithError(String error) {
 		Log.d(TAG, "ServerStopper: " + error);
-		Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
+		//Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
 		return false;
 	}
 	
@@ -55,8 +54,9 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 		if (ShellUtils.echoToFile("0", pidFile) == false)
 			return falseWithError("echoToFile(0, " + ServerUtils.getLocalDir(mContext) + "/pid" + ")");
 
-		if (ShellUtils.kill(9, mServerPid) == false && ShellUtils.killall("dropbear") == false)
-			return falseWithError("kill(9, " + mServerPid + ") + killall(dropbear)");
+		Log.i(TAG, "ServerStopper: Killing process #" + mServerPid);
+		if (ShellUtils.killall("dropbear") == false)
+			return falseWithError("killall(dropbear)");
 		
 		return true;
 	}

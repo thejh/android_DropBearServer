@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 
@@ -84,6 +85,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 				needToCheckDropbear = true;
 		}
 		else if (needToCheckDependencies == true) {
+			Toast.makeText(this, "You can get rid of those checks in Settings", Toast.LENGTH_LONG).show();
 			// Root dependencies
 			check();
 			needToCheckDependencies = false;

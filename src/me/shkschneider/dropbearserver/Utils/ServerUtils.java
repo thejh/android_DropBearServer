@@ -161,18 +161,23 @@ public abstract class ServerUtils {
 
 	public static List<String> getPublicKeys(String path) {
 		List<String> publicKeysList = new ArrayList<String>();
-		try {
-			FileInputStream fis = new FileInputStream(path);
-			DataInputStream dis = new DataInputStream(fis);
-			BufferedReader br = new BufferedReader(new InputStreamReader(dis));
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				publicKeysList.add(line);
+		if (new File(path).exists() == true) {
+			try {
+				FileInputStream fis = new FileInputStream(path);
+				DataInputStream dis = new DataInputStream(fis);
+				BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					publicKeysList.add(line);
+				}
+				dis.close();
 			}
-			dis.close();
+			catch (Exception e) {
+				Log.e(TAG, "ServerUtils: getPublicKeys(): " + e.getMessage());
+			}
 		}
-		catch (Exception e) {
-			Log.e(TAG, "SettingsPage: update(): " + e.getMessage());
+		else {
+			Log.w(TAG, "ServerUtils: getPublicKeys(): File could not be found: " + path);
 		}
 		return publicKeysList;
 	}
@@ -229,5 +234,5 @@ public abstract class ServerUtils {
 		}
 		return true;
 	}
-	
+
 }

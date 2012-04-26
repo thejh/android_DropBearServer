@@ -18,7 +18,6 @@ public class SettingsHelper {
 	private static final String PREF_ONLY_IF_RUNNING_BEFORE = "onlyIfRunningBefore";
 	private static final String PREF_KEEP_SCREEN_ON = "keepScreenOn";
 	private static final String PREF_ONLY_OVER_WIFI = "onlyOverWifi";
-	private static final String PREF_BANNER = "banner";
 	private static final String PREF_DISALLOW_ROOT_LOGINS = "disallowRootLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS = "disablePasswordLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT = "disablePasswordLoginsForRoot";
@@ -31,7 +30,6 @@ public class SettingsHelper {
 	public static final Boolean ONLY_IF_RUNNING_BEFORE_DEFAULT = true;
 	public static final Boolean KEEP_SCREEN_ON_DEFAULT = false;
 	public static final Boolean ONLY_OVER_WIFI_DEFAULT = false;
-	public static final String BANNER_DEFAULT = "";
 	public static final Boolean DISALLOW_ROOT_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
@@ -115,18 +113,6 @@ public class SettingsHelper {
     	Log.d(TAG, "SettingsHelper: setOnlyOverWifi(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_ONLY_OVER_WIFI, b);
-    	editor.commit();
-    }
-    
-    // banner
-    public String getBanner() {
-    	return mSharedPreferences.getString(PREF_BANNER, BANNER_DEFAULT);
-    }
-    
-    public void setBanner(String s) {
-    	Log.d(TAG, "SettingsHelper: setBanner(" + s + ")");
-    	Editor editor = mSharedPreferences.edit();
-    	editor.putString(PREF_BANNER, s);
     	editor.commit();
     }
     

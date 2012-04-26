@@ -1,3 +1,6 @@
+/*
+ * elsdoerfer <http://blog.elsdoerfer.name/2010/04/15/android-check-if-sd-card-storage-is-available/>
+ */
 package me.shkschneider.dropbearserver.Utils;
 
 import java.io.File;
@@ -8,6 +11,7 @@ import java.io.OutputStream;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -61,4 +65,18 @@ public abstract class Utils {
 		}
 		return false;
 	}
+	
+	public static Boolean hasStorage(Boolean requireWriteAccess) {
+	    String state = Environment.getExternalStorageState();
+
+	    if (Environment.MEDIA_MOUNTED.equals(state)) {
+	        return true;
+	    }
+	    else if (!requireWriteAccess && Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+	        return true;
+	    }
+	    
+	    return false;
+	}
+
 }

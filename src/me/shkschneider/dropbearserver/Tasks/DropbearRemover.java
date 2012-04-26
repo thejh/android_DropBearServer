@@ -8,7 +8,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
@@ -58,7 +57,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	private Boolean falseWithError(String error) {
 		Log.d(TAG, "DropBearRemover: " + error);
-		Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
+		//Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
 		return false;
 	}
 
@@ -80,65 +79,67 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		String pid = ServerUtils.getLocalDir(mContext) + "/pid";
 
 		// system rw
+		publishProgress("" + step++, "" + steps, "/system Read-Write");
 		if (ShellUtils.remountReadWrite("/system") == false) {
 			return falseWithError("/system");
 		}
 
 		// dropbear
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "Dropbear binary");
 		if (ShellUtils.rm(dropbear) == false) {
 			return falseWithError(dropbear);
 		}
 
 		// dropbearkey
-		publishProgress("" + step++, "" + steps, dropbearkey);
+		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.rm(dropbearkey) == false) {
 			return falseWithError(dropbearkey);
 		}
 
 		// ssh
-		publishProgress("" + step++, "" + steps, ssh);
+		publishProgress("" + step++, "" + steps, "SSH binary");
 		if (ShellUtils.rm(ssh) == false) {
 			return falseWithError(ssh);
 		}
 
 		// scp
-		publishProgress("" + step++, "" + steps, scp);
+		publishProgress("" + step++, "" + steps, "SCP binary");
 		if (ShellUtils.rm(scp) == false) {
 			return falseWithError(scp);
 		}
 
 		// dropbearmulti
-		publishProgress("" + step++, "" + steps, dropbearmulti);
+		publishProgress("" + step++, "" + steps, "Dropbearmulti binary");
 		if (ShellUtils.rm(dropbearmulti) == false) {
 			return falseWithError(dropbearmulti);
 		}
 
 		// authorized_keys
-		publishProgress("" + step++, "" + steps, authorized_keys);
+		publishProgress("" + step++, "" + steps, "Authorized keys");
 		if (ShellUtils.rm(authorized_keys) == false) {
 			return falseWithError(authorized_keys);
 		}
 		
 		// host_rsa
-		publishProgress("" + step++, "" + steps, host_rsa);
+		publishProgress("" + step++, "" + steps, "Host RSA key");
 		if (ShellUtils.rm(host_rsa) == false) {
 			return falseWithError(host_rsa);
 		}
 		
 		// host_dss
-		publishProgress("" + step++, "" + steps, host_dss);
+		publishProgress("" + step++, "" + steps, "Host DSS key");
 		if (ShellUtils.rm(host_dss) == false) {
 			return falseWithError(host_dss);
 		}
 		
 		// pid
-		publishProgress("" + step++, "" + steps, pid);
+		publishProgress("" + step++, "" + steps, "ProcessId file");
 		if (ShellUtils.rm(pid) == false) {
 			return falseWithError(pid);
 		}
 
 		// system ro
+		publishProgress("" + step++, "" + steps, "/system Read-Only");
 		if (ShellUtils.remountReadOnly("/system") == false) {
 			return falseWithError("/system");
 		}

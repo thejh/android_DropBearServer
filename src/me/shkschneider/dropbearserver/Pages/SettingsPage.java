@@ -45,30 +45,25 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
 	private CheckBox mOnlyOverWifi;
-	private LinearLayout mCompleteRemoval;
-	private AlertDialog mCompleteRemovalAlertDialog;
 
 	private LinearLayout mDropbear;
 	private LinearLayout mDropbearContent;
 	private LinearLayout mDropbearContentError;
 
-	private LinearLayout mBanner;
-	private TextView mBannerInfos;
-	private AlertDialog mBannerAlertDialog;
-	private View mBannerView;
-
-	private CheckBox mDisallowRootLogins;
-	private CheckBox mDisablePasswordLogins;
-	private CheckBox mDisablePasswordLoginsForRoot;
-
 	private LinearLayout mListeningPort;
 	private TextView mListeningPortInfos;
 	private AlertDialog mListeningPortAlertDialog;
 	private View mListeningPortView;
+	private CheckBox mDisallowRootLogins;
+	private CheckBox mDisablePasswordLogins;
+	private CheckBox mDisablePasswordLoginsForRoot;
+	private LinearLayout mCompleteRemoval;
+	private AlertDialog mCompleteRemovalAlertDialog;
 
 	private LinearLayout mCredentials;
 	private LinearLayout mCredentialsContent;
 	private LinearLayout mCredentialsContentError;
+
 	private TextView mCredentialsInfos;
 	private AlertDialog mCredentialsAlertDialog;
 	private View mCredentialsView;
@@ -76,8 +71,9 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 	private LinearLayout mPublicKeys;
 	private LinearLayout mPublicKeysContent;
 	private LinearLayout mPublicKeysContentError;
-	private AlertDialog mPublicKeyAlertDialog;
-	private List<String> mPublicKeyList;
+
+	private AlertDialog mPublicKeysAlertDialog;
+	private List<String> mPublicKeysList;
 	private String mPublicKey;
 
 	private AlertDialog.Builder mAlertDialogBuilder;
@@ -102,8 +98,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mKeepScreenOn.setOnCheckedChangeListener(null);
 		mOnlyOverWifi = (CheckBox) mView.findViewById(R.id.only_over_wifi);
 		mOnlyOverWifi.setOnCheckedChangeListener(null);
-		mCompleteRemoval = (LinearLayout) mView.findViewById(R.id.complete_removal);
-		mCompleteRemoval.setOnClickListener(this);
 
 		// mDropbear mDropbearContent
 		mDropbear = (LinearLayout) mView.findViewById(R.id.dropbear);
@@ -111,18 +105,17 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mDropbearContent = (LinearLayout) mView.findViewById(R.id.dropbear_content);
 		mDropbearContentError = (LinearLayout) mView.findViewById(R.id.dropbear_content_error);
 
-		mBanner = (LinearLayout) mView.findViewById(R.id.banner);
-		mBanner.setOnClickListener(this);
-		mBannerInfos = (TextView) mView.findViewById(R.id.banner_infos);
+		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
+		mListeningPort.setOnClickListener(this);
+		mListeningPortInfos = (TextView) mView.findViewById(R.id.listening_port_infos);
 		mDisallowRootLogins = (CheckBox) mView.findViewById(R.id.disallow_root_logins);
 		mDisallowRootLogins.setOnCheckedChangeListener(null);
 		mDisablePasswordLogins = (CheckBox) mView.findViewById(R.id.disable_password_logins);
 		mDisablePasswordLogins.setOnCheckedChangeListener(null);
 		mDisablePasswordLoginsForRoot = (CheckBox) mView.findViewById(R.id.disable_password_logins_for_root);
 		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(null);
-		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
-		mListeningPort.setOnClickListener(this);
-		mListeningPortInfos = (TextView) mView.findViewById(R.id.listening_port_infos);
+		mCompleteRemoval = (LinearLayout) mView.findViewById(R.id.complete_removal);
+		mCompleteRemoval.setOnClickListener(this);
 
 		// mCredentials mCredentialsContent
 		mCredentials = (LinearLayout) mView.findViewById(R.id.credentials);
@@ -130,6 +123,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mCredentialsContent = (LinearLayout) mView.findViewById(R.id.credentials_content);
 		mCredentialsContent.setOnClickListener(this);
 		mCredentialsContentError = (LinearLayout) mView.findViewById(R.id.credentials_content_error);
+
 		mCredentialsInfos = (TextView) mView.findViewById(R.id.credentials_infos);
 
 		// mPublicKeys mPublicKeysContent
@@ -137,7 +131,8 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mPublicKeys.setOnClickListener(this);
 		mPublicKeysContent = (LinearLayout) mView.findViewById(R.id.public_keys_content);
 		mPublicKeysContentError = (LinearLayout) mView.findViewById(R.id.public_keys_content_error);
-		mPublicKeyList = null;
+
+		mPublicKeysList = null;
 
 		// mAlertDialogBuilder mCompleteRemovalAlertDialog mBannerAlertDialog mListeningPortAlertDialog
 		mAlertDialogBuilder = new AlertDialog.Builder(mContext);
@@ -145,23 +140,16 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mAlertDialogBuilder.setPositiveButton("Okay", this);
 		mAlertDialogBuilder.setNegativeButton("Cancel", this);
 
-		mCompleteRemovalAlertDialog = mAlertDialogBuilder.create();
-		mCompleteRemovalAlertDialog.setTitle("Confirm");
-		mCompleteRemovalAlertDialog.setMessage("This will remove dropbear and all its configuration (including public keys).");
-
-		mBannerAlertDialog = mAlertDialogBuilder.create();
-		mBannerAlertDialog.setTitle("Banner");
-		mBannerView = mLayoutInflater.inflate(R.layout.settings_banner, null);
-		mBannerAlertDialog.setView(mBannerView);
-		EditText banner = (EditText) mBannerView.findViewById(R.id.settings_banner);
-		banner.setHint(SettingsHelper.BANNER_DEFAULT);
-
 		mListeningPortAlertDialog = mAlertDialogBuilder.create();
 		mListeningPortAlertDialog.setTitle("Listening port");
 		mListeningPortView = mLayoutInflater.inflate(R.layout.settings_listening_port, null);
 		mListeningPortAlertDialog.setView(mListeningPortView);
 		EditText listeningPort = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 		listeningPort.setHint("" + SettingsHelper.LISTENING_PORT_DEFAULT);
+
+		mCompleteRemovalAlertDialog = mAlertDialogBuilder.create();
+		mCompleteRemovalAlertDialog.setTitle("Confirm");
+		mCompleteRemovalAlertDialog.setMessage("This will remove dropbear and all its configuration (including public keys).");
 
 		mCredentialsAlertDialog = mAlertDialogBuilder.create();
 		mCredentialsAlertDialog.setTitle("Credentials");
@@ -172,9 +160,9 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_passwd);
 		passwd.setHint(SettingsHelper.CREDENTIALS_PASSWD_DEFAULT);
 
-		mPublicKeyAlertDialog = mAlertDialogBuilder.create();
-		mPublicKeyAlertDialog.setTitle("Confirm");
-		mPublicKeyAlertDialog.setMessage("You are about to remove this public key.");
+		mPublicKeysAlertDialog = mAlertDialogBuilder.create();
+		mPublicKeysAlertDialog.setTitle("Confirm");
+		mPublicKeysAlertDialog.setMessage("You are about to remove this public key.");
 		mPublicKey = null;
 	}
 
@@ -214,7 +202,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mOnlyOverWifi.setOnCheckedChangeListener(this);
 
 		// mDropbear
-		updateBanner();
 		mDisallowRootLogins.setChecked(SettingsHelper.getInstance(mContext).getDisallowRootLogins());
 		mDisallowRootLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLogins.setChecked(SettingsHelper.getInstance(mContext).getDisablePasswordLogins());
@@ -230,10 +217,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		updatePublicKeys();
 	}
 
-	public void updateBanner() {
-		mBannerInfos.setText(SettingsHelper.getInstance(mContext).getBanner());
-	}
-
 	public void updateListeningPort() {
 		mListeningPortInfos.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 	}
@@ -243,12 +226,12 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 	}
 
 	public void updatePublicKeys() {
-		if (mPublicKeyList != null) {
-			mPublicKeyList.clear();
+		if (mPublicKeysList != null) {
+			mPublicKeysList.clear();
 		}
 		mPublicKeysContent.removeAllViews();
-		mPublicKeyList = ServerUtils.getPublicKeys(ServerUtils.getLocalDir(mContext) + "/authorized_keys");
-		for (String publicKey : mPublicKeyList) {
+		mPublicKeysList = ServerUtils.getPublicKeys(ServerUtils.getLocalDir(mContext) + "/authorized_keys");
+		for (String publicKey : mPublicKeysList) {
 			View view = mLayoutInflater.inflate(R.layout.settings_list, null);
 			TextView textView = (TextView) view.findViewById(R.id.settings_name);
 			textView.setText(publicKey);
@@ -276,23 +259,18 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		if (view == mGeneral) {
 			hideAllBut(mGeneralContent);
 		}
-		else if (view == mCompleteRemoval) {
-			mCompleteRemovalAlertDialog.show();
-		}
 
 		// mDropbear
 		else if (view == mDropbear) {
 			hideAllBut(mDropbearContent);
 		}
-		else if (view == mBanner) {
-			EditText banner = (EditText) mBannerView.findViewById(R.id.settings_banner);
-			banner.setText(SettingsHelper.getInstance(mContext).getBanner());
-			mBannerAlertDialog.show();
-		}
 		else if (view == mListeningPort) {
 			EditText listeningPort = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 			listeningPort.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
+		}
+		else if (view == mCompleteRemoval) {
+			mCompleteRemovalAlertDialog.show();
 		}
 
 		// mCredentials
@@ -306,17 +284,22 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 
 		// mPublicKeys
 		else if (view == mPublicKeys) {
-			MainActivity.needToCheckDropbear = false;
-			// ExplorerActivity
-			Intent intent = new Intent(mContext, ExplorerActivity.class);
-			((MainActivity) mContext).startActivityForResult(intent, 1);
+			if (Utils.hasStorage(false) == true) {
+				MainActivity.needToCheckDropbear = false;
+				// ExplorerActivity
+				Intent intent = new Intent(mContext, ExplorerActivity.class);
+				((MainActivity) mContext).startActivityForResult(intent, 1);
+			}
+			else {
+				Toast.makeText(mContext, "Error: Could not found any storage", Toast.LENGTH_LONG).show();
+			}
 		}
 		else {
 			TextView textView = (TextView) view.findViewById(R.id.settings_name);
 			if (textView != null) {
 				mPublicKey = textView.getText().toString();
 				if (mPublicKey != null) {
-					mPublicKeyAlertDialog.show();
+					mPublicKeysAlertDialog.show();
 				}
 			}
 		}
@@ -346,27 +329,22 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		// mDropbear
 		else if (buttonView == mDisallowRootLogins) {
 			SettingsHelper.getInstance(mContext).setDisallowRootLogins(buttonView.isChecked());
+			Toast.makeText(mContext, "You need to restart the server for the changes to take effect", Toast.LENGTH_SHORT).show();
 		}
 		else if (buttonView == mDisablePasswordLogins) {
 			SettingsHelper.getInstance(mContext).setDisablePasswordLogins(buttonView.isChecked());
+			Toast.makeText(mContext, "You need to restart the server for the changes to take effect", Toast.LENGTH_SHORT).show();
 		}
 		else if (buttonView == mDisablePasswordLoginsForRoot) {
 			SettingsHelper.getInstance(mContext).setDisablePasswordLoginsForRoot(buttonView.isChecked());
+			Toast.makeText(mContext, "You need to restart the server for the changes to take effect", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
-			if (dialog == mBannerAlertDialog) {
-				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
-				String settings_banner = editText.getText().toString();
-				if (settings_banner.length() == 0) {
-					settings_banner = SettingsHelper.BANNER_DEFAULT;
-				}
-				SettingsHelper.getInstance(mContext).setBanner(settings_banner);
-				updateBanner();
-			}
-			else if (dialog == mListeningPortAlertDialog) {
+			// mListeningPort
+			if (dialog == mListeningPortAlertDialog) {
 				EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 				String settings_listening_port = editText.getText().toString();
 				if (settings_listening_port.length() == 0) {
@@ -376,10 +354,11 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 					Integer port = Integer.parseInt(settings_listening_port);
 					if (port > 0) {
 						SettingsHelper.getInstance(mContext).setListeningPort(port);
+						Toast.makeText(mContext, "You need to restart the server for the changes to take effect", Toast.LENGTH_SHORT).show();
 					}
 					else {
 						Log.d(TAG, "SettingsPage: onClick(): Wrong TCP port value [listeningPort=" + port + "]");
-						Toast.makeText(mContext, "Wrong TCP port value", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "Error: Wrong TCP port value", Toast.LENGTH_LONG).show();
 					}
 				}
 				else {
@@ -387,6 +366,15 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 				}
 				updateListeningPort();
 			}
+
+			// mCompleteRemoval
+			else if (dialog == mCompleteRemovalAlertDialog) {
+				// mDropbearRemover
+				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
+				dropbearRemover.execute();
+			}
+
+			// mCredentials
 			else if (dialog == mCredentialsAlertDialog) {
 				// TODO: restrict characters
 				EditText login = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_login);
@@ -403,14 +391,12 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 				SettingsHelper.getInstance(mContext).setCredentialsPasswd(settings_passwd);
 				updateCredentials();
 			}
-			else if (dialog == mCompleteRemovalAlertDialog) {
-				// mDropbearRemover
-				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
-				dropbearRemover.execute();
-			}
+
+			// mPublicKeys
 			else {
-				if (mPublicKeyList.size() > 0) {
-					for (String key : mPublicKeyList) {
+				// TODO: prevent duplicates
+				if (mPublicKeysList.size() > 0) {
+					for (String key : mPublicKeysList) {
 						if (key.equals(mPublicKey) == true) {
 							ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
 							Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
@@ -430,7 +416,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 			// do not check for dropbear
 			RootUtils.hasDropbear = false;
 			((MainActivity) mContext).updateAll();
-			Toast.makeText(mContext, "Dropbear successfully removed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "DropBear successfully removed", Toast.LENGTH_SHORT).show();
 			mGeneralContent.setVisibility(View.GONE);
 			((MainActivity) mContext).goToDefaultPage();
 		}

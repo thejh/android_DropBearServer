@@ -1,6 +1,5 @@
 package me.shkschneider.dropbearserver.Tasks;
 
-
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
@@ -10,7 +9,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 
@@ -55,7 +53,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 	
 	private Boolean falseWithError(String error) {
 		Log.d(TAG, "DropBearInstall: " + error);
-		Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
+		//Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
 		return false;
 	}
 
@@ -77,108 +75,110 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		String pid = ServerUtils.getLocalDir(mContext) + "/pid";
 
 		// system rw
+		publishProgress("" + step++, "" + steps, "/system Read-Write");
 		if (ShellUtils.remountReadWrite("/system") == false) {
 			return falseWithError("/system");
 		}
 		
 		// dropbearmulti
-		publishProgress("" + step++, "" + steps, dropbearmulti);
+		publishProgress("" + step++, "" + steps, "Dropbearmulti binary");
 		if (Utils.copyRawFile(mContext, R.raw.dropbearmulti, dropbearmulti) == false) {
 			return falseWithError(dropbearmulti);
 		}
 
 		// dropbear
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "Dropbear binary");
 		if (ShellUtils.lnSymbolic(dropbearmulti, dropbear) == false) {
 			return falseWithError(dropbear);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "Dropbear binary");
 		if (ShellUtils.chown(dropbear, "0:0") == false) {
 			return falseWithError(dropbear);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "Dropbear binary");
 		if (ShellUtils.chmod(dropbear, "755") == false) {
 			return falseWithError(dropbear);
 		}
 		
 		// dropbearkey
-		publishProgress("" + step++, "" + steps, dropbearkey);
+		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.lnSymbolic(dropbearmulti, dropbearkey) == false) {
 			return falseWithError(dropbearkey);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.chown(dropbearkey, "0:0") == false) {
 			return falseWithError(dropbearkey);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.chmod(dropbearkey, "755") == false) {
 			return falseWithError(dropbearkey);
 		}
 		
 		// ssh
-		publishProgress("" + step++, "" + steps, ssh);
+		publishProgress("" + step++, "" + steps, "SSH binary");
 		if (ShellUtils.lnSymbolic(dropbearmulti, ssh) == false) {
 			return falseWithError(ssh);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "SSH binary");
 		if (ShellUtils.chown(ssh, "0:0") == false) {
 			return falseWithError(ssh);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "SSH binary");
 		if (ShellUtils.chmod(ssh, "755") == false) {
 			return falseWithError(ssh);
 		}
 		// scp
-		publishProgress("" + step++, "" + steps, scp);
+		publishProgress("" + step++, "" + steps, "SCP binary");
 		if (ShellUtils.lnSymbolic(dropbearmulti, scp) == false) {
 			return falseWithError(scp);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "SCP binary");
 		if (ShellUtils.chown(scp, "0:0") == false) {
 			return falseWithError(scp);
 		}
-		publishProgress("" + step++, "" + steps, dropbear);
+		publishProgress("" + step++, "" + steps, "SCP binary");
 		if (ShellUtils.chmod(scp, "755") == false) {
 			return falseWithError(scp);
 		}
 
 		// authorized_keys
-		publishProgress("" + step++, "" + steps, authorized_keys);
+		publishProgress("" + step++, "" + steps, "Authorized keys");
 		ServerUtils.createIfNeeded(authorized_keys);
-		publishProgress("" + step++, "" + steps, authorized_keys);
+		publishProgress("" + step++, "" + steps, "Authorized keys");
 		if (ShellUtils.touch(authorized_keys) == false) {
 			return falseWithError(authorized_keys);
 		}
 		
 		// host_rsa
-		publishProgress("" + step++, "" + steps, host_rsa);
+		publishProgress("" + step++, "" + steps, "Host RSA key");
 		if (ShellUtils.chown(host_rsa, "0:0") == false) {
 			return falseWithError(host_rsa);
 		}
-		publishProgress("" + step++, "" + steps, host_rsa);
+		publishProgress("" + step++, "" + steps, "Host RSA key");
 		if (ServerUtils.generateRsaPrivateKey(host_rsa) == false) {
 			return falseWithError(host_rsa);
 		}
 		
 		// host_dss
-		publishProgress("" + step++, "" + steps, host_dss);
+		publishProgress("" + step++, "" + steps, "Host DSS key");
 		if (ShellUtils.chown(host_dss, "0:0") == false) {
 			return falseWithError(host_dss);
 		}
-		publishProgress("" + step++, "" + steps, host_dss);
+		publishProgress("" + step++, "" + steps, "Host DSS key");
 		if (ServerUtils.generateDssPrivateKey(host_dss) == false) {
 			return falseWithError(host_dss);
 		}
 		
 		// pid
-		publishProgress("" + step++, "" + steps, pid);
+		publishProgress("" + step++, "" + steps, "ProcessId file");
 		ServerUtils.createIfNeeded(pid);
-		publishProgress("" + step++, "" + steps, pid);
+		publishProgress("" + step++, "" + steps, "ProcessId file");
 		if (ShellUtils.echoToFile("0", pid) == false) {
 			return falseWithError(pid);
 		}
 
 		// system ro
+		publishProgress("" + step++, "" + steps, "/system Read-Only");
 		if (ShellUtils.remountReadOnly("/system") == false) {
 			return falseWithError("/system");
 		}
