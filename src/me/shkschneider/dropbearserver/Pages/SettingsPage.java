@@ -27,10 +27,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
+import android.widget.ToggleButton;
 
 public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "DropBearServer";
+	
+	public static Boolean goToHome = false;
 
 	private Context mContext;
 	private LayoutInflater mLayoutInflater;
@@ -153,11 +156,9 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		mCredentialsAlertDialog = mAlertDialogBuilder.create();
 		mCredentialsAlertDialog.setTitle("Credentials");
-		mCredentialsView = mLayoutInflater.inflate(R.layout.settings_accounts, null);
+		mCredentialsView = mLayoutInflater.inflate(R.layout.settings_credentials, null);
 		mCredentialsAlertDialog.setView(mCredentialsView);
-		EditText login = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_login);
-		login.setHint(SettingsHelper.CREDENTIALS_LOGIN_DEFAULT);
-		EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_passwd);
+		EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_credentials_passwd);
 		passwd.setHint(SettingsHelper.CREDENTIALS_PASSWD_DEFAULT);
 
 		mPublicKeysAlertDialog = mAlertDialogBuilder.create();
@@ -222,7 +223,9 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	}
 
 	public void updateCredentials() {
-		mCredentialsInfos.setText(SettingsHelper.getInstance(mContext).getCredentialsLogin() + " " + "\n" + SettingsHelper.getInstance(mContext).getCredentialsPasswd() + " ");
+		String credentials = (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true ? "True" : "False");
+		credentials = credentials.concat(" \n" + SettingsHelper.getInstance(mContext).getCredentialsPasswd() + " ");
+		mCredentialsInfos.setText(credentials);
 	}
 
 	public void updatePublicKeys() {
@@ -275,9 +278,9 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		// mCredentials
 		else if (view == mCredentials || view == mCredentialsContent) {
-			EditText login = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_login);
-			login.setText(SettingsHelper.getInstance(mContext).getCredentialsLogin());
-			EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_passwd);
+			ToggleButton login = (ToggleButton) mCredentialsView.findViewById(R.id.settings_credentials_login);
+			login.setChecked(SettingsHelper.getInstance(mContext).getCredentialsLogin());
+			EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_credentials_passwd);
 			passwd.setText(SettingsHelper.getInstance(mContext).getCredentialsPasswd());
 			mCredentialsAlertDialog.show();
 		}
@@ -286,6 +289,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		else if (view == mPublicKeys) {
 			if (Utils.hasStorage(false) == true) {
 				MainActivity.needToCheckDropbear = false;
+				SettingsPage.goToHome = false;
 				// ExplorerActivity
 				Intent intent = new Intent(mContext, ExplorerActivity.class);
 				((MainActivity) mContext).startActivityForResult(intent, 1);
@@ -376,14 +380,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 			// mCredentials
 			else if (dialog == mCredentialsAlertDialog) {
-				// TODO: restrict characters
-				EditText login = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_login);
-				String settings_login = login.getText().toString();
-				EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_accounts_passwd);
+				ToggleButton login = (ToggleButton) mCredentialsView.findViewById(R.id.settings_credentials_login);
+				Boolean settings_login = login.isChecked();
+				EditText passwd = (EditText) mCredentialsView.findViewById(R.id.settings_credentials_passwd);
 				String settings_passwd = passwd.getText().toString();
-				if (settings_login.length() == 0) {
-					settings_login = SettingsHelper.CREDENTIALS_LOGIN_DEFAULT;
-				}
 				if (settings_passwd.length() == 0) {
 					settings_passwd = SettingsHelper.CREDENTIALS_PASSWD_DEFAULT;
 				}

@@ -4,6 +4,7 @@ import com.astuetz.viewpagertabs.ViewPagerTabs;
 import com.markupartist.android.widget.ActionBar;
 
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Pages.SettingsPage;
 import me.shkschneider.dropbearserver.Tasks.Checker;
 import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
@@ -128,6 +129,9 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (SettingsPage.goToHome == true) {
+			goToDefaultPage();
+		}
 		updatePublicKeys();
 	}
 }

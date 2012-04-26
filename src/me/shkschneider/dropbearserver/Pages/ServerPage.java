@@ -203,8 +203,11 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 			
-			// TODO: login is ineffective
-			String infos = "ssh " + SettingsHelper.getInstance(mContext).getCredentialsLogin() + "@" + ServerUtils.getLocalIpAddress();
+			String infos = "ssh ";
+			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
+				infos = infos.concat("root@");
+			}
+			infos = infos.concat(ServerUtils.getLocalIpAddress());
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
 			}

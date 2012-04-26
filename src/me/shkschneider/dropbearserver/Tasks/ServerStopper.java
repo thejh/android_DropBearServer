@@ -55,8 +55,8 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 			return falseWithError("echoToFile(0, " + ServerUtils.getLocalDir(mContext) + "/pid" + ")");
 
 		Log.i(TAG, "ServerStopper: Killing process #" + mServerPid);
-		if (ShellUtils.killall("dropbear") == false)
-			return falseWithError("killall(dropbear)");
+		if (ShellUtils.kill(9, mServerPid) == false && ShellUtils.killall("dropbear") == false)
+			return falseWithError("kill(9, " + mServerPid + ") killall(dropbear)");
 		
 		return true;
 	}

@@ -6,6 +6,7 @@ package me.shkschneider.dropbearserver.Explorer;
 import com.markupartist.android.widget.ActionBar.Action;
 
 import me.shkschneider.dropbearserver.R;
+import me.shkschneider.dropbearserver.Pages.SettingsPage;
 
 import android.content.Context;
 import android.view.View;
@@ -24,6 +25,7 @@ class HomeAction implements Action {
 
     public void performAction(View view) {
     	((ExplorerActivity) mContext).finish();
+    	SettingsPage.goToHome = true;
     }
 
 }

@@ -54,7 +54,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 			return falseWithError("You are not over WiFi network");
 		}
 
-		String login = SettingsHelper.getInstance(mContext).getCredentialsLogin();
+		String login = (SettingsHelper.getInstance(mContext).getCredentialsLogin() ? "root" : "android");
 		String passwd = SettingsHelper.getInstance(mContext).getCredentialsPasswd();
 		String hostRsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String hostDss = ServerUtils.getLocalDir(mContext) + "/host_dss";

@@ -34,7 +34,7 @@ public class SettingsHelper {
 	public static final Boolean DISABLE_PASSWORD_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
 	public static final Integer LISTENING_PORT_DEFAULT = 22;
-	public static final String CREDENTIALS_LOGIN_DEFAULT = "root";
+	public static final Boolean CREDENTIALS_LOGIN_DEFAULT = true;
 	public static final String CREDENTIALS_PASSWD_DEFAULT = "42";
 	
 	private static SettingsHelper mSettingsHelper = null;
@@ -165,14 +165,14 @@ public class SettingsHelper {
     }
     
     // credentialsLogin
-    public String getCredentialsLogin() {
-    	return mSharedPreferences.getString(PREF_CREDENTIALS_LOGIN, CREDENTIALS_LOGIN_DEFAULT);
+    public Boolean getCredentialsLogin() {
+    	return mSharedPreferences.getBoolean(PREF_CREDENTIALS_LOGIN, CREDENTIALS_LOGIN_DEFAULT);
     }
     
-    public void setCredentialsLogin(String s) {
-    	Log.d(TAG, "SettingsHelper: setCredentialsLogin(" + s + ")");
+    public void setCredentialsLogin(Boolean b) {
+    	Log.d(TAG, "SettingsHelper: setCredentialsLogin(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
-    	editor.putString(PREF_CREDENTIALS_LOGIN, s);
+    	editor.putBoolean(PREF_CREDENTIALS_LOGIN, b);
     	editor.commit();
     }
     
