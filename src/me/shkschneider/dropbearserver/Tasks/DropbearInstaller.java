@@ -152,7 +152,9 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		
 		// host_rsa
 		publishProgress("" + step++, "" + steps, host_rsa);
-		ServerUtils.createIfNeeded(host_rsa);
+		if (ShellUtils.chown(host_rsa, "0:0") == false) {
+			return falseWithError(host_rsa);
+		}
 		publishProgress("" + step++, "" + steps, host_rsa);
 		if (ServerUtils.generateRsaPrivateKey(host_rsa) == false) {
 			return falseWithError(host_rsa);
@@ -160,7 +162,9 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		
 		// host_dss
 		publishProgress("" + step++, "" + steps, host_dss);
-		ServerUtils.createIfNeeded(host_dss);
+		if (ShellUtils.chown(host_dss, "0:0") == false) {
+			return falseWithError(host_dss);
+		}
 		publishProgress("" + step++, "" + steps, host_dss);
 		if (ServerUtils.generateDssPrivateKey(host_dss) == false) {
 			return falseWithError(host_dss);

@@ -49,25 +49,25 @@ public abstract class RootUtils {
 
 	public static final Boolean checkDropbear(Context context) {
 		hasDropbear = false;
-		File f = null;
+		File file = null;
 
-		f = new File(ServerUtils.getLocalDir(context) + "/dropbearmulti");
-		if (f.exists() == false || f.isFile() == false || f.canExecute() == false) {
+		file = new File(ServerUtils.getLocalDir(context) + "/dropbearmulti");
+		if (file.exists() == false || file.isFile() == false) {
 			Log.w(TAG, "RootUtils: checkDropear(): dropbearmulti");
 			return false;
 		}
-		f = new File(ServerUtils.getLocalDir(context) + "/host_rsa");
-		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
+		file = new File(ServerUtils.getLocalDir(context) + "/host_rsa");
+		if (file.exists() == false || file.isFile() == false) {
 			Log.w(TAG, "RootUtils: checkDropear(): host_rsa");
 			return false;
 		}
-		f = new File(ServerUtils.getLocalDir(context) + "/host_dss");
-		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
+		file = new File(ServerUtils.getLocalDir(context) + "/host_dss");
+		if (file.exists() == false || file.isFile() == false) {
 			Log.w(TAG, "RootUtils: checkDropear(): host_dss");
 			return false;
 		}
-		f = new File(ServerUtils.getLocalDir(context) + "/authorized_keys");
-		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
+		file = new File(ServerUtils.getLocalDir(context) + "/authorized_keys");
+		if (file.exists() == false || file.isFile() == false || file.canRead() == false) {
 			Log.w(TAG, "RootUtils: checkDropear(): authorized_keys");
 			return false;
 		}
