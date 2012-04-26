@@ -39,7 +39,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.show();
 		}
 	}
-	
+
 	private Boolean falseWithError(String error) {
 		Log.d(TAG, "ServerStarter: " + error);
 		//Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
@@ -49,31 +49,34 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		Log.i(TAG, "ServerStarter: doInBackground()");
-		
+
 		if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
 			return falseWithError("You are not over WiFi network");
 		}
-		
+
 		String login = SettingsHelper.getInstance(mContext).getCredentialsLogin();
 		String passwd = SettingsHelper.getInstance(mContext).getCredentialsPasswd();
 		String hostRsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String hostDss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorizedKeys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
-		String uid = "0";
-		// TODO: 1015 is 'sdcard_rw' groupId, but is it fixed?
-		String gid = (login.equals("root") ? "0" : "1015");
 		String listeningPort = "" + SettingsHelper.getInstance(mContext).getListeningPort();
 		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
-		
+
 		String command = "dropbear";
-		command = command.concat(" -A " + login + " -N " + login);
+		command = command.concat(" -A -N " + login);
 		command = command.concat(" -C " + passwd);
 		command = command.concat(" -r " + hostRsa + " -d " + hostDss);
 		command = command.concat(" -R " + authorizedKeys);
-		command = command.concat(" -U " + uid + " -G " + gid);
+		if (login.equals("root")) {
+			command = command.concat(" -U 0 -G 0");
+		}
+		else {
+			// TODO: uid=app gid=app groups=1015(sdcard_rw),3003(inet)
+			command = command.concat(" -U " + mContext.getApplicationInfo().uid + " -G 1015");
+		}
 		command = command.concat(" -p " + listeningPort);
 		command = command.concat(" -P " + pidFile);
-		
+
 		if (SettingsHelper.getInstance(mContext).getDisallowRootLogins() == true) {
 			command = command.concat(" -w");
 		}
@@ -83,13 +86,16 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		if (SettingsHelper.getInstance(mContext).getDisablePasswordLoginsForRoot() == true) {
 			command = command.concat(" -g");
 		}
-		
+
 		ShellUtils.commands.add(command);
-		
+
 		if (ShellUtils.execute() == false) {
 			return falseWithError("execute(" + command + ")");
 		}
 		
+		// TODO: pid file watchdog
+		// TODO: notification
+
 		return true;
 	}
 

@@ -49,6 +49,7 @@ public class ExplorerAdapter extends ArrayAdapter<ExplorerItem> {
 			}
 			else {
 				title.setText(item.getName());
+				title.setTextColor(mContext.getResources().getColor(R.color.white));
 			}
 		}
 		return view;

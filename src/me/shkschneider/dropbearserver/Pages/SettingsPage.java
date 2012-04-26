@@ -44,6 +44,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
 	private CheckBox mOnlyOverWifi;
+	// TODO: WifiLock
 	private LinearLayout mCompleteRemoval;
 	private AlertDialog mCompleteRemovalAlertDialog;
 
@@ -388,6 +389,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 				}
 				SettingsHelper.getInstance(mContext).setCredentialsLogin(settings_login);
 				SettingsHelper.getInstance(mContext).setCredentialsPasswd(settings_passwd);
+				Toast.makeText(mContext, "You need to restart the server for the changes to take effect", Toast.LENGTH_SHORT).show();
 				updateCredentials();
 			}
 
