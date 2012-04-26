@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			RootUtils.hasBusybox = true;
 			if (needToCheckDropbear == true) {
 				RootUtils.checkDropbear(this);
-				update();
+				updateAll();
 			}
 			else
 				needToCheckDropbear = true;
@@ -114,10 +114,18 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 
 	public void onCheckerComplete(Boolean result) {
-		update();
+		updateAll();
 	}
 	
-	public void update() {
-		mAdapter.update();
+	public void updateAll() {
+		mAdapter.updateAll();
+	}
+	
+	public void updatePublicKeys() {
+		mAdapter.updatePublicKeys();
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		updatePublicKeys();
 	}
 }

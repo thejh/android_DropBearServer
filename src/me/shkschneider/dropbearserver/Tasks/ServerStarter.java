@@ -52,16 +52,16 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "ServerStarter: doInBackground()");
 		
 		if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
-			return false;
+			return falseWithError("You are not over WiFi network");
 		}
 		
-		String login = SettingsHelper.getInstance(mContext).getAccountsLogin();
-		String passwd = SettingsHelper.getInstance(mContext).getAccountsPasswd();
-		String hostRsa = "/data/dropbear/host_rsa";
-		String hostDss = "/data/dropbear/host_dss";
-		String authorizedKeys = "/data/dropbear/authorized_keys";
+		String login = SettingsHelper.getInstance(mContext).getCredentialsLogin();
+		String passwd = SettingsHelper.getInstance(mContext).getCredentialsPasswd();
+		String hostRsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
+		String hostDss = ServerUtils.getLocalDir(mContext) + "/host_dss";
+		String authorizedKeys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
 		String uid = "0";
-		// TODO: 1015 is 'sdcard_rw', but I should retrieve it
+		// TODO: 1015 is 'sdcard_rw' groupId, but is it fixed?
 		String gid = (login.equals("root") ? "0" : "1015");
 		String listeningPort = "" + SettingsHelper.getInstance(mContext).getListeningPort();
 		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";

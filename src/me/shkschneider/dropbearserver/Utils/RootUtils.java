@@ -56,14 +56,19 @@ public abstract class RootUtils {
 			Log.w(TAG, "RootUtils: checkDropear(): dropbearmulti");
 			return false;
 		}
-		f = new File("/data/dropbear/host_rsa");
+		f = new File(ServerUtils.getLocalDir(context) + "/host_rsa");
 		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
 			Log.w(TAG, "RootUtils: checkDropear(): host_rsa");
 			return false;
 		}
-		f = new File("/data/dropbear/host_dss");
+		f = new File(ServerUtils.getLocalDir(context) + "/host_dss");
 		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
 			Log.w(TAG, "RootUtils: checkDropear(): host_dss");
+			return false;
+		}
+		f = new File(ServerUtils.getLocalDir(context) + "/authorized_keys");
+		if (f.exists() == false || f.isFile() == false || f.canRead() == false) {
+			Log.w(TAG, "RootUtils: checkDropear(): authorized_keys");
 			return false;
 		}
 		if (RootTools.checkUtil("dropbear")) {

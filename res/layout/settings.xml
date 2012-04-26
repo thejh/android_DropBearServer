@@ -234,7 +234,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text=""
-             			android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="italic" />
                 </LinearLayout>
 
@@ -338,7 +338,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:text=""
-             			android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="italic" />
                 </LinearLayout>
 
@@ -373,7 +373,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/accounts"
+            android:id="@+id/credentials"
             style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -386,13 +386,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:text="Accounts" />
+                android:text="Credentials" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/accounts_content"
+            android:id="@+id/credentials_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -403,17 +404,24 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/accounts_infos"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
-                    android:text=""
+                    android:text="Login\nPassword"
                     android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/credentials_infos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text=""
+                    android:textStyle="italic" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/accounts_content_error"
+            android:id="@+id/credentials_content_error"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
@@ -453,24 +461,13 @@
 
         <LinearLayout
             android:id="@+id/public_keys_content"
+            style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:clickable="false"
             android:orientation="vertical" >
 
-            <LinearLayout
-                style="@style/list_item_single"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="/data/dropbear/authorized_keys"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+            <!-- settings_list -->
         </LinearLayout>
 
         <LinearLayout

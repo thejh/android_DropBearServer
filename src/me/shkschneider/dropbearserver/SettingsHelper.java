@@ -23,8 +23,8 @@ public class SettingsHelper {
 	private static final String PREF_DISABLE_PASSWORD_LOGINS = "disablePasswordLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT = "disablePasswordLoginsForRoot";
 	private static final String PREF_LISTENING_PORT = "listeningPort";
-	private static final String PREF_ACCOUNTS_LOGIN = "accountsLogin";
-	private static final String PREF_ACCOUNTS_PASSWD = "accountsPasswd";
+	private static final String PREF_CREDENTIALS_LOGIN = "credentialsLogin";
+	private static final String PREF_CREDENTIALS_PASSWD = "credentialsPasswd";
 
 	public static final Boolean ASSUME_ROOT_ACCESS_DEFAULT = false;
 	public static final Boolean START_AT_BOOT_DEFAULT = false;
@@ -36,8 +36,8 @@ public class SettingsHelper {
 	public static final Boolean DISABLE_PASSWORD_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
 	public static final Integer LISTENING_PORT_DEFAULT = 22;
-	public static final String ACCOUNTS_LOGIN_DEFAULT = "root";
-	public static final String ACCOUNTS_PASSWD_DEFAULT = "42";
+	public static final String CREDENTIALS_LOGIN_DEFAULT = "root";
+	public static final String CREDENTIALS_PASSWD_DEFAULT = "42";
 	
 	private static SettingsHelper mSettingsHelper = null;
 	private static SharedPreferences mSharedPreferences = null;
@@ -178,27 +178,27 @@ public class SettingsHelper {
     	editor.commit();
     }
     
-    // accountsLogin
-    public String getAccountsLogin() {
-    	return mSharedPreferences.getString(PREF_ACCOUNTS_LOGIN, ACCOUNTS_LOGIN_DEFAULT);
+    // credentialsLogin
+    public String getCredentialsLogin() {
+    	return mSharedPreferences.getString(PREF_CREDENTIALS_LOGIN, CREDENTIALS_LOGIN_DEFAULT);
     }
     
-    public void setAccountsLogin(String s) {
-    	Log.d(TAG, "SettingsHelper: setAccountsLogin(" + s + ")");
+    public void setCredentialsLogin(String s) {
+    	Log.d(TAG, "SettingsHelper: setCredentialsLogin(" + s + ")");
     	Editor editor = mSharedPreferences.edit();
-    	editor.putString(PREF_ACCOUNTS_LOGIN, s);
+    	editor.putString(PREF_CREDENTIALS_LOGIN, s);
     	editor.commit();
     }
     
-    // accountsPasswd
-    public String getAccountsPasswd() {
-    	return mSharedPreferences.getString(PREF_ACCOUNTS_PASSWD, ACCOUNTS_PASSWD_DEFAULT);
+    // credentialsPasswd
+    public String getCredentialsPasswd() {
+    	return mSharedPreferences.getString(PREF_CREDENTIALS_PASSWD, CREDENTIALS_PASSWD_DEFAULT);
     }
     
-    public void setAccountsPasswd(String s) {
-    	Log.d(TAG, "SettingsHelper: setAccountsPasswd(" + s + ")");
+    public void setCredentialsPasswd(String s) {
+    	Log.d(TAG, "SettingsHelper: setCredentialsPasswd(" + s + ")");
     	Editor editor = mSharedPreferences.edit();
-    	editor.putString(PREF_ACCOUNTS_PASSWD, s);
+    	editor.putString(PREF_CREDENTIALS_PASSWD, s);
     	editor.commit();
     }
     

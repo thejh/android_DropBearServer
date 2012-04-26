@@ -1,8 +1,8 @@
 package me.shkschneider.dropbearserver.Tasks;
 
+import me.shkschneider.dropbearserver.Pages.ServerPage;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.ShellUtils;
-import me.shkschneider.dropbearserver.Utils.Utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,11 +16,10 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
-	private Integer mServerPid;
 
 	private DropbearRemoverCallback<Boolean> mCallback;
 
-	public DropbearRemover(Context context, DropbearRemoverCallback<Boolean> callback, Integer serverPid) {
+	public DropbearRemover(Context context, DropbearRemoverCallback<Boolean> callback) {
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
@@ -32,14 +31,13 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.setMax(100);
 			mProgressDialog.setIcon(0);
 		}
-		mServerPid = serverPid;
 	}
 
 	@Override
 	protected void onPreExecute() {
-		if (mServerPid > 0) {
+		if (ServerPage.mServerPid > 0) {
 			// ServerStopper
-			ServerStopper serverStopper = new ServerStopper(mContext, null, mServerPid);
+			ServerStopper serverStopper = new ServerStopper(mContext, null, ServerPage.mServerPid);
 			serverStopper.execute();
 		}
 		super.onPreExecute();
@@ -69,41 +67,81 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearRemover: doInBackground()");
 		
 		int step = 0;
-		int steps = 9;
-
-		// read-write
-		publishProgress("" + step++, "" + steps, "/system read-write");
-		if (Utils.remountReadWrite("/system") == false)
-			return falseWithError("/system read-write");
-
-		// data/dropbear
-		publishProgress("" + step++, "" + steps, "/data/dropbear");
-		if (ShellUtils.rmRecursive("/data/dropbear") == false)
-			return falseWithError("/data/dropbear");
+		int steps = 11;
 		
-		// data/data
-		publishProgress("" + step++, "" + steps, ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
-		if (ShellUtils.rm(ServerUtils.getLocalDir(mContext) + "/dropbearmulti") == false)
-			return falseWithError(ServerUtils.getLocalDir(mContext) + "/dropbearmulti");
-		
-		// system/xbin
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbear");
-		if (ShellUtils.rm("/system/xbin/dropbear") == false)
-			return falseWithError("/system/xbin/dropbear");
-		publishProgress("" + step++, "" + steps, "/system/xbin/dropbearkey");
-		if (ShellUtils.rm("/system/xbin/dropbearkey") == false)
-			return falseWithError("/system/xbin/dropbearkey");
-		publishProgress("" + step++, "" + steps, "/system/xbin/ssh");
-		if (ShellUtils.rm("/system/xbin/ssh") == false)
-			return falseWithError("/system/xbin/ssh");
-		publishProgress("" + step++, "" + steps, "/system/xbin/scp");
-		if (ShellUtils.rm("/system/xbin/scp") == false)
-			return falseWithError("/system/xbin/scp");
+		String dropbearmulti = ServerUtils.getLocalDir(mContext) + "/dropbearmulti";
+		String dropbear = "/system/xbin/dropbear";
+		String dropbearkey = "/system/xbin/dropbearkey";
+		String ssh = "/system/xbin/ssh";
+		String scp = "/system/xbin/scp";
+		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
+		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
+		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
+		String pid = ServerUtils.getLocalDir(mContext) + "/pid";
 
-		// read-only
-		publishProgress("" + step++, "" + steps, "/system read-only");
-		if (Utils.remountReadOnly("/system") == false)
-			return falseWithError("/system read-only");
+		// system rw
+		if (ShellUtils.remountReadWrite("/system") == false) {
+			return falseWithError("/system");
+		}
+
+		// dropbear
+		publishProgress("" + step++, "" + steps, dropbear);
+		if (ShellUtils.rm(dropbear) == false) {
+			return falseWithError(dropbear);
+		}
+
+		// dropbearkey
+		publishProgress("" + step++, "" + steps, dropbearkey);
+		if (ShellUtils.rm(dropbearkey) == false) {
+			return falseWithError(dropbearkey);
+		}
+
+		// ssh
+		publishProgress("" + step++, "" + steps, ssh);
+		if (ShellUtils.rm(ssh) == false) {
+			return falseWithError(ssh);
+		}
+
+		// scp
+		publishProgress("" + step++, "" + steps, scp);
+		if (ShellUtils.rm(scp) == false) {
+			return falseWithError(scp);
+		}
+
+		// dropbearmulti
+		publishProgress("" + step++, "" + steps, dropbearmulti);
+		if (ShellUtils.rm(dropbearmulti) == false) {
+			return falseWithError(dropbearmulti);
+		}
+
+		// authorized_keys
+		publishProgress("" + step++, "" + steps, authorized_keys);
+		if (ShellUtils.rm(authorized_keys) == false) {
+			return falseWithError(authorized_keys);
+		}
+		
+		// host_rsa
+		publishProgress("" + step++, "" + steps, host_rsa);
+		if (ShellUtils.rm(host_rsa) == false) {
+			return falseWithError(host_rsa);
+		}
+		
+		// host_dss
+		publishProgress("" + step++, "" + steps, host_dss);
+		if (ShellUtils.rm(host_dss) == false) {
+			return falseWithError(host_dss);
+		}
+		
+		// pid
+		publishProgress("" + step++, "" + steps, pid);
+		if (ShellUtils.rm(pid) == false) {
+			return falseWithError(pid);
+		}
+
+		// system ro
+		if (ShellUtils.remountReadOnly("/system") == false) {
+			return falseWithError("/system");
+		}
 		
 		return true;
 	}

@@ -140,7 +140,7 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 				mPublicKey = line;
 		}
 		catch (Exception e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, "ExplorerActivity: onFileClick(): " + e.getMessage());
 		}
 		if (mPublicKey == null) {
 			Toast.makeText(this, "Error: Invalid public key", Toast.LENGTH_SHORT).show();
@@ -166,7 +166,7 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
-			ServerUtils.addPublicKey(mPublicKey);
+			ServerUtils.addPublicKey(mPublicKey, ServerUtils.getLocalDir(this) + "/authorized_keys");
 			Toast.makeText(this, "Public key successfully added", Toast.LENGTH_SHORT).show();
 			finish();
 		}

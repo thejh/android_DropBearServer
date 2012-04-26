@@ -1,6 +1,7 @@
 /*
  * Sherif elKhatib <http://stackoverflow.com/questions/6896618/read-command-output-inside-su-process>
  * Martin <http://www.droidnova.com/get-the-ip-address-of-your-device,304.html>
+ * javadb <http://www.javadb.com/remove-a-line-from-a-text-file>
  */
 package me.shkschneider.dropbearserver.Utils;
 
@@ -9,12 +10,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.http.conn.util.InetAddressUtils;
 
@@ -34,7 +39,7 @@ public abstract class ServerUtils {
 		}
 		return localDir;
 	}
-	
+
 	// WARNING: this is not threaded
 	public static final String getLocalIpAddress() {
 		if (ipAddress == null) {
@@ -153,9 +158,76 @@ public abstract class ServerUtils {
 		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
 		return ShellUtils.execute();
 	}
-	
-	public static final Boolean addPublicKey(String publicKey) {
-		return ShellUtils.echoAppendToFile(publicKey, "/data/dropbear/authorized_keys");
+
+	public static List<String> getPublicKeys(String path) {
+		List<String> publicKeysList = new ArrayList<String>();
+		try {
+			FileInputStream fis = new FileInputStream(path);
+			DataInputStream dis = new DataInputStream(fis);
+			BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				publicKeysList.add(line);
+			}
+			dis.close();
+		}
+		catch (Exception e) {
+			Log.e(TAG, "SettingsPage: update(): " + e.getMessage());
+		}
+		return publicKeysList;
 	}
 
+	public static final Boolean addPublicKey(String publicKey, String authorized_keys) {
+		return ShellUtils.echoAppendToFile(publicKey, authorized_keys);
+	}
+
+	public static final Boolean removePublicKey(String publicKey, String authorized_keys) {
+		try {
+			File inFile = new File(authorized_keys);
+			File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+			BufferedReader br = new BufferedReader(new FileReader(authorized_keys));
+			PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+			String line = null;
+
+			while ((line = br.readLine()) != null) {
+				if (!line.trim().equals(publicKey)) {
+
+					pw.println(line);
+					pw.flush();
+				}
+			}
+			pw.close();
+			br.close();
+
+			if (!inFile.delete()) {
+				Log.d(TAG, "ServerUtils: removePublicKey(): delete() failed");
+				return false;
+			} 
+			if (!tempFile.renameTo(inFile)) {
+				Log.d(TAG, "ServerUtils: removePublicKey(): renameTo() failed");
+				return false;
+			}
+		}
+		catch (Exception e) {
+			Log.d(TAG, "ServerUtils: removePublicKey(): " + e.getMessage());
+			return false;
+		}
+		return true;
+	}
+
+	public static final Boolean createIfNeeded(String path) {
+		File file = new File(path);
+		if (file.exists() == false) {
+			try {
+				file.createNewFile();
+			} catch (Exception e) {
+				Log.d(TAG, "ServerUtils: touch(): " + e.getMessage());
+				return false;
+			}
+		}
+		return true;
+	}
+	
 }

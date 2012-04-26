@@ -42,7 +42,8 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	private View mView;
 	private Integer mServerStatusCode;
 	private Integer mListeningPort;
-	private Integer mServerPid;
+	
+	public static Integer mServerPid;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -133,15 +134,23 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	}
 
 	public void updateDropbearStatus() {
-		if (RootUtils.hasRootAccess == true && RootUtils.hasDropbear == true) {
-			mDropbearStatus.setText("OK");
-			mDropbearStatus.setTextColor(Color.GREEN);
-			mGetDropbear.setVisibility(View.GONE);
+		if (RootUtils.hasRootAccess == true && RootUtils.hasBusybox == true) {
+			if (RootUtils.hasDropbear == true) {
+				mDropbearStatus.setText("OK");
+				mDropbearStatus.setTextColor(Color.GREEN);
+				mGetDropbear.setVisibility(View.GONE);
+			}
+			else {
+				mDropbearStatus.setText("KO");
+				mDropbearStatus.setTextColor(Color.RED);
+				mGetDropbear.setVisibility(View.VISIBLE);
+				mServerStatusCode = STATUS_ERROR;
+			}
 		}
 		else {
 			mDropbearStatus.setText("KO");
 			mDropbearStatus.setTextColor(Color.RED);
-			mGetDropbear.setVisibility(View.VISIBLE);
+			mGetDropbear.setVisibility(View.GONE);
 			mServerStatusCode = STATUS_ERROR;
 		}
 	}
@@ -192,7 +201,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 			
-			String infos = "ssh " + SettingsHelper.getInstance(mContext).getAccountsLogin() + "@" + ServerUtils.getLocalIpAddress();
+			String infos = "ssh " + SettingsHelper.getInstance(mContext).getCredentialsLogin() + "@" + ServerUtils.getLocalIpAddress();
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
 			}
@@ -290,7 +299,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		Log.i(TAG, "ServerPage: onDropbearInstallerComplete(" + result + ")");
 		if (result == true) {
 			RootUtils.checkDropbear(mContext);
-			((MainActivity) mContext).update();
+			((MainActivity) mContext).updateAll();
 			Toast.makeText(mContext, "DropBear successfully installed", Toast.LENGTH_SHORT).show();
 		}
 	}
