@@ -94,7 +94,6 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		}
 		
 		// TODO: pid file watchdog
-		// TODO: notification
 
 		return true;
 	}

@@ -47,6 +47,8 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// TODO: fixed header
 
 		ListView listView = getListView();
 		LayoutInflater layoutInflater = getLayoutInflater();
