@@ -203,6 +203,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 			
+			// TODO: login is ineffective
 			String infos = "ssh " + SettingsHelper.getInstance(mContext).getCredentialsLogin() + "@" + ServerUtils.getLocalIpAddress();
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
@@ -303,6 +304,9 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			RootUtils.checkDropbear(mContext);
 			((MainActivity) mContext).updateAll();
 			Toast.makeText(mContext, "DropBear successfully installed", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			Toast.makeText(mContext, "Use Settings > General > Complete removal to fix", Toast.LENGTH_LONG).show();
 		}
 	}
 

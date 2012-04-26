@@ -152,6 +152,29 @@
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/complete_removal"
+                style="@style/list_item_bottom"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Complete removal"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    style="@style/list_item_chevron"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="chevron" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -267,7 +290,7 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/list_item_middle"
+                style="@style/list_item_bottom"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:duplicateParentState="true"
@@ -286,29 +309,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/complete_removal"
-                style="@style/list_item_bottom"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:duplicateParentState="true"
-                android:orientation="horizontal"
-                android:visibility="visible" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="Complete removal"
-                    android:textColor="@color/white" />
-
-                <ImageView
-                    style="@style/list_item_chevron"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="chevron" />
             </LinearLayout>
         </LinearLayout>
 

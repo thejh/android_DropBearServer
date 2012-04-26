@@ -62,13 +62,10 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearInstaller: doInBackground()");
 		
 		int step = 0;
-		int steps = 23;
+		int steps = 24;
 		
 		String dropbearmulti = ServerUtils.getLocalDir(mContext) + "/dropbearmulti";
-		String dropbear = "/system/xbin/dropbear";
-		String dropbearkey = "/system/xbin/dropbearkey";
-		String ssh = "/system/xbin/ssh";
-		String scp = "/system/xbin/scp";
+		String scp = ServerUtils.getLocalDir(mContext) + "/scp";
 		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
@@ -88,57 +85,62 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 
 		// dropbear
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, dropbear) == false) {
-			return falseWithError(dropbear);
+		if (ShellUtils.lnSymbolic(dropbearmulti, "/system/xbin/dropbear") == false) {
+			return falseWithError("/system/xbin/dropbear");
 		}
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.chown(dropbear, "0:0") == false) {
-			return falseWithError(dropbear);
+		if (ShellUtils.chown("/system/xbin/dropbear", "0:0") == false) {
+			return falseWithError("/system/xbin/dropbear");
 		}
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.chmod(dropbear, "755") == false) {
-			return falseWithError(dropbear);
+		if (ShellUtils.chmod("/system/xbin/dropbear", "755") == false) {
+			return falseWithError("/system/xbin/dropbear");
 		}
 		
 		// dropbearkey
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, dropbearkey) == false) {
-			return falseWithError(dropbearkey);
+		if (ShellUtils.lnSymbolic(dropbearmulti, "/system/xbin/dropbearkey") == false) {
+			return falseWithError("/system/xbin/dropbearkey");
 		}
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.chown(dropbearkey, "0:0") == false) {
-			return falseWithError(dropbearkey);
+		if (ShellUtils.chown("/system/xbin/dropbearkey", "0:0") == false) {
+			return falseWithError("/system/xbin/dropbearkey");
 		}
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.chmod(dropbearkey, "755") == false) {
-			return falseWithError(dropbearkey);
+		if (ShellUtils.chmod("/system/xbin/dropbearkey", "755") == false) {
+			return falseWithError("/system/xbin/dropbearkey");
 		}
 		
 		// ssh
 		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, ssh) == false) {
-			return falseWithError(ssh);
+		if (ShellUtils.lnSymbolic(dropbearmulti, "/system/xbin/ssh") == false) {
+			return falseWithError("/system/xbin/ssh");
 		}
 		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.chown(ssh, "0:0") == false) {
-			return falseWithError(ssh);
+		if (ShellUtils.chown("/system/xbin/ssh", "0:0") == false) {
+			return falseWithError("/system/xbin/ssh");
 		}
 		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.chmod(ssh, "755") == false) {
-			return falseWithError(ssh);
+		if (ShellUtils.chmod("/system/xbin/ssh", "755") == false) {
+			return falseWithError("/system/xbin/ssh");
 		}
+		
 		// scp
 		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, scp) == false) {
+		if (Utils.copyRawFile(mContext, R.raw.scp, scp) == false) {
 			return falseWithError(scp);
 		}
 		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.chown(scp, "0:0") == false) {
-			return falseWithError(scp);
+		if (ShellUtils.lnSymbolic(scp, "/system/xbin/scp") == false) {
+			return falseWithError("/system/xbin/scp");
 		}
 		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.chmod(scp, "755") == false) {
-			return falseWithError(scp);
+		if (ShellUtils.chown("/system/xbin/scp", "0:0") == false) {
+			return falseWithError("/system/xbin/scp");
+		}
+		publishProgress("" + step++, "" + steps, "SCP binary");
+		if (ShellUtils.chmod("/system/xbin/scp", "755") == false) {
+			return falseWithError("/system/xbin/scp");
 		}
 
 		// authorized_keys

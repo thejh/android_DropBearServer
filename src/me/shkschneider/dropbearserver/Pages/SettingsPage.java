@@ -12,7 +12,6 @@ import me.shkschneider.dropbearserver.Utils.RootUtils;
 import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,7 +28,7 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 
-public class SettingsPage extends Activity implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
+public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "DropBearServer";
 
@@ -45,6 +44,8 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
 	private CheckBox mOnlyOverWifi;
+	private LinearLayout mCompleteRemoval;
+	private AlertDialog mCompleteRemovalAlertDialog;
 
 	private LinearLayout mDropbear;
 	private LinearLayout mDropbearContent;
@@ -57,8 +58,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 	private CheckBox mDisallowRootLogins;
 	private CheckBox mDisablePasswordLogins;
 	private CheckBox mDisablePasswordLoginsForRoot;
-	private LinearLayout mCompleteRemoval;
-	private AlertDialog mCompleteRemovalAlertDialog;
 
 	private LinearLayout mCredentials;
 	private LinearLayout mCredentialsContent;
@@ -98,6 +97,8 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mKeepScreenOn.setOnCheckedChangeListener(null);
 		mOnlyOverWifi = (CheckBox) mView.findViewById(R.id.only_over_wifi);
 		mOnlyOverWifi.setOnCheckedChangeListener(null);
+		mCompleteRemoval = (LinearLayout) mView.findViewById(R.id.complete_removal);
+		mCompleteRemoval.setOnClickListener(this);
 
 		// mDropbear mDropbearContent
 		mDropbear = (LinearLayout) mView.findViewById(R.id.dropbear);
@@ -114,8 +115,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mDisablePasswordLogins.setOnCheckedChangeListener(null);
 		mDisablePasswordLoginsForRoot = (CheckBox) mView.findViewById(R.id.disable_password_logins_for_root);
 		mDisablePasswordLoginsForRoot.setOnCheckedChangeListener(null);
-		mCompleteRemoval = (LinearLayout) mView.findViewById(R.id.complete_removal);
-		mCompleteRemoval.setOnClickListener(this);
 
 		// mCredentials mCredentialsContent
 		mCredentials = (LinearLayout) mView.findViewById(R.id.credentials);
@@ -259,6 +258,9 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		if (view == mGeneral) {
 			hideAllBut(mGeneralContent);
 		}
+		else if (view == mCompleteRemoval) {
+			mCompleteRemovalAlertDialog.show();
+		}
 
 		// mDropbear
 		else if (view == mDropbear) {
@@ -268,9 +270,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 			EditText listeningPort = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 			listeningPort.setText("" + SettingsHelper.getInstance(mContext).getListeningPort());
 			mListeningPortAlertDialog.show();
-		}
-		else if (view == mCompleteRemoval) {
-			mCompleteRemovalAlertDialog.show();
 		}
 
 		// mCredentials
@@ -343,8 +342,15 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 
 	public void onClick(DialogInterface dialog, int button) {
 		if (button == DialogInterface.BUTTON_POSITIVE) {
+			// mCompleteRemoval
+			if (dialog == mCompleteRemovalAlertDialog) {
+				// mDropbearRemover
+				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
+				dropbearRemover.execute();
+			}
+			
 			// mListeningPort
-			if (dialog == mListeningPortAlertDialog) {
+			else if (dialog == mListeningPortAlertDialog) {
 				EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
 				String settings_listening_port = editText.getText().toString();
 				if (settings_listening_port.length() == 0) {
@@ -365,13 +371,6 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 					Log.d(TAG, "SettingsPage: onClick(): Wrong type [listeningPort: " + settings_listening_port + "]");
 				}
 				updateListeningPort();
-			}
-
-			// mCompleteRemoval
-			else if (dialog == mCompleteRemovalAlertDialog) {
-				// mDropbearRemover
-				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
-				dropbearRemover.execute();
 			}
 
 			// mCredentials

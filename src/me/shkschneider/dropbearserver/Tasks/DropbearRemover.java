@@ -66,13 +66,10 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearRemover: doInBackground()");
 		
 		int step = 0;
-		int steps = 11;
+		int steps = 12;
 		
 		String dropbearmulti = ServerUtils.getLocalDir(mContext) + "/dropbearmulti";
-		String dropbear = "/system/xbin/dropbear";
-		String dropbearkey = "/system/xbin/dropbearkey";
-		String ssh = "/system/xbin/ssh";
-		String scp = "/system/xbin/scp";
+		String scp = ServerUtils.getLocalDir(mContext) + "/scp";
 		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
@@ -86,23 +83,27 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 		// dropbear
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.rm(dropbear) == false) {
-			return falseWithError(dropbear);
+		if (ShellUtils.rm("/system/xbin/dropbear") == false) {
+			return falseWithError("/system/xbin/dropbear");
 		}
 
 		// dropbearkey
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.rm(dropbearkey) == false) {
-			return falseWithError(dropbearkey);
+		if (ShellUtils.rm("/system/xbin/dropbearkey") == false) {
+			return falseWithError("/system/xbin/dropbearkey");
 		}
 
 		// ssh
 		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.rm(ssh) == false) {
-			return falseWithError(ssh);
+		if (ShellUtils.rm("/system/xbin/ssh") == false) {
+			return falseWithError("/system/xbin/ssh");
 		}
 
 		// scp
+		publishProgress("" + step++, "" + steps, "SCP binary");
+		if (ShellUtils.rm("/system/xbin/scp") == false) {
+			return falseWithError("/system/xbin/scp");
+		}
 		publishProgress("" + step++, "" + steps, "SCP binary");
 		if (ShellUtils.rm(scp) == false) {
 			return falseWithError(scp);
