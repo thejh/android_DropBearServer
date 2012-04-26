@@ -43,6 +43,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mGeneralContent;
 
 	private CheckBox mAssumeRootAccess;
+	private CheckBox mNotification;
 	private CheckBox mStartAtBoot;
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
@@ -92,6 +93,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		mAssumeRootAccess = (CheckBox) mView.findViewById(R.id.assume_root_access);
 		mAssumeRootAccess.setOnCheckedChangeListener(null);
+		mNotification = (CheckBox) mView.findViewById(R.id.notification);
+		mNotification.setOnCheckedChangeListener(null);
 		mStartAtBoot = (CheckBox) mView.findViewById(R.id.start_at_boot);
 		mStartAtBoot.setOnCheckedChangeListener(null);
 		mOnlyIfRunningBefore = (CheckBox) mView.findViewById(R.id.only_if_running_before);
@@ -192,6 +195,8 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		// mGeneral
 		mAssumeRootAccess.setChecked(SettingsHelper.getInstance(mContext).getAssumeRootAccess());
 		mAssumeRootAccess.setOnCheckedChangeListener(this);
+		mNotification.setChecked(SettingsHelper.getInstance(mContext).getNotification());
+		mNotification.setOnCheckedChangeListener(this);
 		mStartAtBoot.setChecked(SettingsHelper.getInstance(mContext).getStartAtBoot());
 		mStartAtBoot.setOnCheckedChangeListener(this);
 		mOnlyIfRunningBefore.setChecked(SettingsHelper.getInstance(mContext).getOnlyIfRunningBefore());
@@ -234,6 +239,9 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mPublicKeysContent.removeAllViews();
 		mPublicKeysList = ServerUtils.getPublicKeys(ServerUtils.getLocalDir(mContext) + "/authorized_keys");
 		for (String publicKey : mPublicKeysList) {
+			if (mPublicKeysList.contains(publicKey) == true) {
+				ServerUtils.removePublicKey(publicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
+			}
 			View view = mLayoutInflater.inflate(R.layout.settings_list, null);
 			TextView textView = (TextView) view.findViewById(R.id.settings_name);
 			textView.setText(publicKey);
@@ -312,6 +320,9 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		// mGeneral
 		if (buttonView == mAssumeRootAccess) {
 			SettingsHelper.getInstance(mContext).setAssumeRootAccess(buttonView.isChecked());
+		}
+		else if (buttonView == mNotification) {
+			SettingsHelper.getInstance(mContext).setNotification(buttonView.isChecked());
 		}
 		else if (buttonView == mStartAtBoot) {
 			SettingsHelper.getInstance(mContext).setStartAtBoot(buttonView.isChecked());
@@ -394,19 +405,14 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 			// mPublicKeys
 			else {
-				if (mPublicKeysList.contains(mPublicKey) == true) {
-					Toast.makeText(mContext, "Public key already loaded", Toast.LENGTH_SHORT).show();
-				}
-				else {
-					if (mPublicKeysList.size() > 0) {
-						for (String key : mPublicKeysList) {
-							if (key.equals(mPublicKey) == true) {
-								ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
-								Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
-								Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
-								updatePublicKeys();
-								break ;
-							}
+				if (mPublicKeysList.size() > 0) {
+					for (String key : mPublicKeysList) {
+						if (key.equals(mPublicKey) == true) {
+							ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
+							Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
+							Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
+							updatePublicKeys();
+							break ;
 						}
 					}
 				}

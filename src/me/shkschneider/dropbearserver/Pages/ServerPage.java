@@ -16,6 +16,9 @@ import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -38,12 +41,14 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	private static final int STATUS_STARTING = 0x02;
 	private static final int STATUS_STARTED = 0x03;
 	private static final int STATUS_STOPPING = 0x04;
+	private static final int NOTIFICATION_ID = 1;
 
 	private Context mContext;
 	private View mView;
 	private Integer mServerStatusCode;
 	private Integer mListeningPort;
-	
+	private NotificationManager mNotificationManager;
+
 	public static Integer mServerPid;
 
 	private TextView mNetworkConnexion;
@@ -66,6 +71,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		mServerStatusCode = STATUS_ERROR;
 		mListeningPort = SettingsHelper.LISTENING_PORT_DEFAULT;
 		mServerPid = 0;
+		mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// mNetworkConnexions
 		mNetworkConnexion = (TextView) mView.findViewById(R.id.network_connexion);
@@ -202,7 +208,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerLaunchLabel.setText("STOP SERVER");
 			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
-			
+
 			String infos = "ssh ";
 			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
 				infos = infos.concat("root@");
@@ -211,7 +217,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
 			}
-			
+
 			mInfosLabel.setText(infos);
 			break;
 		case STATUS_STOPPING:
@@ -317,12 +323,25 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		Log.i(TAG, "ServerPage: onStartServerComplete(" + result + ")");
 		updateServerStatusCode();
 		updateServerStatus();
+
+		if (result == true && SettingsHelper.getInstance(mContext).getNotification() == true) {
+			Notification notification = new Notification(R.drawable.ic_launcher, "DropBear Server is running", System.currentTimeMillis());
+			Intent intent = new Intent(mContext, MainActivity.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+			notification.setLatestEventInfo(mContext, "DropBear Server", mInfosLabel.getText().toString(), pendingIntent);
+			notification.flags |= Notification.FLAG_ONGOING_EVENT;
+			mNotificationManager.notify(NOTIFICATION_ID, notification);
+		}
 	}
 
 	public void onServerStopperComplete(Boolean result) {
 		Log.i(TAG, "ServerPage: onStopServerComplete(" + result + ")");
 		updateServerStatusCode();
 		updateServerStatus();
+
+		if (result == true && SettingsHelper.getInstance(mContext).getNotification() == true) {
+			mNotificationManager.cancel(NOTIFICATION_ID);
+		}
 	}
 
 	public void onCheckerComplete(Boolean result) {

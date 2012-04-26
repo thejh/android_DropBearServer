@@ -66,7 +66,29 @@
             </LinearLayout>
 
             <LinearLayout
-                style="@style/list_item_top"
+                style="@style/list_item_middle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:text="Notification"
+                    android:textColor="@color/white" />
+
+                <CheckBox
+                    android:id="@+id/notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:duplicateParentState="true"
@@ -86,9 +108,9 @@
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
-
+            
             <LinearLayout
-                style="@style/list_item_top"
+                style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:duplicateParentState="true"

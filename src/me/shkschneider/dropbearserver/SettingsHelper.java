@@ -14,6 +14,7 @@ public class SettingsHelper {
 	private static final String TAG = "DropBearServer";
 
 	private static final String PREF_ASSUME_ROOT_ACCESS = "assumeRootAccess";
+	private static final String PREF_NOTIFICATION = "notification";
 	private static final String PREF_START_AT_BOOT = "startAtBoot";
 	private static final String PREF_ONLY_IF_RUNNING_BEFORE = "onlyIfRunningBefore";
 	private static final String PREF_KEEP_SCREEN_ON = "keepScreenOn";
@@ -26,6 +27,7 @@ public class SettingsHelper {
 	private static final String PREF_CREDENTIALS_PASSWD = "credentialsPasswd";
 
 	public static final Boolean ASSUME_ROOT_ACCESS_DEFAULT = false;
+	public static final Boolean NOTIFICATION_DEFAULT = true;
 	public static final Boolean START_AT_BOOT_DEFAULT = false;
 	public static final Boolean ONLY_IF_RUNNING_BEFORE_DEFAULT = true;
 	public static final Boolean KEEP_SCREEN_ON_DEFAULT = false;
@@ -65,6 +67,18 @@ public class SettingsHelper {
     	Log.d(TAG, "SettingsHelper: setAssumeRootAccess(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_ASSUME_ROOT_ACCESS, b);
+    	editor.commit();
+    }
+    
+    // notification
+    public Boolean getNotification() {
+    	return mSharedPreferences.getBoolean(PREF_NOTIFICATION, NOTIFICATION_DEFAULT);
+    }
+    
+    public void setNotification(Boolean b) {
+    	Log.d(TAG, "SettingsHelper: setNotification(" + b + ")");
+    	Editor editor = mSharedPreferences.edit();
+    	editor.putBoolean(PREF_NOTIFICATION, b);
     	editor.commit();
     }
     

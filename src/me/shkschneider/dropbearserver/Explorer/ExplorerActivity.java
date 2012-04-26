@@ -52,7 +52,7 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 		LayoutInflater layoutInflater = getLayoutInflater();
 		ViewGroup header = (ViewGroup) layoutInflater.inflate(R.layout.explorer_header, listView, false);
 		listView.addHeaderView(header, null, false);
-
+		
 		// Header
 		mActionBar = (ActionBar) header.findViewById(R.id.actionbar);
 		mActionBar.setTitle(getResources().getString(R.string.app_name));
@@ -161,6 +161,9 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 		if (mDirStack.size() > 0) {
 			mDir = mDirStack.pop();
 			fill(mDir);
+		}
+		else {
+			finish();
 		}
 	}
 
