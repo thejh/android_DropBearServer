@@ -93,7 +93,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		mInfosLabel = (TextView) mView.findViewById(R.id.infos_label);
 	}
 
-	public void update() {
+	public void updateAll() {
 		updateNetworkStatus();
 		updateRootStatus();
 		updateDropbearStatus();
@@ -161,6 +161,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 		}
 		else {
 			mServerPid = ServerUtils.getServerPidFromPs();
+			Log.d(TAG, "ServerPage: updateServerStatusCode(): PID #" + mServerPid);
 			if (mServerPid < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
@@ -319,7 +320,7 @@ public class ServerPage implements OnClickListener, DropbearInstallerCallback<Bo
 	public void onCheckerComplete(Boolean result) {
 		Log.i(TAG, "ServerPage: onCheckerComplete(" + result + ")");
 		if (result == true) {
-			update();
+			updateAll();
 		}
 	}
 

@@ -43,13 +43,13 @@ public class MainAdapter extends PagerAdapter implements ViewPagerTabProvider {
 	}
 
 	public void updateAll() {
-		mSettingsPage.update();
-		mServerPage.update();
+		mSettingsPage.updateAll();
+		mServerPage.updateAll();
 	}
 
 	public void updatePublicKeys() {
 		mSettingsPage.updatePublicKeys();
-		mServerPage.update();
+		mServerPage.updateAll();
 	}
 
 	@Override

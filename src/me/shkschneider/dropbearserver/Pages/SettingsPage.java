@@ -178,7 +178,7 @@ public class SettingsPage extends Activity implements OnClickListener, OnChecked
 		mPublicKey = null;
 	}
 
-	public void update() {
+	public void updateAll() {
 		if (RootUtils.hasRootAccess == true && RootUtils.hasBusybox == true && RootUtils.hasDropbear == true) {
 			mDropbear.setClickable(true);
 			mDropbearContentError.setVisibility(View.GONE);
