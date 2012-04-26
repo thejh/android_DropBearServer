@@ -42,13 +42,13 @@ This software is released under GNU GPLv2+.
 Compatibility
 -------------
 
-* Android 2.1+ (API 7+)
+* Minimal: Android 2.1+ (API 7+)
+* Target: Android 2.3+ (API 10+)
 
 * Density:
-  * ldpi (36x36)
-  * mdpi (48x48)
-  * hdpi (72x72)
-  * xhdpi (96x96)
+  * ldpi
+  * mdpi
+  * hdpi
 
 * Screens:
   * small
