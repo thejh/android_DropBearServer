@@ -32,7 +32,7 @@ import android.widget.ToggleButton;
 public class SettingsPage implements OnClickListener, OnCheckedChangeListener, DialogInterface.OnClickListener, DropbearRemoverCallback<Boolean> {
 
 	private static final String TAG = "DropBearServer";
-	
+
 	public static Boolean goToHome = false;
 
 	private Context mContext;
@@ -47,7 +47,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
 	private CheckBox mOnlyOverWifi;
-	// TODO: WifiLock
 	private LinearLayout mCompleteRemoval;
 	private AlertDialog mCompleteRemovalAlertDialog;
 
@@ -353,7 +352,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 				DropbearRemover dropbearRemover = new DropbearRemover(mContext, this);
 				dropbearRemover.execute();
 			}
-			
+
 			// mListeningPort
 			else if (dialog == mListeningPortAlertDialog) {
 				EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
@@ -395,15 +394,19 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 			// mPublicKeys
 			else {
-				// TODO: prevent duplicates
-				if (mPublicKeysList.size() > 0) {
-					for (String key : mPublicKeysList) {
-						if (key.equals(mPublicKey) == true) {
-							ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
-							Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
-							Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
-							updatePublicKeys();
-							break ;
+				if (mPublicKeysList.contains(mPublicKey) == true) {
+					Toast.makeText(mContext, "Public key already loaded", Toast.LENGTH_SHORT).show();
+				}
+				else {
+					if (mPublicKeysList.size() > 0) {
+						for (String key : mPublicKeysList) {
+							if (key.equals(mPublicKey) == true) {
+								ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
+								Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
+								Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
+								updatePublicKeys();
+								break ;
+							}
 						}
 					}
 				}
