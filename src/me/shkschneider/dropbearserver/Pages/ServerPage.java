@@ -313,6 +313,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			RootUtils.checkDropbear(mContext);
 			((MainActivity) mContext).updateSettings();
 			((MainActivity) mContext).updateServer();
+			((MainActivity) mContext).updateAbout();
 			Toast.makeText(mContext, "DropBear successfully installed", Toast.LENGTH_SHORT).show();
 		}
 		else {

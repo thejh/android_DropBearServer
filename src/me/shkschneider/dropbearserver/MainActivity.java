@@ -28,8 +28,8 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	public static Boolean needToCheckDependencies = true;
 	public static Boolean needToCheckDropbear = true;
 
-	private static String appVersion = "1.0";
-	private static String dropbearVersion = null;
+	public static String appVersion = "1.0";
+	public static String dropbearVersion = null;
 
 	private ActionBar mActionBar;
 	private ViewPager mPager;
@@ -92,6 +92,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			}
 			else
 				needToCheckDropbear = true;
+			updateAbout();
 		}
 		else if (needToCheckDependencies == true) {
 			Toast.makeText(this, "You can get rid of those checks in Settings", Toast.LENGTH_LONG).show();
@@ -128,12 +129,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	public void onCheckerComplete(Boolean result) {
 		updateSettings();
 		updateServer();
-		
-		// DropbearVersion
-		if (dropbearVersion == null) {
-			dropbearVersion = ServerUtils.getDropbearVersion();
-			updateAbout();
-		}
+		updateAbout();
 	}
 	
 	public void updateSettings() {
@@ -145,6 +141,9 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 	
 	public void updateAbout() {
+		if (dropbearVersion == null) {
+			dropbearVersion = ServerUtils.getDropbearVersion();
+		}
 		mAdapter.updateAbout();
 	}
 	

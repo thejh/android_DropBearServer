@@ -427,6 +427,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			RootUtils.hasDropbear = false;
 			((MainActivity) mContext).updateSettings();
 			((MainActivity) mContext).updateServer();
+			MainActivity.dropbearVersion = null;
 			Toast.makeText(mContext, "DropBear successfully removed", Toast.LENGTH_SHORT).show();
 			mGeneralContent.setVisibility(View.GONE);
 			((MainActivity) mContext).goToDefaultPage();
