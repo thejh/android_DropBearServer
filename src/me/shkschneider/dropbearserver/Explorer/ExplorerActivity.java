@@ -24,9 +24,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,21 +45,15 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// TODO: fixed header
-
-		ListView listView = getListView();
-		LayoutInflater layoutInflater = getLayoutInflater();
-		ViewGroup header = (ViewGroup) layoutInflater.inflate(R.layout.explorer_header, listView, false);
-		listView.addHeaderView(header, null, false);
+		setContentView(R.layout.explorer);
 		
 		// Header
-		mActionBar = (ActionBar) header.findViewById(R.id.actionbar);
+		mActionBar = (ActionBar) findViewById(R.id.actionbar);
 		mActionBar.setTitle(getResources().getString(R.string.app_name));
 		mActionBar.setHomeAction(new HomeAction(this));
 		mActionBar.addAction(new CancelAction(this));
 
-		mCurrentPath = (TextView) header.findViewById(R.id.current_path);
+		mCurrentPath = (TextView) findViewById(R.id.current_path);
 		mCurrentPath.setText("SDCard: /");
 
 		// Explorer
@@ -100,18 +92,13 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 		if (mCurrentPath.getText().equals("SDCard: /") == false)
 			dirs.add(0, new ExplorerItem("..", path.getParent(), true));
 
-		mExplorerAdapter = new ExplorerAdapter(ExplorerActivity.this, R.layout.explorer_list, dirs);
+		mExplorerAdapter = new ExplorerAdapter(ExplorerActivity.this, R.layout.explorer_item, dirs);
 		this.setListAdapter(mExplorerAdapter);
 	}
 
 	@Override
 	protected void onListItemClick(ListView listView, View view, int position, long id) {
 		super.onListItemClick(listView, view, position, id);
-
-		/*
-		 * I did not understand why, but since I added the header, the position is 1 too big...
-		 */
-		position -= 1;
 
 		ExplorerItem item = mExplorerAdapter.getItem(position);
 		File f = new File(item.getPath());
