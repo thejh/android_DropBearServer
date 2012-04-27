@@ -219,6 +219,15 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			}
 
 			mInfosLabel.setText(infos);
+			
+			if (SettingsHelper.getInstance(mContext).getNotification() == true) {
+				Notification notification = new Notification(R.drawable.ic_launcher, "DropBear Server is running", System.currentTimeMillis());
+				Intent intent = new Intent(mContext, MainActivity.class);
+				PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
+				notification.setLatestEventInfo(mContext, "DropBear Server", mInfosLabel.getText().toString(), pendingIntent);
+				notification.flags |= Notification.FLAG_ONGOING_EVENT;
+				mNotificationManager.notify(NOTIFICATION_ID, notification);
+			}
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");
@@ -324,16 +333,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	public void onServerStarterComplete(Boolean result) {
 		Log.i(TAG, "ServerPage: onStartServerComplete(" + result + ")");
 		updateServerStatusCode();
-		updateServerStatus();
-
-		if (result == true && SettingsHelper.getInstance(mContext).getNotification() == true) {
-			Notification notification = new Notification(R.drawable.ic_launcher, "DropBear Server is running", System.currentTimeMillis());
-			Intent intent = new Intent(mContext, MainActivity.class);
-			PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);
-			notification.setLatestEventInfo(mContext, "DropBear Server", mInfosLabel.getText().toString(), pendingIntent);
-			notification.flags |= Notification.FLAG_ONGOING_EVENT;
-			mNotificationManager.notify(NOTIFICATION_ID, notification);
-		}
+		updateServerStatus(); // includes notification
 	}
 
 	public void onServerStopperComplete(Boolean result) {
