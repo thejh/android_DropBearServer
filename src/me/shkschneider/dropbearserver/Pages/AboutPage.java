@@ -1,5 +1,6 @@
 package me.shkschneider.dropbearserver.Pages;
 
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 import me.shkschneider.dropbearserver.Utils.Utils;
 import me.shkschneider.dropbearserver.MainActivity;
 import me.shkschneider.dropbearserver.R;
@@ -47,6 +48,10 @@ public class AboutPage implements OnClickListener {
 	}
 	
 	public View getView() {
+		String version = ServerUtils.getDropbearVersion();
+		if (version != null) {
+			mAppVersion.setText("Version " + MainActivity.getAppVersion() + " / " + ServerUtils.getDropbearVersion());
+		}
 		return mView;
 	}
 
