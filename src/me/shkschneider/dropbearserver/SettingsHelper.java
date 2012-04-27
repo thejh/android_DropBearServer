@@ -15,8 +15,6 @@ public class SettingsHelper {
 
 	private static final String PREF_ASSUME_ROOT_ACCESS = "assumeRootAccess";
 	private static final String PREF_NOTIFICATION = "notification";
-	private static final String PREF_START_AT_BOOT = "startAtBoot";
-	private static final String PREF_ONLY_IF_RUNNING_BEFORE = "onlyIfRunningBefore";
 	private static final String PREF_KEEP_SCREEN_ON = "keepScreenOn";
 	private static final String PREF_ONLY_OVER_WIFI = "onlyOverWifi";
 	private static final String PREF_DISALLOW_ROOT_LOGINS = "disallowRootLogins";
@@ -28,8 +26,6 @@ public class SettingsHelper {
 
 	public static final Boolean ASSUME_ROOT_ACCESS_DEFAULT = false;
 	public static final Boolean NOTIFICATION_DEFAULT = true;
-	public static final Boolean START_AT_BOOT_DEFAULT = false;
-	public static final Boolean ONLY_IF_RUNNING_BEFORE_DEFAULT = true;
 	public static final Boolean KEEP_SCREEN_ON_DEFAULT = false;
 	public static final Boolean ONLY_OVER_WIFI_DEFAULT = false;
 	public static final Boolean DISALLOW_ROOT_LOGINS_DEFAULT = false;
@@ -79,30 +75,6 @@ public class SettingsHelper {
     	Log.d(TAG, "SettingsHelper: setNotification(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_NOTIFICATION, b);
-    	editor.commit();
-    }
-    
-    // startAtBoot
-    public Boolean getStartAtBoot() {
-    	return mSharedPreferences.getBoolean(PREF_START_AT_BOOT, START_AT_BOOT_DEFAULT);
-    }
-    
-    public void setStartAtBoot(Boolean b) {
-    	Log.d(TAG, "SettingsHelper: setStartAtBoot(" + b + ")");
-    	Editor editor = mSharedPreferences.edit();
-    	editor.putBoolean(PREF_START_AT_BOOT, b);
-    	editor.commit();
-    }
-    
-    // onlyIfRunningBefore
-    public Boolean getOnlyIfRunningBefore() {
-    	return mSharedPreferences.getBoolean(PREF_ONLY_IF_RUNNING_BEFORE, ONLY_IF_RUNNING_BEFORE_DEFAULT);
-    }
-    
-    public void setOnlyIfRunningBefore(Boolean b) {
-    	Log.d(TAG, "SettingsHelper: setOnlyIfRunningBefore(" + b + ")");
-    	Editor editor = mSharedPreferences.edit();
-    	editor.putBoolean(PREF_ONLY_IF_RUNNING_BEFORE, b);
     	editor.commit();
     }
     

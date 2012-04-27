@@ -44,8 +44,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 	private CheckBox mAssumeRootAccess;
 	private CheckBox mNotification;
-	private CheckBox mStartAtBoot;
-	private CheckBox mOnlyIfRunningBefore;
 	private CheckBox mKeepScreenOn;
 	private CheckBox mOnlyOverWifi;
 	private LinearLayout mCompleteRemoval;
@@ -95,10 +93,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mAssumeRootAccess.setOnCheckedChangeListener(null);
 		mNotification = (CheckBox) mView.findViewById(R.id.notification);
 		mNotification.setOnCheckedChangeListener(null);
-		mStartAtBoot = (CheckBox) mView.findViewById(R.id.start_at_boot);
-		mStartAtBoot.setOnCheckedChangeListener(null);
-		mOnlyIfRunningBefore = (CheckBox) mView.findViewById(R.id.only_if_running_before);
-		mOnlyIfRunningBefore.setOnCheckedChangeListener(null);
 		mKeepScreenOn = (CheckBox) mView.findViewById(R.id.keep_screen_on);
 		mKeepScreenOn.setOnCheckedChangeListener(null);
 		mOnlyOverWifi = (CheckBox) mView.findViewById(R.id.only_over_wifi);
@@ -197,10 +191,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mAssumeRootAccess.setOnCheckedChangeListener(this);
 		mNotification.setChecked(SettingsHelper.getInstance(mContext).getNotification());
 		mNotification.setOnCheckedChangeListener(this);
-		mStartAtBoot.setChecked(SettingsHelper.getInstance(mContext).getStartAtBoot());
-		mStartAtBoot.setOnCheckedChangeListener(this);
-		mOnlyIfRunningBefore.setChecked(SettingsHelper.getInstance(mContext).getOnlyIfRunningBefore());
-		mOnlyIfRunningBefore.setOnCheckedChangeListener(this);
 		mKeepScreenOn.setChecked(SettingsHelper.getInstance(mContext).getKeepScreenOn());
 		mKeepScreenOn.setOnCheckedChangeListener(this);
 		mOnlyOverWifi.setChecked(SettingsHelper.getInstance(mContext).getOnlyOverWifi());
@@ -323,9 +313,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		}
 		else if (buttonView == mNotification) {
 			SettingsHelper.getInstance(mContext).setNotification(buttonView.isChecked());
-		}
-		else if (buttonView == mStartAtBoot) {
-			SettingsHelper.getInstance(mContext).setStartAtBoot(buttonView.isChecked());
 		}
 		else if (buttonView == mKeepScreenOn) {
 			if (isChecked == true) {
