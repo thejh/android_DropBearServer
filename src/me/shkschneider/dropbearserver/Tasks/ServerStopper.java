@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class ServerStopper extends AsyncTask<Void, String, Boolean> {
-	
+
 	private static final String TAG = "DropBearServer";
 
 	private Context mContext = null;
@@ -39,25 +39,30 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.show();
 		}
 	}
-	
+
 	private Boolean falseWithError(String error) {
 		Log.d(TAG, "ServerStopper: " + error);
 		//Toast.makeText(mContext, "Error: " + error, Toast.LENGTH_LONG).show();
 		return false;
 	}
-	
+
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		Log.i(TAG, "ServerStopper: doInBackground()");
-		
+
 		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
 		if (ShellUtils.echoToFile("0", pidFile) == false)
 			return falseWithError("echoToFile(0, " + ServerUtils.getLocalDir(mContext) + "/pid" + ")");
 
 		Log.i(TAG, "ServerStopper: Killing process #" + mServerPid);
-		if (ShellUtils.kill(9, mServerPid) == false && ShellUtils.killall("dropbear") == false)
-			return falseWithError("kill(9, " + mServerPid + ") killall(dropbear)");
-		
+		if (mServerPid > 0) {
+			if (ShellUtils.kill(9, mServerPid) == false && ShellUtils.killall("dropbear") == false)
+				return falseWithError("kill(9, " + mServerPid + ") killall(dropbear)");
+		}
+		else {
+			ShellUtils.killall("dropbear");
+		}
+
 		return true;
 	}
 

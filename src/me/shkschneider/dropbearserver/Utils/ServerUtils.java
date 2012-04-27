@@ -50,7 +50,7 @@ public abstract class ServerUtils {
 						InetAddress inetAddress = enumIpAddr.nextElement();
 						String ip4 = inetAddress.getHostAddress().toString();
 						if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
-							Log.d(TAG, inetAddress.getHostAddress().toString());
+							Log.d(TAG, "ServerUtils: getLocalIpAddress(): " + inetAddress.getHostAddress().toString());
 							ipAddress = ip4;
 							return ipAddress;
 						}
@@ -82,7 +82,6 @@ public abstract class ServerUtils {
 				if (line != null) {
 					try {
 						Integer pid = Integer.parseInt(line);
-						Log.i(TAG, "ServerUtils: PID #" + pid);
 						return pid;
 					}
 					catch (Exception e) {
@@ -135,7 +134,6 @@ public abstract class ServerUtils {
 					line = line.replaceFirst("^^\\S+\\s+([0-9]+)\\s+.+\\sdropbear(\\s.+)?$", "$1");
 					if (Utils.isNumeric(line)) {
 						Integer pid = Integer.parseInt(line);
-						Log.i(TAG, "ServerUtils: PID #" + pid);
 						return pid;
 					}
 				}
