@@ -69,12 +69,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="icon"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_market" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:paddingLeft="5dp"
             android:text="Get &apos;Superuser&apos;!"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -98,12 +99,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="icon"
-            android:src="@drawable/ic_launcher" />
+            android:src="@drawable/ic_market" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:paddingLeft="5dp"
             android:text="Get &apos;Busybox&apos;!"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -157,6 +159,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:paddingLeft="5dp"
             android:text="Install &apos;DropBear&apos;!"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -217,7 +220,7 @@
                     style="@style/content_page_large_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                 	android:layout_weight="1.0"
+                    android:layout_weight="1.0"
                     android:gravity="left"
                     android:text="" />
 
