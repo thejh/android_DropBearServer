@@ -239,7 +239,7 @@ public abstract class ServerUtils {
 
 	// WARNING: this is not threaded
 	public static final String getDropbearVersion() {
-		String version = "";
+		String version = null;
 		if (RootUtils.hasBusybox == true) {
 			try {
 				Process suProcess = Runtime.getRuntime().exec("su");
