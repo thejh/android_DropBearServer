@@ -1,0 +1,36 @@
+This is a SSH server, based on DropBear.
+It allows you to easily install, configure and run a Secured SHell on your Android phone.
+SSH is a secured (encrypted) protocol that is used on millions of GNU/Linux servers to issue commands remotely.
+
+THIS REQUIRES ROOT PERMISSIONS
+If you don't know what 'root' or 'ssh' means, you should not install this!
+
+* You will be able to gain shell access, just like 'adb shell'
+* You will be able to put and pull files via 'scp' or similar
+
+This rich front-end to DropBear allows you to easily configure tons of things:
+
+* Allows root access (optional)
+* Allows non-root access (sdcard read/write)
+* Install DropBear
+* Start/Stop the server
+* Manage credentials (publickeys or master password)
+* Loads public keys from SDCard
+* and much more!
+
+Highly configurable!
+
+GNU/Linux:
+* Terminal: ssh
+* Terminal: scp
+
+Windows:
+* PuTTY/KiTTY
+* WinSCP
+
+MacOS:
+* Terminal: ssh
+* Terminal: scp
+* Cyberduck
+
+Now you will have full control of your device!
