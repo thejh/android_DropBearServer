@@ -145,6 +145,7 @@ public abstract class ServerUtils {
 		}
 		return 0;
 	}
+
 	// WARNING: this is not threaded
 	public static final Boolean generateRsaPrivateKey(String path) {
 		ShellUtils.commands.add("dropbearkey -t rsa -f " + path);
@@ -157,6 +158,7 @@ public abstract class ServerUtils {
 		return ShellUtils.execute();
 	}
 
+	// WARNING: this is not threaded
 	public static List<String> getPublicKeys(String path) {
 		List<String> publicKeysList = new ArrayList<String>();
 		if (new File(path).exists() == true) {
@@ -180,10 +182,12 @@ public abstract class ServerUtils {
 		return publicKeysList;
 	}
 
+	// WARNING: this is not threaded
 	public static final Boolean addPublicKey(String publicKey, String authorized_keys) {
 		return ShellUtils.echoAppendToFile(publicKey, authorized_keys);
 	}
 
+	// WARNING: this is not threaded
 	public static final Boolean removePublicKey(String publicKey, String authorized_keys) {
 		try {
 			File inFile = new File(authorized_keys);
@@ -231,6 +235,38 @@ public abstract class ServerUtils {
 			}
 		}
 		return true;
+	}
+
+	// WARNING: this is not threaded
+	public static final String getDropbearVersion() {
+		if (RootUtils.hasBusybox == false) {
+			return null;
+		}
+		String version = null;
+		try {
+			Process suProcess = Runtime.getRuntime().exec("su");
+
+			// stdin
+			DataOutputStream stdin = new DataOutputStream(suProcess.getOutputStream());
+			Log.d(TAG, "ServerUtils: getDropbearVersion(): # dropbear -h");
+			stdin.writeBytes("dropbear -h 2>&1 | busybox head -1\n");
+			stdin.flush();
+			stdin.writeBytes("exit\n");
+			stdin.flush();
+
+			// stdout
+			BufferedReader reader = new BufferedReader(new InputStreamReader(suProcess.getInputStream()));
+			String line = reader.readLine();
+
+			// parsing
+			if (line != null && line.matches("^Dropbear sshd v[0-9\\.]+$")) {
+				version = line.replaceFirst("^Dropbear sshd v", "");
+			}
+		}
+		catch (Exception e) {
+			Log.e(TAG, "ServerUtils: getServerPidFromPs(): " + e.getMessage());
+		}
+		return version;
 	}
 
 }
