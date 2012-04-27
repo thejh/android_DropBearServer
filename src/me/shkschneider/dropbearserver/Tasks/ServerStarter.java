@@ -92,8 +92,6 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		if (ShellUtils.execute() == false) {
 			return falseWithError("execute(" + command + ")");
 		}
-		
-		// TODO: pid file watchdog
 
 		return true;
 	}
