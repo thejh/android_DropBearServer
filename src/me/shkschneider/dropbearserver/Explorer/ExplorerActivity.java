@@ -1,5 +1,6 @@
 /*
  * Michael Almyros <http://www.dreamincode.net/forums/topic/190013-creating-simple-file-chooser/>
+ * Max Aller <http://blog.maxaller.name/2010/05/attaching-a-sticky-headerfooter-to-an-android-listview/>
  */
 package me.shkschneider.dropbearserver.Explorer;
 
