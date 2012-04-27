@@ -8,6 +8,7 @@ import me.shkschneider.dropbearserver.Pages.SettingsPage;
 import me.shkschneider.dropbearserver.Tasks.Checker;
 import me.shkschneider.dropbearserver.Tasks.CheckerCallback;
 import me.shkschneider.dropbearserver.Utils.RootUtils;
+import me.shkschneider.dropbearserver.Utils.ServerUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,6 +29,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	public static Boolean needToCheckDropbear = true;
 
 	private static String appVersion = "1.0";
+	private static String dropbearVersion = null;
 
 	private ActionBar mActionBar;
 	private ViewPager mPager;
@@ -35,7 +37,12 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	private MainAdapter mAdapter;
 	
 	public static String getAppVersion() {
-		return appVersion;
+		if (dropbearVersion != null) {
+			return appVersion + "/" + dropbearVersion;
+		}
+		else {
+			return appVersion;
+		}
 	}
 	
 	@Override
@@ -80,7 +87,8 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			RootUtils.hasBusybox = true;
 			if (needToCheckDropbear == true) {
 				RootUtils.checkDropbear(this);
-				updateAll();
+				updateSettings();
+				updateServer();
 			}
 			else
 				needToCheckDropbear = true;
@@ -92,6 +100,7 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			needToCheckDependencies = false;
 		}
 		
+		// keepScreenOn
 		if (SettingsHelper.getInstance(getBaseContext()).getKeepScreenOn() == true) {
 			this.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
@@ -117,11 +126,26 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 
 	public void onCheckerComplete(Boolean result) {
-		updateAll();
+		updateSettings();
+		updateServer();
+		
+		// DropbearVersion
+		if (dropbearVersion == null) {
+			dropbearVersion = ServerUtils.getDropbearVersion();
+			updateAbout();
+		}
 	}
 	
-	public void updateAll() {
-		mAdapter.updateAll();
+	public void updateSettings() {
+		mAdapter.updateSettings();
+	}
+	
+	public void updateServer() {
+		mAdapter.updateServer();
+	}
+	
+	public void updateAbout() {
+		mAdapter.updateAbout();
 	}
 	
 	public void updatePublicKeys() {
