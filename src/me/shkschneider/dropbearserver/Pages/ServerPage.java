@@ -213,7 +213,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
 				infos = infos.concat("root@");
 			}
-			infos = infos.concat(ServerUtils.getLocalIpAddress());
+			infos = infos.concat((ServerUtils.getLocalIpAddress() != null) ? ServerUtils.getLocalIpAddress() : "UNKNOWN.IP.ADRESS");
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
 			}
