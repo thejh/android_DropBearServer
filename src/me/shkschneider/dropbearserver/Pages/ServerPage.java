@@ -221,6 +221,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mInfosLabel.setText(infos);
 			
 			if (SettingsHelper.getInstance(mContext).getNotification() == true) {
+				Log.d(TAG, "ServerPage: updateServerStatus(): Notification");
 				Notification notification = new Notification(R.drawable.ic_launcher, "DropBear Server is running", System.currentTimeMillis());
 				Intent intent = new Intent(mContext, MainActivity.class);
 				PendingIntent pendingIntent = PendingIntent.getActivity(mContext, 0, intent, 0);

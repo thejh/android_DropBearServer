@@ -25,7 +25,7 @@ public class SettingsHelper {
 	private static final String PREF_CREDENTIALS_PASSWD = "credentialsPasswd";
 
 	public static final Boolean ASSUME_ROOT_ACCESS_DEFAULT = false;
-	public static final Boolean NOTIFICATION_DEFAULT = true;
+	public static final Boolean NOTIFICATION_DEFAULT = false;
 	public static final Boolean KEEP_SCREEN_ON_DEFAULT = false;
 	public static final Boolean ONLY_OVER_WIFI_DEFAULT = false;
 	public static final Boolean DISALLOW_ROOT_LOGINS_DEFAULT = false;

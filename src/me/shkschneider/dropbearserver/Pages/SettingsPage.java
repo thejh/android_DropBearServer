@@ -161,11 +161,14 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mPublicKeysAlertDialog.setTitle("Confirm");
 		mPublicKeysAlertDialog.setMessage("You are about to remove this public key.");
 		mPublicKey = null;
+		
+		updateAll();
 	}
 
 	public void updateAll() {
 		if (RootUtils.hasRootAccess == true && RootUtils.hasBusybox == true && RootUtils.hasDropbear == true) {
 			mDropbear.setClickable(true);
+			mDropbearContent.setVisibility(View.VISIBLE);
 			mDropbearContentError.setVisibility(View.GONE);
 			mCredentials.setClickable(true);
 			mCredentialsContent.setVisibility(View.VISIBLE);
