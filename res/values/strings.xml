@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DropBear Server</string>
+    <string name="app_name">DropBear SSH Server</string>
     <!-- app_donate -->
     <string name="app_website">http://www.shkschneider.me</string>
     <string name="superuser_package">com.noshufou.android.su</string>

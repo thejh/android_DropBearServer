@@ -53,6 +53,10 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 	private LinearLayout mDropbearContent;
 	private LinearLayout mDropbearContentError;
 
+	private LinearLayout mBanner;
+	private TextView mBannerInfos;
+	private AlertDialog mBannerAlertDialog;
+	private View mBannerView;
 	private LinearLayout mListeningPort;
 	private TextView mListeningPortInfos;
 	private AlertDialog mListeningPortAlertDialog;
@@ -106,6 +110,9 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mDropbearContent = (LinearLayout) mView.findViewById(R.id.dropbear_content);
 		mDropbearContentError = (LinearLayout) mView.findViewById(R.id.dropbear_content_error);
 
+		mBanner = (LinearLayout) mView.findViewById(R.id.banner);
+		mBanner.setOnClickListener(this);
+		mBannerInfos = (TextView) mView.findViewById(R.id.banner_infos);
 		mListeningPort = (LinearLayout) mView.findViewById(R.id.listening_port);
 		mListeningPort.setOnClickListener(this);
 		mListeningPortInfos = (TextView) mView.findViewById(R.id.listening_port_infos);
@@ -138,6 +145,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mAlertDialogBuilder.setCancelable(false);
 		mAlertDialogBuilder.setPositiveButton("Okay", this);
 		mAlertDialogBuilder.setNegativeButton("Cancel", this);
+
+		mBannerAlertDialog = mAlertDialogBuilder.create();
+		mBannerAlertDialog.setTitle("Listening port");
+		mBannerView = mLayoutInflater.inflate(R.layout.settings_banner, null);
+		mBannerAlertDialog.setView(mBannerView);
 
 		mListeningPortAlertDialog = mAlertDialogBuilder.create();
 		mListeningPortAlertDialog.setTitle("Listening port");
@@ -199,6 +211,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mOnlyOverWifi.setOnCheckedChangeListener(this);
 
 		// mDropbear
+		updateBanner();
 		mDisallowRootLogins.setChecked(SettingsHelper.getInstance(mContext).getDisallowRootLogins());
 		mDisallowRootLogins.setOnCheckedChangeListener(this);
 		mDisablePasswordLogins.setChecked(SettingsHelper.getInstance(mContext).getDisablePasswordLogins());
@@ -212,6 +225,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		// mPublicKeys
 		updatePublicKeys();
+	}
+
+	public void updateBanner() {
+		String banner = ServerUtils.getBanner(ServerUtils.getLocalDir(mContext) + "/banner");
+		mBannerInfos.setText(banner.length() == 0 ? "(none)" : banner);
 	}
 
 	public void updateListeningPort() {
@@ -265,6 +283,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		// mDropbear
 		else if (view == mDropbear) {
 			hideAllBut(mDropbearContent);
+		}
+		else if (view == mBanner) {
+			EditText banner = (EditText) mBannerView.findViewById(R.id.settings_banner);
+			banner.setText(ServerUtils.getBanner(ServerUtils.getLocalDir(mContext) + "/banner"));
+			mBannerAlertDialog.show();
 		}
 		else if (view == mListeningPort) {
 			EditText listeningPort = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
@@ -351,6 +374,20 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 				dropbearRemover.execute();
 			}
 
+			// mBanner
+			else if (dialog == mBannerAlertDialog) {
+				EditText editText = (EditText) mBannerView.findViewById(R.id.settings_banner);
+				String settings_banner = editText.getText().toString();
+				if (ServerUtils.setBanner(settings_banner, ServerUtils.getLocalDir(mContext) + "/banner") == true) {
+					SettingsHelper.getInstance(mContext).setBanner(settings_banner.length() > 0);
+					Log.d(TAG, "SettingsPage: onClick(): Banner set: '" + settings_banner + "'");
+					Toast.makeText(mContext, "You need to restart the server for the changes to take effect", Toast.LENGTH_SHORT).show();
+					updateBanner();
+				}
+				else {
+					Toast.makeText(mContext, "Error: Could not set banner", Toast.LENGTH_SHORT).show();
+				}
+			}
 			// mListeningPort
 			else if (dialog == mListeningPortAlertDialog) {
 				EditText editText = (EditText) mListeningPortView.findViewById(R.id.settings_listening_port);
@@ -393,10 +430,14 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			// mPublicKeys
 			else {
 				if (mPublicKeysList.contains(mPublicKey) == true) {
-					ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
-					Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
-					Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
-					updatePublicKeys();
+					if (ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys") == true) {
+						Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
+						Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
+						updatePublicKeys();
+					}
+					else {
+						Toast.makeText(mContext, "Error: Could not add public key", Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		}

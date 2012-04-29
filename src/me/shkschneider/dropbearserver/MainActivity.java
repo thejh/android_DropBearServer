@@ -91,21 +91,18 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 		super.onResume();
 		
 		if (SettingsHelper.getInstance(getBaseContext()).getAssumeRootAccess() == true) {
-			Log.d(TAG, "DEBUG: getAssumeRootAccess==true");
 			RootUtils.hasRootAccess = true;
 			RootUtils.hasBusybox = true;
 			if (needToCheckDropbear == true) {
 				RootUtils.checkDropbear(this);
 				updateSettings();
 				updateServer();
-				Log.d(TAG, "DEBUG: needToCheckDropbear==true");
 			}
 			else
 				needToCheckDropbear = true;
 			updateAbout();
 		}
 		else if (needToCheckDependencies == true) {
-			Log.d(TAG, "DEBUG: needToCheckDependencies==true");
 			Toast.makeText(this, "You can get rid of those checks in Settings", Toast.LENGTH_LONG).show();
 			// Root dependencies
 			check();
@@ -138,7 +135,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	}
 
 	public void onCheckerComplete(Boolean result) {
-		Log.d(TAG, "DEBUG: onCheckerComplete");
 		updateSettings();
 		updateServer();
 		updateAbout();

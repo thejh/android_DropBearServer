@@ -20,6 +20,7 @@ public class SettingsHelper {
 	private static final String PREF_DISALLOW_ROOT_LOGINS = "disallowRootLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS = "disablePasswordLogins";
 	private static final String PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT = "disablePasswordLoginsForRoot";
+	private static final String PREF_BANNER = "banner";
 	private static final String PREF_LISTENING_PORT = "listeningPort";
 	private static final String PREF_CREDENTIALS_LOGIN = "credentialsLogin";
 	private static final String PREF_CREDENTIALS_PASSWD = "credentialsPasswd";
@@ -31,6 +32,7 @@ public class SettingsHelper {
 	public static final Boolean DISALLOW_ROOT_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_DEFAULT = false;
 	public static final Boolean DISABLE_PASSWORD_LOGINS_FOR_ROOT_DEFAULT = false;
+	public static final Boolean BANNER_DEFAULT = true;
 	public static final Integer LISTENING_PORT_DEFAULT = 22;
 	public static final Boolean CREDENTIALS_LOGIN_DEFAULT = true;
 	public static final String CREDENTIALS_PASSWD_DEFAULT = "42";
@@ -135,6 +137,18 @@ public class SettingsHelper {
     	Log.d(TAG, "SettingsHelper: setDisablePasswordLoginsForRoot(" + b + ")");
     	Editor editor = mSharedPreferences.edit();
     	editor.putBoolean(PREF_DISABLE_PASSWORD_LOGINS_FOR_ROOT, b);
+    	editor.commit();
+    }
+    
+    // banner
+    public Boolean getBanner() {
+    	return mSharedPreferences.getBoolean(PREF_BANNER, BANNER_DEFAULT);
+    }
+    
+    public void setBanner(Boolean b) {
+    	Log.d(TAG, "SettingsHelper: setBanner(" + b + ")");
+    	Editor editor = mSharedPreferences.edit();
+    	editor.putBoolean(PREF_BANNER, b);
     	editor.commit();
     }
     

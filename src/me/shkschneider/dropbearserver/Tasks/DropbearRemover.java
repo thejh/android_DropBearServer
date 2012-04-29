@@ -66,10 +66,12 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearRemover: doInBackground()");
 		
 		int step = 0;
-		int steps = 12;
-		
-		String dropbearmulti = ServerUtils.getLocalDir(mContext) + "/dropbearmulti";
+		int steps = 13;
+
+		String dropbear = ServerUtils.getLocalDir(mContext) + "/dropbear";
+		String dropbearkey = ServerUtils.getLocalDir(mContext) + "/dropbearkey";
 		String scp = ServerUtils.getLocalDir(mContext) + "/scp";
+		String banner = ServerUtils.getLocalDir(mContext) + "/banner";
 		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
@@ -86,17 +88,19 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		if (ShellUtils.rm("/system/xbin/dropbear") == false) {
 			return falseWithError("/system/xbin/dropbear");
 		}
+		publishProgress("" + step++, "" + steps, "Dropbear binary");
+		if (ShellUtils.rm(dropbear) == false) {
+			return falseWithError(dropbear);
+		}
 
 		// dropbearkey
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.rm("/system/xbin/dropbearkey") == false) {
 			return falseWithError("/system/xbin/dropbearkey");
 		}
-
-		// ssh
-		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.rm("/system/xbin/ssh") == false) {
-			return falseWithError("/system/xbin/ssh");
+		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
+		if (ShellUtils.rm(dropbearkey) == false) {
+			return falseWithError(dropbearkey);
 		}
 
 		// scp
@@ -109,10 +113,10 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 			return falseWithError(scp);
 		}
 
-		// dropbearmulti
-		publishProgress("" + step++, "" + steps, "Dropbearmulti binary");
-		if (ShellUtils.rm(dropbearmulti) == false) {
-			return falseWithError(dropbearmulti);
+		// banner
+		publishProgress("" + step++, "" + steps, "Banner");
+		if (ShellUtils.rm(banner) == false) {
+			return falseWithError(banner);
 		}
 
 		// authorized_keys

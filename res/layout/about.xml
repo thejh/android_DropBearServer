@@ -26,7 +26,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="DropBear Server" />
+                android:text="DropBear SSH Server" />
 
             <TextView
                 android:id="@+id/about_app_version"
@@ -110,7 +110,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="shkschneider" />
+                android:text="shk.schneider" />
 
             <TextView
                 style="@style/content_page_small_text"

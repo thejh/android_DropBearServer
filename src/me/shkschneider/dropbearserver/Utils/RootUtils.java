@@ -51,9 +51,19 @@ public abstract class RootUtils {
 		hasDropbear = false;
 		File file = null;
 
-		file = new File(ServerUtils.getLocalDir(context) + "/dropbearmulti");
+		file = new File(ServerUtils.getLocalDir(context) + "/dropbear");
 		if (file.exists() == false || file.isFile() == false) {
-			Log.w(TAG, "RootUtils: checkDropear(): dropbearmulti");
+			Log.w(TAG, "RootUtils: checkDropear(): dropbear");
+			return false;
+		}
+		file = new File(ServerUtils.getLocalDir(context) + "/dropbearkey");
+		if (file.exists() == false || file.isFile() == false) {
+			Log.w(TAG, "RootUtils: checkDropear(): dropbearkey");
+			return false;
+		}
+		file = new File(ServerUtils.getLocalDir(context) + "/scp");
+		if (file.exists() == false || file.isFile() == false) {
+			Log.w(TAG, "RootUtils: checkDropear(): scp");
 			return false;
 		}
 		file = new File(ServerUtils.getLocalDir(context) + "/host_rsa");
@@ -71,12 +81,19 @@ public abstract class RootUtils {
 			Log.w(TAG, "RootUtils: checkDropear(): authorized_keys");
 			return false;
 		}
+		file = new File(ServerUtils.getLocalDir(context) + "/banner");
+		if (file.exists() == false || file.isFile() == false || file.canRead() == false) {
+			Log.w(TAG, "RootUtils: checkDropear(): banner");
+			return false;
+		}
 		if (RootTools.checkUtil("dropbear")) {
 			if (RootTools.checkUtil("dropbearkey")) {
-				hasDropbear = true;
-			}
-			else {
-				Log.w(TAG, "RootUtils: checkDropbear(): dropbearkey");
+				if (RootTools.checkUtil("scp")) {
+					hasDropbear = true;
+				}
+				else {
+					Log.w(TAG, "RootUtils: checkDropbear(): dropbearkey");
+				}
 			}
 		}
 		else {
