@@ -19,7 +19,7 @@ This is similar to the Terminal app or `adb shell` but over the network.
 Usage
 -----
 
-Transfert files with `scp`, `sftp`, WinSCP or Cyberduck.
+Transfert files with `scp`, WinSCP or Cyberduck.
 
 Gain shell access with `ssh` from any terminal emulator (PuTTY/KiTTY under Windows).
 
@@ -40,6 +40,8 @@ This software is released under GNU GPLv2+.
 * ic_donate.png: Iconshock (Free)
 * ic_web.png: Ever (Free)
 
+* Binaries from <http://blog.mwmdev.com/tutorials/249/>
+
 Compatibility
 -------------
 
@@ -59,8 +61,8 @@ Compatibility
 Thanks
 ------
 
+* Miguel (for binaries)
 * Michael Almyros (for file chooser)
-* Mestre (for dropbearmulti)
 * Johan Nilsson (for android-actionbar)
 * thiagolocatelli (for android-uitableview)
 * Andreas Stutz (for android-viewpagertabs)

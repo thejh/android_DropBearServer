@@ -56,6 +56,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 		String login = (SettingsHelper.getInstance(mContext).getCredentialsLogin() ? "root" : "android");
 		String passwd = SettingsHelper.getInstance(mContext).getCredentialsPasswd();
+		String banner = ServerUtils.getLocalDir(mContext) + "/banner";
 		String hostRsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String hostDss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorizedKeys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
@@ -85,6 +86,9 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		}
 		if (SettingsHelper.getInstance(mContext).getDisablePasswordLoginsForRoot() == true) {
 			command = command.concat(" -g");
+		}
+		if (SettingsHelper.getInstance(mContext).getBanner() == true) {
+			command = command.concat(" -b " + banner);
 		}
 
 		ShellUtils.commands.add(command);

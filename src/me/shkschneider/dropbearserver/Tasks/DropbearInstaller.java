@@ -62,10 +62,12 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearInstaller: doInBackground()");
 		
 		int step = 0;
-		int steps = 24;
-		
-		String dropbearmulti = ServerUtils.getLocalDir(mContext) + "/dropbearmulti";
+		int steps = 22;
+
+		String dropbear = ServerUtils.getLocalDir(mContext) + "/dropbear";
+		String dropbearkey = ServerUtils.getLocalDir(mContext) + "/dropbearkey";
 		String scp = ServerUtils.getLocalDir(mContext) + "/scp";
+		String banner = ServerUtils.getLocalDir(mContext) + "/banner";
 		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
@@ -77,15 +79,13 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 			return falseWithError("/system");
 		}
 		
-		// dropbearmulti
-		publishProgress("" + step++, "" + steps, "Dropbearmulti binary");
-		if (Utils.copyRawFile(mContext, R.raw.dropbearmulti, dropbearmulti) == false) {
-			return falseWithError(dropbearmulti);
-		}
-
 		// dropbear
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, "/system/xbin/dropbear") == false) {
+		if (Utils.copyRawFile(mContext, R.raw.dropbear, dropbear) == false) {
+			return falseWithError(dropbear);
+		}
+		publishProgress("" + step++, "" + steps, "Dropbear binary");
+		if (ShellUtils.lnSymbolic(dropbear, "/system/xbin/dropbear") == false) {
 			return falseWithError("/system/xbin/dropbear");
 		}
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
@@ -99,7 +99,11 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		
 		// dropbearkey
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, "/system/xbin/dropbearkey") == false) {
+		if (Utils.copyRawFile(mContext, R.raw.dropbearkey, dropbearkey) == false) {
+			return falseWithError(dropbearkey);
+		}
+		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
+		if (ShellUtils.lnSymbolic(dropbearkey, "/system/xbin/dropbearkey") == false) {
 			return falseWithError("/system/xbin/dropbearkey");
 		}
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
@@ -109,20 +113,6 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.chmod("/system/xbin/dropbearkey", "755") == false) {
 			return falseWithError("/system/xbin/dropbearkey");
-		}
-		
-		// ssh
-		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.lnSymbolic(dropbearmulti, "/system/xbin/ssh") == false) {
-			return falseWithError("/system/xbin/ssh");
-		}
-		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.chown("/system/xbin/ssh", "0:0") == false) {
-			return falseWithError("/system/xbin/ssh");
-		}
-		publishProgress("" + step++, "" + steps, "SSH binary");
-		if (ShellUtils.chmod("/system/xbin/ssh", "755") == false) {
-			return falseWithError("/system/xbin/ssh");
 		}
 		
 		// scp
@@ -142,12 +132,16 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		if (ShellUtils.chmod("/system/xbin/scp", "755") == false) {
 			return falseWithError("/system/xbin/scp");
 		}
+		
+		// banner
+		publishProgress("" + step++, "" + steps, "Banner");
+		if (Utils.copyRawFile(mContext, R.raw.banner, banner) == false) {
+			return falseWithError(banner);
+		}
 
 		// authorized_keys
 		publishProgress("" + step++, "" + steps, "Authorized keys");
-		ServerUtils.createIfNeeded(authorized_keys);
-		publishProgress("" + step++, "" + steps, "Authorized keys");
-		if (ShellUtils.touch(authorized_keys) == false) {
+		if (ServerUtils.createIfNeeded(authorized_keys) == false) {
 			return falseWithError(authorized_keys);
 		}
 		
@@ -173,7 +167,9 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		
 		// pid
 		publishProgress("" + step++, "" + steps, "ProcessId file");
-		ServerUtils.createIfNeeded(pid);
+		if (ServerUtils.createIfNeeded(pid) == false) {
+			return falseWithError(pid);
+		}
 		publishProgress("" + step++, "" + steps, "ProcessId file");
 		if (ShellUtils.echoToFile("0", pid) == false) {
 			return falseWithError(pid);

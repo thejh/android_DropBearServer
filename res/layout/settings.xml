@@ -186,8 +186,46 @@
             android:visibility="gone" >
 
             <LinearLayout
-                android:id="@+id/listening_port"
+                android:id="@+id/banner"
                 style="@style/list_item_top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:duplicateParentState="true"
+                android:orientation="horizontal"
+                android:visibility="visible" >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:duplicateParentState="true"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Banner"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/banner_infos"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+                <ImageView
+                    style="@style/list_item_chevron"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="chevron" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/listening_port"
+                style="@style/list_item_middle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:duplicateParentState="true"

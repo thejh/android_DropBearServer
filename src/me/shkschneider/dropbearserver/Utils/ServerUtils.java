@@ -160,9 +160,44 @@ public abstract class ServerUtils {
 	}
 
 	// WARNING: this is not threaded
+	public static String getBanner(String path) {
+		String banner = "";
+		File f = new File(path);
+		if (f.exists() == true && f.isFile() == true) {
+			try {
+				FileInputStream fis = new FileInputStream(path);
+				DataInputStream dis = new DataInputStream(fis);
+				BufferedReader br = new BufferedReader(new InputStreamReader(dis));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					banner = banner.concat(line);
+				}
+				dis.close();
+			}
+			catch (Exception e) {
+				Log.e(TAG, "ServerUtils: getBanner(): " + e.getMessage());
+			}
+		}
+		else {
+			Log.w(TAG, "ServerUtils: getBanner(): File could not be found: " + path);
+		}
+		return banner;
+	}
+
+	// WARNING: this is not threaded
+	public static Boolean setBanner(String banner, String path) {
+		File f = new File(path);
+		if (f.exists() == true && f.isFile() == true) {
+			return ShellUtils.echoToFile(banner, path);
+		}
+		return false;
+	}
+
+	// WARNING: this is not threaded
 	public static List<String> getPublicKeys(String path) {
 		List<String> publicKeysList = new ArrayList<String>();
-		if (new File(path).exists() == true) {
+		File f = new File(path);
+		if (f.exists() == true && f.isFile() == true) {
 			try {
 				FileInputStream fis = new FileInputStream(path);
 				DataInputStream dis = new DataInputStream(fis);
@@ -184,53 +219,59 @@ public abstract class ServerUtils {
 	}
 
 	// WARNING: this is not threaded
-	public static final Boolean addPublicKey(String publicKey, String authorized_keys) {
-		try {
-			BufferedWriter out = new BufferedWriter(new FileWriter(authorized_keys, true));
-			out.write(publicKey);
-			out.close();
+	public static final Boolean addPublicKey(String publicKey, String path) {
+		File f = new File(path);
+		if (f.exists() == true && f.isFile() == true) {
+			try {
+				BufferedWriter out = new BufferedWriter(new FileWriter(path, true));
+				out.write(publicKey);
+				out.close();
+				return true;
+			}
+			catch (Exception e) {
+				Log.e(TAG, "ServerUtils: addPublicKey(): " + e.getMessage());
+			}
 		}
-		catch (Exception e) {
-			Log.e(TAG, "ServerUtils: addPublicKey(): " + e.getMessage());
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	// WARNING: this is not threaded
-	public static final Boolean removePublicKey(String publicKey, String authorized_keys) {
-		try {
-			File inFile = new File(authorized_keys);
-			File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+	public static final Boolean removePublicKey(String publicKey, String path) {
+		File f = new File(path);
+		if (f.exists() == true && f.isFile() == true) {
+			try {
+				File inFile = new File(path);
+				File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
 
-			BufferedReader br = new BufferedReader(new FileReader(authorized_keys));
-			PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+				BufferedReader br = new BufferedReader(new FileReader(path));
+				PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
-			String line = null;
+				String line = null;
 
-			while ((line = br.readLine()) != null) {
-				if (!line.trim().equals(publicKey)) {
-					pw.println(line);
-					pw.flush();
+				while ((line = br.readLine()) != null) {
+					if (!line.trim().equals(publicKey)) {
+						pw.println(line);
+						pw.flush();
+					}
 				}
-			}
-			pw.close();
-			br.close();
+				pw.close();
+				br.close();
 
-			if (!inFile.delete()) {
-				Log.d(TAG, "ServerUtils: removePublicKey(): delete() failed");
-				return false;
-			} 
-			if (!tempFile.renameTo(inFile)) {
-				Log.d(TAG, "ServerUtils: removePublicKey(): renameTo() failed");
-				return false;
+				if (!inFile.delete()) {
+					Log.d(TAG, "ServerUtils: removePublicKey(): delete() failed");
+					return false;
+				} 
+				if (!tempFile.renameTo(inFile)) {
+					Log.d(TAG, "ServerUtils: removePublicKey(): renameTo() failed");
+					return false;
+				}
+				return true;
+			}
+			catch (Exception e) {
+				Log.d(TAG, "ServerUtils: removePublicKey(): " + e.getMessage());
 			}
 		}
-		catch (Exception e) {
-			Log.d(TAG, "ServerUtils: removePublicKey(): " + e.getMessage());
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	public static final Boolean createIfNeeded(String path) {
@@ -238,13 +279,13 @@ public abstract class ServerUtils {
 		if (file.exists() == false) {
 			try {
 				file.createNewFile();
+				return true;
 			}
 			catch (Exception e) {
 				Log.d(TAG, "ServerUtils: createIfNeeded(): " + e.getMessage());
-				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	// WARNING: this is not threaded
