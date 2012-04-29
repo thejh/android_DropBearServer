@@ -158,10 +158,16 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 	}
 
 	public void onClick(DialogInterface dialog, int button) {
+		List<String> publicKeysList = ServerUtils.getPublicKeys(ServerUtils.getLocalDir(this) + "/authorized_keys");
 		if (button == DialogInterface.BUTTON_POSITIVE) {
-			ServerUtils.addPublicKey(mPublicKey, ServerUtils.getLocalDir(this) + "/authorized_keys");
-			Toast.makeText(this, "Public key successfully added", Toast.LENGTH_SHORT).show();
-			finish();
+			if (publicKeysList.contains(mPublicKey) == false) {
+				ServerUtils.addPublicKey(mPublicKey, ServerUtils.getLocalDir(this) + "/authorized_keys");
+				Toast.makeText(this, "Public key successfully added", Toast.LENGTH_SHORT).show();
+				finish();
+			}
+			else {
+				Toast.makeText(this, "Public key already registered", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 

@@ -161,14 +161,13 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mPublicKeysAlertDialog.setTitle("Confirm");
 		mPublicKeysAlertDialog.setMessage("You are about to remove this public key.");
 		mPublicKey = null;
-		
+
 		updateAll();
 	}
 
 	public void updateAll() {
 		if (RootUtils.hasRootAccess == true && RootUtils.hasBusybox == true && RootUtils.hasDropbear == true) {
 			mDropbear.setClickable(true);
-			mDropbearContent.setVisibility(View.VISIBLE);
 			mDropbearContentError.setVisibility(View.GONE);
 			mCredentials.setClickable(true);
 			mCredentialsContent.setVisibility(View.VISIBLE);
@@ -232,9 +231,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mPublicKeysContent.removeAllViews();
 		mPublicKeysList = ServerUtils.getPublicKeys(ServerUtils.getLocalDir(mContext) + "/authorized_keys");
 		for (String publicKey : mPublicKeysList) {
-			if (mPublicKeysList.contains(publicKey) == true) {
-				ServerUtils.removePublicKey(publicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
-			}
 			View view = mLayoutInflater.inflate(R.layout.settings_list, null);
 			TextView textView = (TextView) view.findViewById(R.id.settings_name);
 			textView.setText(publicKey);
@@ -290,6 +286,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			if (Utils.hasStorage(false) == true) {
 				MainActivity.needToCheckDropbear = false;
 				SettingsPage.goToHome = false;
+
 				// ExplorerActivity
 				Intent intent = new Intent(mContext, ExplorerActivity.class);
 				((MainActivity) mContext).startActivityForResult(intent, 1);
@@ -395,16 +392,11 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 			// mPublicKeys
 			else {
-				if (mPublicKeysList.size() > 0) {
-					for (String key : mPublicKeysList) {
-						if (key.equals(mPublicKey) == true) {
-							ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
-							Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
-							Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
-							updatePublicKeys();
-							break ;
-						}
-					}
+				if (mPublicKeysList.contains(mPublicKey) == true) {
+					ServerUtils.removePublicKey(mPublicKey, ServerUtils.getLocalDir(mContext) + "/authorized_keys");
+					Log.d(TAG, "SettingsPage: onClick(): Public key removed: '" + mPublicKey + "'");
+					Toast.makeText(mContext, "Public key successfully removed", Toast.LENGTH_SHORT).show();
+					updatePublicKeys();
 				}
 			}
 		}
@@ -415,6 +407,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		if (result == true) {
 			// do not check for dropbear
 			RootUtils.hasDropbear = false;
+
 			((MainActivity) mContext).updateSettings();
 			((MainActivity) mContext).updateServer();
 			MainActivity.dropbearVersion = null;

@@ -6,6 +6,7 @@
 package me.shkschneider.dropbearserver.Utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -184,7 +185,16 @@ public abstract class ServerUtils {
 
 	// WARNING: this is not threaded
 	public static final Boolean addPublicKey(String publicKey, String authorized_keys) {
-		return ShellUtils.echoAppendToFile(publicKey, authorized_keys);
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter(authorized_keys, true));
+			out.write(publicKey);
+			out.close();
+		}
+		catch (Exception e) {
+			Log.e(TAG, "ServerUtils: addPublicKey(): " + e.getMessage());
+			return false;
+		}
+		return true;
 	}
 
 	// WARNING: this is not threaded
@@ -200,7 +210,6 @@ public abstract class ServerUtils {
 
 			while ((line = br.readLine()) != null) {
 				if (!line.trim().equals(publicKey)) {
-
 					pw.println(line);
 					pw.flush();
 				}
@@ -229,8 +238,9 @@ public abstract class ServerUtils {
 		if (file.exists() == false) {
 			try {
 				file.createNewFile();
-			} catch (Exception e) {
-				Log.d(TAG, "ServerUtils: touch(): " + e.getMessage());
+			}
+			catch (Exception e) {
+				Log.d(TAG, "ServerUtils: createIfNeeded(): " + e.getMessage());
 				return false;
 			}
 		}

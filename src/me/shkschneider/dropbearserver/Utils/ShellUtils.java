@@ -94,7 +94,7 @@ public abstract class ShellUtils {
 
 	public static final Boolean kill(int signal, int pid) {
 		if (signal > 0 && pid > 0) {
-			ShellUtils.commands.add("busybox kill -9 " + pid);
+			ShellUtils.commands.add("busybox kill -" + signal + " " + pid);
 			return execute();
 		}
 		return false;

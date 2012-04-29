@@ -81,7 +81,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.d(TAG, "DEBUG: onStart -----");
 		
 		updateSettings();
 		updateServer();
@@ -90,7 +89,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d(TAG, "DEBUG: onResume -----");
 		
 		if (SettingsHelper.getInstance(getBaseContext()).getAssumeRootAccess() == true) {
 			Log.d(TAG, "DEBUG: getAssumeRootAccess==true");
