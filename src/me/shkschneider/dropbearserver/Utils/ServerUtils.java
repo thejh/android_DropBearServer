@@ -82,7 +82,7 @@ public abstract class ServerUtils {
 						InetAddress inetAddress = enumIpAddr.nextElement();
 						String ip4 = inetAddress.getHostAddress().toString();
 						if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
-							Log.d(TAG, "ServerUtils: getLocalIpAddress(): " + inetAddress.getHostAddress().toString());
+							Log.d(TAG, "ServerUtils: getLocalIpAddress(): " + ip4);
 							ipAddress = ip4;
 							return ipAddress;
 						}
