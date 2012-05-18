@@ -52,7 +52,7 @@ public abstract class ServerUtils {
 	public static final String getExternalIpAddress () {
         	try {
                 	HttpClient httpclient = new DefaultHttpClient();
-                	HttpGet httpget = new HttpGet("http://http://ifconfig.me/ip");
+                	HttpGet httpget = new HttpGet("http://ifconfig.me/ip");
                 	HttpResponse response = httpclient.execute(httpget);
                 	HttpEntity entity = response.getEntity();
                 
