@@ -2,6 +2,7 @@
  * Sherif elKhatib <http://stackoverflow.com/questions/6896618/read-command-output-inside-su-process>
  * Martin <http://www.droidnova.com/get-the-ip-address-of-your-device,304.html>
  * javadb <http://www.javadb.com/remove-a-line-from-a-text-file>
+ * external-ip <http://code.google.com/p/external-ip/>
  */
 package me.shkschneider.dropbearserver.Utils;
 
@@ -23,6 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.conn.util.InetAddressUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 import android.util.Log;
@@ -40,6 +47,30 @@ public abstract class ServerUtils {
 		}
 		return localDir;
 	}
+	
+	// WARNING: this is not threaded
+	public void getExternalIpAddress () {
+        	try {
+                	HttpClient httpclient = new DefaultHttpClient();
+                	HttpGet httpget = new HttpGet("http://http://ifconfig.me/ip");
+                	HttpResponse response = httpclient.execute(httpget);
+                	HttpEntity entity = response.getEntity();
+                
+                	if (entity != null) {
+                        	long len = entity.getContentLength();
+                        	if (len != -1 && len < 1024) {
+                                	ipAddress = EntityUtils.toString(entity);
+					Log.d(TAG, "ServerUtils: getExternalIpAddress(): " + ipAddress);
+                                	return ipAddress;
+                        	}
+                        }
+                }
+        	catch (Exception e) {
+			Log.e(TAG, "ServerUtils: getExternalIpAddress(): " + e.getMessage());
+        	}
+		ipAddress = null;
+                return ServerUtils.getLocalIpAddress();
+    	}
 
 	// WARNING: this is not threaded
 	public static final String getLocalIpAddress() {
