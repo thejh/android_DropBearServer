@@ -49,7 +49,7 @@ public abstract class ServerUtils {
 	}
 	
 	// WARNING: this is not threaded
-	public void getExternalIpAddress () {
+	public static final String getExternalIpAddress () {
         	try {
                 	HttpClient httpclient = new DefaultHttpClient();
                 	HttpGet httpget = new HttpGet("http://http://ifconfig.me/ip");
