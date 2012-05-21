@@ -10,7 +10,7 @@ import android.util.Log;
 public class Checker extends AsyncTask<Void, String, Boolean> {
 
 	private static final String TAG = "DropBearServer";
-	
+
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
 
@@ -51,18 +51,18 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... params) {
 		Log.i(TAG, "Checker: doInBackground()");
-		
+
 		int step = 0;
 		int steps = 3;
 
 		// root
 		publishProgress("" + step++, "" + steps, "Root access");
 		RootUtils.checkRootAccess();
-		
+
 		// busybox
 		publishProgress("" + step++, "" + steps, "Busybox");
 		RootUtils.checkBusybox();
-		
+
 		// dropbear
 		publishProgress("" + step++, "" + steps, "DropBear");
 		RootUtils.checkDropbear(mContext);
@@ -79,4 +79,5 @@ public class Checker extends AsyncTask<Void, String, Boolean> {
 			mCallback.onCheckerComplete(result);
 		}
 	}
+
 }

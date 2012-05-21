@@ -39,7 +39,8 @@ public abstract class ServerUtils {
 	private static final String TAG = "DropBearServer";
 
 	public static String localDir = null;
-	public static String ipAddress = null;
+	public static String externalIpAddress = null;
+	public static String localIpAddress = null;
 
 	public static final String getLocalDir(Context context) {
 		if (localDir == null) {
@@ -47,34 +48,39 @@ public abstract class ServerUtils {
 		}
 		return localDir;
 	}
-	
+
 	// WARNING: this is not threaded
 	public static final String getExternalIpAddress () {
-        	try {
-                	HttpClient httpclient = new DefaultHttpClient();
-                	HttpGet httpget = new HttpGet("http://ifconfig.me/ip");
-                	HttpResponse response = httpclient.execute(httpget);
-                	HttpEntity entity = response.getEntity();
-                
-                	if (entity != null) {
-                        	long len = entity.getContentLength();
-                        	if (len != -1 && len < 1024) {
-                                	ipAddress = EntityUtils.toString(entity);
-					Log.d(TAG, "ServerUtils: getExternalIpAddress(): " + ipAddress);
-                                	return ipAddress;
-                        	}
-                        }
-                }
-        	catch (Exception e) {
-			Log.e(TAG, "ServerUtils: getExternalIpAddress(): " + e.getMessage());
-        	}
-		ipAddress = null;
-                return ServerUtils.getLocalIpAddress();
-    	}
+		if (externalIpAddress == null) {
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpGet httpget = new HttpGet("http://ifconfig.me/ip");
+				HttpResponse response = httpclient.execute(httpget);
+				HttpEntity entity = response.getEntity();
+				Log.d(TAG, "=1=");
+
+				if (entity != null) {
+					Log.d(TAG, "=2=");
+					long len = entity.getContentLength();
+					if (len != -1 && len < 1024) {
+						Log.d(TAG, "=3=");
+						externalIpAddress = EntityUtils.toString(entity);
+						Log.d(TAG, "ServerUtils: getExternalIpAddress(): " + externalIpAddress);
+						return externalIpAddress;
+					}
+				}
+			}
+			catch (Exception e) {
+				Log.e(TAG, "ServerUtils: getExternalIpAddress(): " + e.getMessage());
+			}
+			externalIpAddress = null;
+		}
+		return externalIpAddress;
+	}
 
 	// WARNING: this is not threaded
 	public static final String getLocalIpAddress() {
-		if (ipAddress == null) {
+		if (localIpAddress == null) {
 			try {
 				for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 					NetworkInterface intf = en.nextElement();
@@ -83,8 +89,8 @@ public abstract class ServerUtils {
 						String ip4 = inetAddress.getHostAddress().toString();
 						if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
 							Log.d(TAG, "ServerUtils: getLocalIpAddress(): " + ip4);
-							ipAddress = ip4;
-							return ipAddress;
+							localIpAddress = ip4;
+							return localIpAddress;
 						}
 					}
 				}
@@ -92,9 +98,9 @@ public abstract class ServerUtils {
 			catch (Exception e) {
 				Log.e(TAG, "ServerUtils: getLocalIpAddress(): " + e.getMessage());
 			}
-			ipAddress = null;
+			localIpAddress = null;
 		}
-		return ipAddress;
+		return localIpAddress;
 	}
 
 	/*
@@ -180,13 +186,13 @@ public abstract class ServerUtils {
 
 	// WARNING: this is not threaded
 	public static final Boolean generateRsaPrivateKey(String path) {
-		ShellUtils.commands.add("dropbearkey -t rsa -f " + path);
+		ShellUtils.commands.add("/system/xbin/dropbearkey -t rsa -f " + path);
 		return ShellUtils.execute();
 	}
 
 	// WARNING: this is not threaded
 	public static final Boolean generateDssPrivateKey(String path) {
-		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
+		ShellUtils.commands.add("/system/xbin/dropbearkey -t dss -f " + path);
 		return ShellUtils.execute();
 	}
 

@@ -213,7 +213,18 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
 				infos = infos.concat("root@");
 			}
-			infos = infos.concat((ServerUtils.getLocalIpAddress() != null) ? ServerUtils.getLocalIpAddress() : "UNKNOWN.IP.ADRESS");
+			String localIpAddress = ServerUtils.getLocalIpAddress();
+			infos = infos.concat((localIpAddress != null) ? localIpAddress : "UNKNOWN.INTERNAL.IP.ADDRESS");
+			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
+				infos = infos.concat(" -p " + mListeningPort);
+			}
+			infos = infos.concat("\n");
+			infos = infos.concat("ssh ");
+			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
+				infos = infos.concat("root@");
+			}
+			String externalIpAddress = ServerUtils.getExternalIpAddress();
+			infos = infos.concat((externalIpAddress != null) ? externalIpAddress : "UNKNOWN.EXTERNAL.IP.ADDRESS");
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
 			}
