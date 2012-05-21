@@ -1,3 +1,6 @@
+/*
+ * Pawel Nadolski <http://stackoverflow.com/questions/10319471/android-is-the-groupid-of-sdcard-rw-always-1015/>
+ */
 package me.shkschneider.dropbearserver.Tasks;
 
 import me.shkschneider.dropbearserver.SettingsHelper;
@@ -12,6 +15,7 @@ import android.util.Log;
 public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	private static final String TAG = "DropBearServer";
+	private static final int SDCARD_RW = 1015;
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
@@ -73,7 +77,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		}
 		else {
 			// TODO: uid=app gid=app groups=1015(sdcard_rw),3003(inet)
-			command = command.concat(" -U " + mContext.getApplicationInfo().uid + " -G 1015");
+			command = command.concat(" -U " + mContext.getApplicationInfo().uid + " -G " + SDCARD_RW);
 		}
 		command = command.concat(" -p " + listeningPort);
 		command = command.concat(" -P " + pidFile);
