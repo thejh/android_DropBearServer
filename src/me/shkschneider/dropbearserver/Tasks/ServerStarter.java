@@ -65,7 +65,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		String hostDss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorizedKeys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
 		String listeningPort = "" + SettingsHelper.getInstance(mContext).getListeningPort();
-		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
+		//String lockFile = ServerUtils.getLocalDir(mContext) + "/lock";
 
 		String command = "/system/xbin/dropbear";
 		command = command.concat(" -A -N " + login);
@@ -80,7 +80,7 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 			command = command.concat(" -U " + mContext.getApplicationInfo().uid + " -G " + SDCARD_RW);
 		}
 		command = command.concat(" -p " + listeningPort);
-		command = command.concat(" -P " + pidFile);
+		//command = command.concat(" -P " + lockFile);
 
 		if (SettingsHelper.getInstance(mContext).getDisallowRootLogins() == true) {
 			command = command.concat(" -w");
@@ -108,6 +108,9 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 	protected void onPostExecute(Boolean result) {
 		if (mProgressDialog != null) {
 			mProgressDialog.dismiss();
+		}
+		if (result == true) {
+			ShellUtils.echoToFile("0" + android.os.Process.myPid(), ServerUtils.getLocalDir(mContext) + "/lock");
 		}
 		if (mCallback != null) {
 			mCallback.onServerStarterComplete(result);

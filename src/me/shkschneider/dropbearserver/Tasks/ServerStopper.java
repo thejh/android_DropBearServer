@@ -13,11 +13,10 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
-	private Integer mServerPid;
 
 	private ServerStopperCallback<Boolean> mCallback;
 
-	public ServerStopper(Context context, ServerStopperCallback<Boolean> callback, Integer serverPid) {
+	public ServerStopper(Context context, ServerStopperCallback<Boolean> callback) {
 		mContext = context;
 		mCallback = callback;
 		if (mContext != null) {
@@ -29,7 +28,6 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 			mProgressDialog.setMax(100);
 			mProgressDialog.setIcon(0);
 		}
-		mServerPid = serverPid;
 	}
 
 	@Override
@@ -50,18 +48,13 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 	protected Boolean doInBackground(Void... params) {
 		Log.i(TAG, "ServerStopper: doInBackground()");
 
-		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
-		if (ShellUtils.echoToFile("0", pidFile) == false)
-			return falseWithError("echoToFile(0, " + ServerUtils.getLocalDir(mContext) + "/pid" + ")");
+		String lockFile = ServerUtils.getLocalDir(mContext) + "/lock";
+		if (ShellUtils.echoToFile("0", lockFile) == false)
+			return falseWithError("echoToFile(0, " + lockFile + ")");
 
-		Log.i(TAG, "ServerStopper: Killing process #" + mServerPid);
-		if (mServerPid > 0) {
-			if (ShellUtils.kill(9, mServerPid) == false && ShellUtils.killall("dropbear") == false)
-				return falseWithError("kill(9, " + mServerPid + ") killall(dropbear)");
-		}
-		else {
-			ShellUtils.killall("dropbear");
-		}
+		Log.i(TAG, "ServerStopper: Killing processes");
+		if (ShellUtils.killall("dropbear") == false)
+			return falseWithError("killall(dropbear)");
 
 		return true;
 	}
