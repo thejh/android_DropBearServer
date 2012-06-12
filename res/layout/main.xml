@@ -13,12 +13,12 @@
         android:id="@+id/tabs"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/sugray" />
+        android:background="@color/dark_background" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dip"
-        android:background="@color/sugreen" />
+        android:background="@color/highlight" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

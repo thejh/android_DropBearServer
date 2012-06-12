@@ -71,7 +71,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
-		String pid = ServerUtils.getLocalDir(mContext) + "/pid";
+		String lock = ServerUtils.getLocalDir(mContext) + "/lock";
 
 		// system rw
 		publishProgress("" + step++, "" + steps, "/system Read-Write");
@@ -165,14 +165,14 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 			return falseWithError(host_dss);
 		}
 		
-		// pid
-		publishProgress("" + step++, "" + steps, "ProcessId file");
-		if (ServerUtils.createIfNeeded(pid) == false) {
-			return falseWithError(pid);
+		// lock
+		publishProgress("" + step++, "" + steps, "Lock file");
+		if (ServerUtils.createIfNeeded(lock) == false) {
+			return falseWithError(lock);
 		}
-		publishProgress("" + step++, "" + steps, "ProcessId file");
-		if (ShellUtils.echoToFile("0", pid) == false) {
-			return falseWithError(pid);
+		publishProgress("" + step++, "" + steps, "Lock file");
+		if (ShellUtils.echoToFile("0", lock) == false) {
+			return falseWithError(lock);
 		}
 
 		// system ro

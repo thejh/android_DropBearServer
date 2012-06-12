@@ -20,7 +20,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.conn.util.InetAddressUtils;
@@ -103,27 +102,23 @@ public abstract class ServerUtils {
 		return localIpAddress;
 	}
 
-	/*
-	 * Dropbear seems to take some time to write the pidFile
-	 * As a consequence, this is only used by the BootReceiver
-	 */
 	// WARNING: this is not threaded
-	public static final Integer getServerPidFromFile(Context context) {
-		File f = new File(ServerUtils.getLocalDir(context) + "/pid");
+	public static final Integer getServerLock(Context context) {
+		File f = new File(ServerUtils.getLocalDir(context) + "/lock");
 		if (f.exists() == true && f.isFile() == true) {
 			try {
-				FileInputStream fis = new FileInputStream(ServerUtils.getLocalDir(context) + "/pid");
+				FileInputStream fis = new FileInputStream(f.getAbsolutePath());
 				DataInputStream dis = new DataInputStream(fis);
 				BufferedReader br = new BufferedReader(new InputStreamReader(dis));
 				String line = br.readLine();
 				dis.close();
 				if (line != null) {
 					try {
-						Integer pid = Integer.parseInt(line);
-						return pid;
+						Integer lock = Integer.parseInt(line);
+						return lock;
 					}
 					catch (Exception e) {
-						Log.e(TAG, "ServerUtils: getServerPidFromFile(): " + e.getMessage());
+						Log.e(TAG, "ServerUtils: getServerLock(): " + e.getMessage());
 						return -1;
 					}
 				}
@@ -132,54 +127,6 @@ public abstract class ServerUtils {
 				Log.e(TAG, e.getMessage());
 				return -1;
 			}
-		}
-		return 0;
-	}
-
-	// WARNING: this is not threaded
-	public static final Integer getServerPidFromPs() {
-		try {
-			Process suProcess = Runtime.getRuntime().exec("su");
-
-			// stdin
-			DataOutputStream stdin = new DataOutputStream(suProcess.getOutputStream());
-			Log.d(TAG, "ServerUtils: getServerPidFromPs(): # ps dropbear");
-			stdin.writeBytes("ps dropbear\n");
-			stdin.flush();
-			stdin.writeBytes("exit\n");
-			stdin.flush();
-
-			// stdout
-			BufferedReader reader = new BufferedReader(new InputStreamReader(suProcess.getInputStream()));
-			ArrayList<String> output = new ArrayList<String>();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				output.add(line);
-			}
-
-			// parsing
-			if (output.size() >= 2) {
-				line = null;
-				Iterator<String> itr = output.iterator();
-				while (itr.hasNext()) {
-					String element = itr.next();
-					if (element.matches("^\\S+\\s+[0-9]+\\s+.+\\sdropbear(\\s.+)?$")) {
-						line = element;
-						break ;
-					}
-				}
-				if (line != null) {
-					line = line.replaceFirst("^^\\S+\\s+([0-9]+)\\s+.+\\sdropbear(\\s.+)?$", "$1");
-					if (Utils.isNumeric(line)) {
-						Integer pid = Integer.parseInt(line);
-						return pid;
-					}
-				}
-			}
-		}
-		catch (Exception e) {
-			Log.e(TAG, "ServerUtils: getServerPidFromPs(): " + e.getMessage());
-			return -1;
 		}
 		return 0;
 	}

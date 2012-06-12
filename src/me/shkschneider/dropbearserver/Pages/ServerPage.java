@@ -49,7 +49,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	private Integer mListeningPort;
 	private NotificationManager mNotificationManager;
 
-	public static Integer mServerPid;
+	public static Integer mServerLock;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -60,7 +60,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	private TextView mServerStatus;
 	private LinearLayout mServerLaunch;
 	private TextView mServerLaunchLabel;
-	private TextView mServerLaunchPid;
 	private LinearLayout mInfos;
 	private TextView mInfosLabel;
 
@@ -70,7 +69,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		mView = inflater.inflate(R.layout.server, null);
 		mServerStatusCode = STATUS_ERROR;
 		mListeningPort = SettingsHelper.LISTENING_PORT_DEFAULT;
-		mServerPid = 0;
+		mServerLock = 0;
 		mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// mNetworkConnexions
@@ -88,12 +87,11 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		mGetDropbear = (LinearLayout) mView.findViewById(R.id.get_dropbear);
 		mGetDropbear.setOnClickListener(this);
 
-		// mServerStatus mServerLaunch mServerLaunchLabel mServerLaunchPid
+		// mServerStatus mServerLaunch mServerLaunchLabel
 		mServerStatus = (TextView) mView.findViewById(R.id.server_status);
 		mServerLaunch = (LinearLayout) mView.findViewById(R.id.server_launch);
 		mServerLaunch.setOnClickListener(this);
 		mServerLaunchLabel = (TextView) mView.findViewById(R.id.launch_label);
-		mServerLaunchPid = (TextView) mView.findViewById(R.id.launch_pid);
 
 		// mInfos mInfosLabel
 		mInfos = (LinearLayout) mView.findViewById(R.id.infos);
@@ -167,12 +165,12 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
-			mServerPid = ServerUtils.getServerPidFromPs();
-			Log.d(TAG, "ServerPage: updateServerStatusCode(): PID #" + mServerPid);
-			if (mServerPid < 0) {
+			mServerLock = ServerUtils.getServerLock(mContext);
+			Log.d(TAG, "ServerPage: updateServerStatusCode(): #" + mServerLock);
+			if (mServerLock < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
-			else if (mServerPid == 0) {
+			else if (mServerLock == 0) {
 				mServerStatusCode = STATUS_STOPPED;
 			}
 			else {
@@ -188,7 +186,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatus.setTextColor(Color.RED);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("START SERVER");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
@@ -197,7 +194,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatus.setTextColor(Color.YELLOW);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STARTING...");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
@@ -206,7 +202,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatus.setTextColor(Color.GREEN);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOP SERVER");
-			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 
 			String infos = "ssh ";
@@ -246,7 +241,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatus.setTextColor(Color.YELLOW);
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOPPING...");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
@@ -255,7 +249,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatus.setTextColor(Color.RED);
 			mServerLaunch.setVisibility(View.GONE);
 			mServerLaunchLabel.setText("ERROR");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
@@ -286,7 +279,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 				mServerStatusCode = STATUS_STOPPING;
 				updateServerStatus();
 				// StopServer
-				ServerStopper serverStopper = new ServerStopper(mContext, this, mServerPid);
+				ServerStopper serverStopper = new ServerStopper(mContext, this);
 				serverStopper.execute();
 				break;
 			case STATUS_STOPPING:

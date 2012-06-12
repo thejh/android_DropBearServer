@@ -34,9 +34,9 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 	@Override
 	protected void onPreExecute() {
-		if (ServerPage.mServerPid > 0) {
+		if (ServerPage.mServerLock > 0) {
 			// ServerStopper
-			ServerStopper serverStopper = new ServerStopper(mContext, null, ServerPage.mServerPid);
+			ServerStopper serverStopper = new ServerStopper(mContext, null);
 			serverStopper.execute();
 		}
 		super.onPreExecute();
@@ -75,7 +75,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		String host_rsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
-		String pid = ServerUtils.getLocalDir(mContext) + "/pid";
+		String lock = ServerUtils.getLocalDir(mContext) + "/lock";
 
 		// system rw
 		publishProgress("" + step++, "" + steps, "/system Read-Write");
@@ -137,10 +137,10 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 			return falseWithError(host_dss);
 		}
 		
-		// pid
-		publishProgress("" + step++, "" + steps, "ProcessId file");
-		if (ShellUtils.rm(pid) == false) {
-			return falseWithError(pid);
+		// lock
+		publishProgress("" + step++, "" + steps, "Lock file");
+		if (ShellUtils.rm(lock) == false) {
+			return falseWithError(lock);
 		}
 
 		// system ro

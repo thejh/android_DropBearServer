@@ -3,8 +3,8 @@
     
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
-    <color name="sugreen">#FF91A438</color>
-    <color name="sugray">#FF3B3B3B</color>
+    <color name="highlight">#FF91A438</color>
+    <color name="dark_background">#FF3B3B3B</color>
     <color name="background">#FF333333</color>
     <color name="red">#FFFF0000</color>
     
