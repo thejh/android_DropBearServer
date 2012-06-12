@@ -27,7 +27,7 @@
 
     <!-- actionbar -->
     <color name="actionbar_separator">#FF000000</color>
-    <color name="actionbar_background_start">#FF000000</color>
-    <color name="actionbar_background_end">#FF000000</color>
+    <color name="actionbar_background_start">#FF222222</color>
+    <color name="actionbar_background_end">#FF111111</color>
 
 </resources>
