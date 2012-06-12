@@ -45,7 +45,7 @@ public class ExplorerAdapter extends ArrayAdapter<ExplorerItem> {
 			TextView title = (TextView) view.findViewById(R.id.filename);
 			if (file.isDirectory()) {
 				title.setText(item.getName() + "/");
-				title.setTextColor(mContext.getResources().getColor(R.color.highlight));
+				title.setTextColor(mContext.getResources().getColor(R.color.blue_inactive));
 			}
 			else {
 				title.setText(item.getName());
