@@ -269,7 +269,8 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 				mListeningPort = SettingsHelper.getInstance(mContext).getListeningPort();
 
 				if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
-					Toast.makeText(mContext, "You are not over WiFi network", Toast.LENGTH_LONG).show();
+					Toast.makeText(mContext, "You are not over WiFi network (see Settings)", Toast.LENGTH_LONG).show();
+					onServerStopperComplete(false);
 				}
 				else {
 					// StartServer
