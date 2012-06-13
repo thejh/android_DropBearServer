@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <color name="white">#FFFFFFFF</color>
+
     <color name="black">#FF000000</color>
-    <color name="sugreen">#FF91A438</color>
-    <color name="sugray">#FF3B3B3B</color>
-    <color name="background">#FF333333</color>
-    <color name="red">#FFFF0000</color>
-    
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- android design -->
+    <color name="blue_active">#FF33B5E5</color>
+    <color name="blue_inactive">#FF0099CC</color>
+    <color name="purple_active">#FFAA66CC</color>
+    <color name="purple_inactive">#FF9933CC</color>
+    <color name="green_active">#FF99CC00</color>
+    <color name="green_inactive">#FF669900</color>
+    <color name="orange_active">#FFFFBB33</color>
+    <color name="orange_inactive">#FFFF8800</color>
+    <color name="red_active">#FFFF4444</color>
+    <color name="red_inactive">#FFCC0000</color>
+
     <!-- viewpagertabs -->
-    <color name="rounded_container_border">#00000000</color>
-    <color name="base_start_color_default">#FF3B3B3B</color>
-    <color name="base_end_color_default">#FF3B3B3B</color>
-    <color name="base_start_color_pressed">#FF91A438</color>
-    <color name="base_end_color_pressed">#FF91A438</color>
-    <color name="text_color_default">#FF91A438</color>
-    <color name="text_color_pressed">#FF3B3B3B</color>
-    
+    <color name="rounded_container_border">#FF000000</color>
+    <color name="base_start_color_default">#FF000000</color>
+    <color name="base_end_color_default">#FF111111</color>
+    <color name="base_start_color_pressed">#FF111111</color>
+    <color name="base_end_color_pressed">#FF222222</color>
+    <color name="text_color_default">#FF669900</color>
+    <color name="text_color_pressed">#FF99CC00</color>
+
     <!-- actionbar -->
-    <color name="actionbar_separator">#FF3B3B3B</color>
-    <color name="actionbar_background_start">#FF333333</color>
-    <color name="actionbar_background_end">#FF333333</color>
-    
+    <color name="actionbar_separator">#FF000000</color>
+    <color name="actionbar_background_start">#FF222222</color>
+    <color name="actionbar_background_end">#FF111111</color>
+
 </resources>

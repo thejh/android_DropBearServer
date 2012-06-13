@@ -92,14 +92,6 @@ public abstract class ShellUtils {
 		return execute();
 	}
 
-	public static final Boolean kill(int signal, int pid) {
-		if (signal > 0 && pid > 0) {
-			ShellUtils.commands.add("busybox kill -" + signal + " " + pid);
-			return execute();
-		}
-		return false;
-	}
-
 	public static final Boolean killall(String processName) {
 		ShellUtils.commands.add("busybox killall " + processName);
 		return ShellUtils.execute();

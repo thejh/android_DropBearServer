@@ -34,7 +34,7 @@ This software is released under GNU GPLv2+.
     This is free software, and you are welcome to redistribute it
     under certain conditions.
 
-* ic_launcher.png: Mfayas (Free)
+* ic_launcher.png: Mfayas (Free), Johanna Nizard (Free)
 * ic_market.png: DsynFLO Creations (Free)
 * ic_rate.png: Andy Gongea (Free)
 * ic_donate.png: Iconshock (Free)

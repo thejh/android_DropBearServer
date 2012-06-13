@@ -22,7 +22,6 @@ import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,7 +48,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	private Integer mListeningPort;
 	private NotificationManager mNotificationManager;
 
-	public static Integer mServerPid;
+	public static Integer mServerLock;
 
 	private TextView mNetworkConnexion;
 	private TextView mRootStatus;
@@ -60,7 +59,6 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	private TextView mServerStatus;
 	private LinearLayout mServerLaunch;
 	private TextView mServerLaunchLabel;
-	private TextView mServerLaunchPid;
 	private LinearLayout mInfos;
 	private TextView mInfosLabel;
 
@@ -70,7 +68,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		mView = inflater.inflate(R.layout.server, null);
 		mServerStatusCode = STATUS_ERROR;
 		mListeningPort = SettingsHelper.LISTENING_PORT_DEFAULT;
-		mServerPid = 0;
+		mServerLock = 0;
 		mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// mNetworkConnexions
@@ -88,12 +86,11 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		mGetDropbear = (LinearLayout) mView.findViewById(R.id.get_dropbear);
 		mGetDropbear.setOnClickListener(this);
 
-		// mServerStatus mServerLaunch mServerLaunchLabel mServerLaunchPid
+		// mServerStatus mServerLaunch mServerLaunchLabel
 		mServerStatus = (TextView) mView.findViewById(R.id.server_status);
 		mServerLaunch = (LinearLayout) mView.findViewById(R.id.server_launch);
 		mServerLaunch.setOnClickListener(this);
 		mServerLaunchLabel = (TextView) mView.findViewById(R.id.launch_label);
-		mServerLaunchPid = (TextView) mView.findViewById(R.id.launch_pid);
 
 		// mInfos mInfosLabel
 		mInfos = (LinearLayout) mView.findViewById(R.id.infos);
@@ -111,11 +108,11 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 	public void updateNetworkStatus() {
 		if (ServerUtils.getLocalIpAddress() != null) {
 			mNetworkConnexion.setText("OK");
-			mNetworkConnexion.setTextColor(Color.GREEN);
+			mNetworkConnexion.setTextColor(mContext.getResources().getColor(R.color.green_active));
 		}
 		else {
 			mNetworkConnexion.setText("KO");
-			mNetworkConnexion.setTextColor(Color.RED);
+			mNetworkConnexion.setTextColor(mContext.getResources().getColor(R.color.red_active));
 		}
 	}
 
@@ -123,19 +120,19 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		if (RootUtils.hasRootAccess == true) {
 			if (RootUtils.hasBusybox == true) {
 				mRootStatus.setText("OK");
-				mRootStatus.setTextColor(Color.GREEN);
+				mRootStatus.setTextColor(mContext.getResources().getColor(R.color.green_active));
 				mGetBusybox.setVisibility(View.GONE);
 			}
 			else {
 				mRootStatus.setText("KO");
-				mRootStatus.setTextColor(Color.RED);
+				mRootStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 				mGetBusybox.setVisibility(View.VISIBLE);
 			}
 			mGetSuperuser.setVisibility(View.GONE);
 		}
 		else {
 			mRootStatus.setText("KO");
-			mRootStatus.setTextColor(Color.RED);
+			mRootStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 			mGetSuperuser.setVisibility(View.VISIBLE);
 		}
 	}
@@ -144,19 +141,19 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		if (RootUtils.hasRootAccess == true && RootUtils.hasBusybox == true) {
 			if (RootUtils.hasDropbear == true) {
 				mDropbearStatus.setText("OK");
-				mDropbearStatus.setTextColor(Color.GREEN);
+				mDropbearStatus.setTextColor(mContext.getResources().getColor(R.color.green_active));
 				mGetDropbear.setVisibility(View.GONE);
 			}
 			else {
 				mDropbearStatus.setText("KO");
-				mDropbearStatus.setTextColor(Color.RED);
+				mDropbearStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 				mGetDropbear.setVisibility(View.VISIBLE);
 				mServerStatusCode = STATUS_ERROR;
 			}
 		}
 		else {
 			mDropbearStatus.setText("KO");
-			mDropbearStatus.setTextColor(Color.RED);
+			mDropbearStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 			mGetDropbear.setVisibility(View.GONE);
 			mServerStatusCode = STATUS_ERROR;
 		}
@@ -167,12 +164,12 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			mServerStatusCode = STATUS_ERROR;
 		}
 		else {
-			mServerPid = ServerUtils.getServerPidFromPs();
-			Log.d(TAG, "ServerPage: updateServerStatusCode(): PID #" + mServerPid);
-			if (mServerPid < 0) {
+			mServerLock = ServerUtils.getServerLock(mContext);
+			Log.d(TAG, "ServerPage: updateServerStatusCode(): #" + mServerLock);
+			if (mServerLock < 0) {
 				mServerStatusCode = STATUS_ERROR;
 			}
-			else if (mServerPid == 0) {
+			else if (mServerLock == 0) {
 				mServerStatusCode = STATUS_STOPPED;
 			}
 			else {
@@ -185,41 +182,49 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 		switch (mServerStatusCode) {
 		case STATUS_STOPPED:
 			mServerStatus.setText("STOPPED");
-			mServerStatus.setTextColor(Color.RED);
+			mServerStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("START SERVER");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
 		case STATUS_STARTING:
 			mServerStatus.setText("STARTING");
-			mServerStatus.setTextColor(Color.YELLOW);
+			mServerStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STARTING...");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
 		case STATUS_STARTED:
 			mServerStatus.setText("STARTED");
-			mServerStatus.setTextColor(Color.GREEN);
+			mServerStatus.setTextColor(mContext.getResources().getColor(R.color.green_active));
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOP SERVER");
-			mServerLaunchPid.setText("PID " + mServerPid);
 			mInfos.setVisibility(View.VISIBLE);
 
 			String infos = "ssh ";
 			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
 				infos = infos.concat("root@");
 			}
-			infos = infos.concat((ServerUtils.getLocalIpAddress() != null) ? ServerUtils.getLocalIpAddress() : "UNKNOWN.IP.ADRESS");
+			String localIpAddress = ServerUtils.getLocalIpAddress();
+			infos = infos.concat((localIpAddress != null) ? localIpAddress : "UNKNOWN.INTERNAL.IP.ADDRESS");
+			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
+				infos = infos.concat(" -p " + mListeningPort);
+			}
+			infos = infos.concat("\n");
+			infos = infos.concat("ssh ");
+			if (SettingsHelper.getInstance(mContext).getCredentialsLogin() == true) {
+				infos = infos.concat("root@");
+			}
+			String externalIpAddress = ServerUtils.getExternalIpAddress();
+			infos = infos.concat((externalIpAddress != null) ? externalIpAddress : "UNKNOWN.EXTERNAL.IP.ADDRESS");
 			if (mListeningPort != SettingsHelper.LISTENING_PORT_DEFAULT) {
 				infos = infos.concat(" -p " + mListeningPort);
 			}
 
 			mInfosLabel.setText(infos);
-			
+
 			if (SettingsHelper.getInstance(mContext).getNotification() == true) {
 				Log.d(TAG, "ServerPage: updateServerStatus(): Notification");
 				Notification notification = new Notification(R.drawable.ic_launcher, "DropBear Server is running", System.currentTimeMillis());
@@ -232,19 +237,17 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			break;
 		case STATUS_STOPPING:
 			mServerStatus.setText("STOPPING");
-			mServerStatus.setTextColor(Color.YELLOW);
+			mServerStatus.setTextColor(mContext.getResources().getColor(R.color.orange_active));
 			mServerLaunch.setVisibility(View.VISIBLE);
 			mServerLaunchLabel.setText("STOPPING...");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
 		case STATUS_ERROR:
 			mServerStatus.setText("ERROR");
-			mServerStatus.setTextColor(Color.RED);
+			mServerStatus.setTextColor(mContext.getResources().getColor(R.color.red_active));
 			mServerLaunch.setVisibility(View.GONE);
 			mServerLaunchLabel.setText("ERROR");
-			mServerLaunchPid.setText("");
 			mInfos.setVisibility(View.GONE);
 			mInfosLabel.setText("");
 			break;
@@ -264,9 +267,16 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 				mServerStatusCode = STATUS_STARTING;
 				updateServerStatus();
 				mListeningPort = SettingsHelper.getInstance(mContext).getListeningPort();
-				// StartServer
-				ServerStarter serverStarter = new ServerStarter(mContext, this);
-				serverStarter.execute();
+
+				if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
+					Toast.makeText(mContext, "You are not over WiFi network (see Settings)", Toast.LENGTH_LONG).show();
+					onServerStopperComplete(false);
+				}
+				else {
+					// StartServer
+					ServerStarter serverStarter = new ServerStarter(mContext, this);
+					serverStarter.execute();
+				}
 				break;
 			case STATUS_STARTING:
 				mServerStatusCode = STATUS_STARTED;
@@ -275,7 +285,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 				mServerStatusCode = STATUS_STOPPING;
 				updateServerStatus();
 				// StopServer
-				ServerStopper serverStopper = new ServerStopper(mContext, this, mServerPid);
+				ServerStopper serverStopper = new ServerStopper(mContext, this);
 				serverStopper.execute();
 				break;
 			case STATUS_STOPPING:

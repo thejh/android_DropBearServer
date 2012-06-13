@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.shkschneider.dropbearserver"
     android:installLocation="preferExternal"
-    android:versionCode="160"
-    android:versionName="1.6.0" >
+    android:versionCode="170"
+    android:versionName="1.7.0" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -25,6 +25,7 @@
         android:label="@string/app_name" >
         <activity
             android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
