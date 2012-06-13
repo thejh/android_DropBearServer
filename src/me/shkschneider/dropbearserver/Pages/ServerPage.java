@@ -224,7 +224,7 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 			}
 
 			mInfosLabel.setText(infos);
-			
+
 			if (SettingsHelper.getInstance(mContext).getNotification() == true) {
 				Log.d(TAG, "ServerPage: updateServerStatus(): Notification");
 				Notification notification = new Notification(R.drawable.ic_launcher, "DropBear Server is running", System.currentTimeMillis());
@@ -267,9 +267,15 @@ public class ServerPage extends Activity implements OnClickListener, DropbearIns
 				mServerStatusCode = STATUS_STARTING;
 				updateServerStatus();
 				mListeningPort = SettingsHelper.getInstance(mContext).getListeningPort();
-				// StartServer
-				ServerStarter serverStarter = new ServerStarter(mContext, this);
-				serverStarter.execute();
+
+				if (SettingsHelper.getInstance(mContext).getOnlyOverWifi() == true && Utils.isConnectedToWiFi(mContext) == false) {
+					Toast.makeText(mContext, "You are not over WiFi network", Toast.LENGTH_LONG).show();
+				}
+				else {
+					// StartServer
+					ServerStarter serverStarter = new ServerStarter(mContext, this);
+					serverStarter.execute();
+				}
 				break;
 			case STATUS_STARTING:
 				mServerStatusCode = STATUS_STARTED;

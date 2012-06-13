@@ -132,6 +132,36 @@ public abstract class ServerUtils {
 	}
 
 	// WARNING: this is not threaded
+	public static final Boolean isDropbearRunning() {
+		try {
+			Process suProcess = Runtime.getRuntime().exec("su");
+
+			// stdin
+			DataOutputStream stdin = new DataOutputStream(suProcess.getOutputStream());
+			Log.d(TAG, "ServerUtils: getServerPidFromPs(): # ps dropbear");
+			stdin.writeBytes("ps dropbear\n");
+			stdin.flush();
+			stdin.writeBytes("exit\n");
+			stdin.flush();
+
+			// stdout
+			BufferedReader reader = new BufferedReader(new InputStreamReader(suProcess.getInputStream()));
+			ArrayList<String> output = new ArrayList<String>();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				output.add(line);
+			}
+
+			// parsing
+			return (output.size() >= 2);
+		}
+		catch (Exception e) {
+			Log.e(TAG, "ServerUtils: isDropbearRunning(): " + e.getMessage());
+		}
+		return false;
+	}
+
+	// WARNING: this is not threaded
 	public static final Boolean generateRsaPrivateKey(String path) {
 		ShellUtils.commands.add("/system/xbin/dropbearkey -t rsa -f " + path);
 		return ShellUtils.execute();

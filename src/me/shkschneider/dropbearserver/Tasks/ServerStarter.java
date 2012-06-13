@@ -15,7 +15,8 @@ import android.util.Log;
 public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 
 	private static final String TAG = "DropBearServer";
-	private static final int SDCARD_RW = 1015;
+	private static final int ID_ROOT = 0;
+	private static final int ID_SDCARD_RW = 1015;
 
 	private Context mContext = null;
 	private ProgressDialog mProgressDialog = null;
@@ -58,14 +59,20 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 			return falseWithError("You are not over WiFi network");
 		}
 
+		if (ServerUtils.isDropbearRunning() == true) {
+			Log.i(TAG, "ServerStopper: Killing processes");
+			if (ShellUtils.killall("dropbear") == false)
+				return falseWithError("killall(dropbear)");
+		}
+
 		String login = (SettingsHelper.getInstance(mContext).getCredentialsLogin() ? "root" : "android");
 		String passwd = SettingsHelper.getInstance(mContext).getCredentialsPasswd();
 		String banner = ServerUtils.getLocalDir(mContext) + "/banner";
 		String hostRsa = ServerUtils.getLocalDir(mContext) + "/host_rsa";
 		String hostDss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorizedKeys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
-		String listeningPort = "" + SettingsHelper.getInstance(mContext).getListeningPort();
-		//String lockFile = ServerUtils.getLocalDir(mContext) + "/lock";
+		Integer listeningPort = SettingsHelper.getInstance(mContext).getListeningPort();
+		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
 
 		String command = "/system/xbin/dropbear";
 		command = command.concat(" -A -N " + login);
@@ -73,14 +80,14 @@ public class ServerStarter extends AsyncTask<Void, String, Boolean> {
 		command = command.concat(" -r " + hostRsa + " -d " + hostDss);
 		command = command.concat(" -R " + authorizedKeys);
 		if (login.equals("root")) {
-			command = command.concat(" -U 0 -G 0");
+			command = command.concat(" -U " + ID_ROOT + " -G " + ID_ROOT);
 		}
 		else {
 			// TODO: uid=app gid=app groups=1015(sdcard_rw),3003(inet)
-			command = command.concat(" -U " + mContext.getApplicationInfo().uid + " -G " + SDCARD_RW);
+			command = command.concat(" -U " + mContext.getApplicationInfo().uid + " -G " + ID_SDCARD_RW);
 		}
 		command = command.concat(" -p " + listeningPort);
-		//command = command.concat(" -P " + lockFile);
+		command = command.concat(" -P " + pidFile);
 
 		if (SettingsHelper.getInstance(mContext).getDisallowRootLogins() == true) {
 			command = command.concat(" -w");

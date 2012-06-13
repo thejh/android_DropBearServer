@@ -48,6 +48,9 @@ public class ServerStopper extends AsyncTask<Void, String, Boolean> {
 	protected Boolean doInBackground(Void... params) {
 		Log.i(TAG, "ServerStopper: doInBackground()");
 
+		String pidFile = ServerUtils.getLocalDir(mContext) + "/pid";
+		ShellUtils.rm(pidFile);
+
 		String lockFile = ServerUtils.getLocalDir(mContext) + "/lock";
 		if (ShellUtils.echoToFile("0", lockFile) == false)
 			return falseWithError("echoToFile(0, " + lockFile + ")");
