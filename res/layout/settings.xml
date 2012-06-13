@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background"
+    android:background="@color/black"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -18,7 +18,7 @@
             style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:clickable="true"
             android:orientation="horizontal" >
 
@@ -160,7 +160,7 @@
             style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:clickable="true"
             android:orientation="horizontal" >
 
@@ -346,7 +346,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="You need DropBear to configure this"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/orange_active" />
             </LinearLayout>
         </LinearLayout>
 
@@ -355,7 +355,7 @@
             style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:clickable="false"
             android:orientation="horizontal" >
 
@@ -416,7 +416,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="You need DropBear to configure this"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/orange_active" />
             </LinearLayout>
         </LinearLayout>
 
@@ -425,7 +425,7 @@
             style="@style/list_item_single"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:clickable="false"
             android:orientation="horizontal" >
 
@@ -466,7 +466,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="You need DropBear to configure this"
-                    android:textColor="@color/red" />
+                    android:textColor="@color/orange_active" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -20,7 +20,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.conn.util.InetAddressUtils;
@@ -39,7 +38,8 @@ public abstract class ServerUtils {
 	private static final String TAG = "DropBearServer";
 
 	public static String localDir = null;
-	public static String ipAddress = null;
+	public static String externalIpAddress = null;
+	public static String localIpAddress = null;
 
 	public static final String getLocalDir(Context context) {
 		if (localDir == null) {
@@ -47,34 +47,39 @@ public abstract class ServerUtils {
 		}
 		return localDir;
 	}
-	
+
 	// WARNING: this is not threaded
 	public static final String getExternalIpAddress () {
-        	try {
-                	HttpClient httpclient = new DefaultHttpClient();
-                	HttpGet httpget = new HttpGet("http://ifconfig.me/ip");
-                	HttpResponse response = httpclient.execute(httpget);
-                	HttpEntity entity = response.getEntity();
-                
-                	if (entity != null) {
-                        	long len = entity.getContentLength();
-                        	if (len != -1 && len < 1024) {
-                                	ipAddress = EntityUtils.toString(entity);
-					Log.d(TAG, "ServerUtils: getExternalIpAddress(): " + ipAddress);
-                                	return ipAddress;
-                        	}
-                        }
-                }
-        	catch (Exception e) {
-			Log.e(TAG, "ServerUtils: getExternalIpAddress(): " + e.getMessage());
-        	}
-		ipAddress = null;
-                return ServerUtils.getLocalIpAddress();
-    	}
+		if (externalIpAddress == null) {
+			try {
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpGet httpget = new HttpGet("http://ifconfig.me/ip");
+				HttpResponse response = httpclient.execute(httpget);
+				HttpEntity entity = response.getEntity();
+				Log.d(TAG, "=1=");
+
+				if (entity != null) {
+					Log.d(TAG, "=2=");
+					long len = entity.getContentLength();
+					if (len != -1 && len < 1024) {
+						Log.d(TAG, "=3=");
+						externalIpAddress = EntityUtils.toString(entity);
+						Log.d(TAG, "ServerUtils: getExternalIpAddress(): " + externalIpAddress);
+						return externalIpAddress;
+					}
+				}
+			}
+			catch (Exception e) {
+				Log.e(TAG, "ServerUtils: getExternalIpAddress(): " + e.getMessage());
+			}
+			externalIpAddress = null;
+		}
+		return externalIpAddress;
+	}
 
 	// WARNING: this is not threaded
 	public static final String getLocalIpAddress() {
-		if (ipAddress == null) {
+		if (localIpAddress == null) {
 			try {
 				for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
 					NetworkInterface intf = en.nextElement();
@@ -83,8 +88,8 @@ public abstract class ServerUtils {
 						String ip4 = inetAddress.getHostAddress().toString();
 						if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip4)) {
 							Log.d(TAG, "ServerUtils: getLocalIpAddress(): " + ip4);
-							ipAddress = ip4;
-							return ipAddress;
+							localIpAddress = ip4;
+							return localIpAddress;
 						}
 					}
 				}
@@ -92,32 +97,28 @@ public abstract class ServerUtils {
 			catch (Exception e) {
 				Log.e(TAG, "ServerUtils: getLocalIpAddress(): " + e.getMessage());
 			}
-			ipAddress = null;
+			localIpAddress = null;
 		}
-		return ipAddress;
+		return localIpAddress;
 	}
 
-	/*
-	 * Dropbear seems to take some time to write the pidFile
-	 * As a consequence, this is only used by the BootReceiver
-	 */
 	// WARNING: this is not threaded
-	public static final Integer getServerPidFromFile(Context context) {
-		File f = new File(ServerUtils.getLocalDir(context) + "/pid");
+	public static final Integer getServerLock(Context context) {
+		File f = new File(ServerUtils.getLocalDir(context) + "/lock");
 		if (f.exists() == true && f.isFile() == true) {
 			try {
-				FileInputStream fis = new FileInputStream(ServerUtils.getLocalDir(context) + "/pid");
+				FileInputStream fis = new FileInputStream(f.getAbsolutePath());
 				DataInputStream dis = new DataInputStream(fis);
 				BufferedReader br = new BufferedReader(new InputStreamReader(dis));
 				String line = br.readLine();
 				dis.close();
 				if (line != null) {
 					try {
-						Integer pid = Integer.parseInt(line);
-						return pid;
+						Integer lock = Integer.parseInt(line);
+						return lock;
 					}
 					catch (Exception e) {
-						Log.e(TAG, "ServerUtils: getServerPidFromFile(): " + e.getMessage());
+						Log.e(TAG, "ServerUtils: getServerLock(): " + e.getMessage());
 						return -1;
 					}
 				}
@@ -131,7 +132,7 @@ public abstract class ServerUtils {
 	}
 
 	// WARNING: this is not threaded
-	public static final Integer getServerPidFromPs() {
+	public static final Boolean isDropbearRunning() {
 		try {
 			Process suProcess = Runtime.getRuntime().exec("su");
 
@@ -152,41 +153,23 @@ public abstract class ServerUtils {
 			}
 
 			// parsing
-			if (output.size() >= 2) {
-				line = null;
-				Iterator<String> itr = output.iterator();
-				while (itr.hasNext()) {
-					String element = itr.next();
-					if (element.matches("^\\S+\\s+[0-9]+\\s+.+\\sdropbear(\\s.+)?$")) {
-						line = element;
-						break ;
-					}
-				}
-				if (line != null) {
-					line = line.replaceFirst("^^\\S+\\s+([0-9]+)\\s+.+\\sdropbear(\\s.+)?$", "$1");
-					if (Utils.isNumeric(line)) {
-						Integer pid = Integer.parseInt(line);
-						return pid;
-					}
-				}
-			}
+			return (output.size() >= 2);
 		}
 		catch (Exception e) {
-			Log.e(TAG, "ServerUtils: getServerPidFromPs(): " + e.getMessage());
-			return -1;
+			Log.e(TAG, "ServerUtils: isDropbearRunning(): " + e.getMessage());
 		}
-		return 0;
+		return false;
 	}
 
 	// WARNING: this is not threaded
 	public static final Boolean generateRsaPrivateKey(String path) {
-		ShellUtils.commands.add("dropbearkey -t rsa -f " + path);
+		ShellUtils.commands.add("/system/xbin/dropbearkey -t rsa -f " + path);
 		return ShellUtils.execute();
 	}
 
 	// WARNING: this is not threaded
 	public static final Boolean generateDssPrivateKey(String path) {
-		ShellUtils.commands.add("dropbearkey -t dss -f " + path);
+		ShellUtils.commands.add("/system/xbin/dropbearkey -t dss -f " + path);
 		return ShellUtils.execute();
 	}
 

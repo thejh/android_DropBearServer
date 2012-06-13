@@ -126,7 +126,7 @@ public class ExplorerActivity extends ListActivity implements DialogInterface.On
 			String line = br.readLine();
 			dis.close();
 			// validates the PublicKey
-			if (line != null && line.startsWith("ssh-rsa ") == true)
+			if (line != null && line.startsWith("ssh-") == true)
 				mPublicKey = line;
 		}
 		catch (Exception e) {
