@@ -3,10 +3,10 @@ It allows you to easily install, configure and run a Secured SHell on your Andro
 SSH is a secured (encrypted) protocol that is used on millions of GNU/Linux servers to issue commands remotely.
 
 THIS REQUIRES ROOT PERMISSIONS
-If you don't know what 'root' or 'ssh' means, you should not install this!
+If you don't know what 'root' or 'ssh' means, you probably don't need this!
 
 * You will be able to gain shell access, just like 'adb shell'
-* You will be able to put and pull files via 'scp' or similar
+* You will be able to pull files via 'scp' or similar
 
 This rich front-end to DropBear allows you to easily configure tons of things:
 
@@ -32,5 +32,9 @@ MacOS:
 * Terminal: ssh
 * Terminal: scp
 * Cyberduck
+
+Next to come
+* Working SSH/SCP from phone
+* Proper detection of PID
 
 Now you will have full control of your device!

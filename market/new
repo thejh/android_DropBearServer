@@ -1,0 +1,6 @@
+* Many fixes (thanks to A. Davidson, J. Spatschil, D. Kahl, L. Weller and M. Sefi):
+  - Does not conflict with other dropbear binaries
+  - Properly detects server startup with all systems
+  - Fixed FC concerning rotation
+* Slight interface redesign for ICS
+* New logo (thanks to Johanna Nizard)
