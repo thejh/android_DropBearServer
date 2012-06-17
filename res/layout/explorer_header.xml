@@ -19,6 +19,7 @@
         android:paddingTop="4dp"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/green_active"
         android:textStyle="bold" />
 
     <View
