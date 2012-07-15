@@ -66,7 +66,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearRemover: doInBackground()");
 		
 		int step = 0;
-		int steps = 13;
+		int steps = 8;
 
 		String dropbear = ServerUtils.getLocalDir(mContext) + "/dropbear";
 		String dropbearkey = ServerUtils.getLocalDir(mContext) + "/dropbearkey";
@@ -77,17 +77,7 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
 		String lock = ServerUtils.getLocalDir(mContext) + "/lock";
 
-		// system rw
-		publishProgress("" + step++, "" + steps, "/system Read-Write");
-		if (ShellUtils.remountReadWrite("/system") == false) {
-			return falseWithError("/system");
-		}
-
 		// dropbear
-		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.rm("/system/xbin/dropbear") == false) {
-			return falseWithError("/system/xbin/dropbear");
-		}
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
 		if (ShellUtils.rm(dropbear) == false) {
 			return falseWithError(dropbear);
@@ -95,19 +85,11 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 
 		// dropbearkey
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.rm("/system/xbin/dropbearkey") == false) {
-			return falseWithError("/system/xbin/dropbearkey");
-		}
-		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
 		if (ShellUtils.rm(dropbearkey) == false) {
 			return falseWithError(dropbearkey);
 		}
 
 		// scp
-		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.rm("/system/xbin/scp") == false) {
-			return falseWithError("/system/xbin/scp");
-		}
 		publishProgress("" + step++, "" + steps, "SCP binary");
 		if (ShellUtils.rm(scp) == false) {
 			return falseWithError(scp);
@@ -141,12 +123,6 @@ public class DropbearRemover extends AsyncTask<Void, String, Boolean> {
 		publishProgress("" + step++, "" + steps, "Lock file");
 		if (ShellUtils.rm(lock) == false) {
 			return falseWithError(lock);
-		}
-
-		// system ro
-		publishProgress("" + step++, "" + steps, "/system Read-Only");
-		if (ShellUtils.remountReadOnly("/system") == false) {
-			return falseWithError("/system");
 		}
 		
 		return true;

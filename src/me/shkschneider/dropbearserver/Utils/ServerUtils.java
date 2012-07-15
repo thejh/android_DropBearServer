@@ -56,13 +56,10 @@ public abstract class ServerUtils {
 				HttpGet httpget = new HttpGet("http://ifconfig.me/ip");
 				HttpResponse response = httpclient.execute(httpget);
 				HttpEntity entity = response.getEntity();
-				Log.d(TAG, "=1=");
 
 				if (entity != null) {
-					Log.d(TAG, "=2=");
 					long len = entity.getContentLength();
 					if (len != -1 && len < 1024) {
-						Log.d(TAG, "=3=");
 						externalIpAddress = EntityUtils.toString(entity);
 						Log.d(TAG, "ServerUtils: getExternalIpAddress(): " + externalIpAddress);
 						return externalIpAddress;
@@ -163,13 +160,13 @@ public abstract class ServerUtils {
 
 	// WARNING: this is not threaded
 	public static final Boolean generateRsaPrivateKey(String path) {
-		ShellUtils.commands.add("/system/xbin/dropbearkey -t rsa -f " + path);
+		ShellUtils.commands.add(ServerUtils.getLocalDir(null) + "/dropbearkey -t rsa -f " + path);
 		return ShellUtils.execute();
 	}
 
 	// WARNING: this is not threaded
 	public static final Boolean generateDssPrivateKey(String path) {
-		ShellUtils.commands.add("/system/xbin/dropbearkey -t dss -f " + path);
+		ShellUtils.commands.add(ServerUtils.getLocalDir(null) + "/dropbearkey -t dss -f " + path);
 		return ShellUtils.execute();
 	}
 
@@ -312,7 +309,7 @@ public abstract class ServerUtils {
 				// stdin
 				DataOutputStream stdin = new DataOutputStream(suProcess.getOutputStream());
 				Log.d(TAG, "ServerUtils: getDropbearVersion(): # dropbear -h");
-				stdin.writeBytes("dropbear -h 2>&1 | busybox head -1\n");
+				stdin.writeBytes(ServerUtils.getLocalDir(null) + "/dropbear -h 2>&1 | busybox head -1\n");
 				stdin.flush();
 				stdin.writeBytes("exit\n");
 				stdin.flush();

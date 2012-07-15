@@ -62,7 +62,7 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		Log.i(TAG, "DropbearInstaller: doInBackground()");
 		
 		int step = 0;
-		int steps = 22;
+		int steps = 14;
 
 		String dropbear = ServerUtils.getLocalDir(mContext) + "/dropbear";
 		String dropbearkey = ServerUtils.getLocalDir(mContext) + "/dropbearkey";
@@ -72,12 +72,6 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		String host_dss = ServerUtils.getLocalDir(mContext) + "/host_dss";
 		String authorized_keys = ServerUtils.getLocalDir(mContext) + "/authorized_keys";
 		String lock = ServerUtils.getLocalDir(mContext) + "/lock";
-
-		// system rw
-		publishProgress("" + step++, "" + steps, "/system Read-Write");
-		if (ShellUtils.remountReadWrite("/system") == false) {
-			return falseWithError("/system");
-		}
 		
 		// dropbear
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
@@ -85,16 +79,8 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 			return falseWithError(dropbear);
 		}
 		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.lnSymbolic(dropbear, "/system/xbin/dropbear") == false) {
-			return falseWithError("/system/xbin/dropbear");
-		}
-		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.chown("/system/xbin/dropbear", "0:0") == false) {
-			return falseWithError("/system/xbin/dropbear");
-		}
-		publishProgress("" + step++, "" + steps, "Dropbear binary");
-		if (ShellUtils.chmod("/system/xbin/dropbear", "755") == false) {
-			return falseWithError("/system/xbin/dropbear");
+		if (ShellUtils.chmod(dropbear, "755") == false) {
+			return falseWithError(dropbear);
 		}
 		
 		// dropbearkey
@@ -103,16 +89,8 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 			return falseWithError(dropbearkey);
 		}
 		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.lnSymbolic(dropbearkey, "/system/xbin/dropbearkey") == false) {
-			return falseWithError("/system/xbin/dropbearkey");
-		}
-		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.chown("/system/xbin/dropbearkey", "0:0") == false) {
-			return falseWithError("/system/xbin/dropbearkey");
-		}
-		publishProgress("" + step++, "" + steps, "Dropbearkey binary");
-		if (ShellUtils.chmod("/system/xbin/dropbearkey", "755") == false) {
-			return falseWithError("/system/xbin/dropbearkey");
+		if (ShellUtils.chmod(dropbearkey, "755") == false) {
+			return falseWithError(dropbearkey);
 		}
 		
 		// scp
@@ -121,16 +99,8 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 			return falseWithError(scp);
 		}
 		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.lnSymbolic(scp, "/system/xbin/scp") == false) {
-			return falseWithError("/system/xbin/scp");
-		}
-		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.chown("/system/xbin/scp", "0:0") == false) {
-			return falseWithError("/system/xbin/scp");
-		}
-		publishProgress("" + step++, "" + steps, "SCP binary");
-		if (ShellUtils.chmod("/system/xbin/scp", "755") == false) {
-			return falseWithError("/system/xbin/scp");
+		if (ShellUtils.chmod(scp, "755") == false) {
+			return falseWithError(scp);
 		}
 		
 		// banner
@@ -173,12 +143,6 @@ public class DropbearInstaller extends AsyncTask<Void, String, Boolean> {
 		publishProgress("" + step++, "" + steps, "Lock file");
 		if (ShellUtils.echoToFile("0", lock) == false) {
 			return falseWithError(lock);
-		}
-
-		// system ro
-		publishProgress("" + step++, "" + steps, "/system Read-Only");
-		if (ShellUtils.remountReadOnly("/system") == false) {
-			return falseWithError("/system");
 		}
 		
 		return true;
