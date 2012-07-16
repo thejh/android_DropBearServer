@@ -58,7 +58,6 @@ public class MainActivity extends Activity implements CheckerCallback<Boolean> {
 			appVersion = packageInfo.versionName.toString();
 		}
 		catch (Exception e) {
-			appVersion = "1.0";
 			Log.e(TAG, "MainActivity: onCreate(): " + e.getMessage());
 		}
 		Log.i(TAG, appName + " v" + appVersion + " (" + packageName + ") Android " + Build.VERSION.RELEASE + " (API-" + Build.VERSION.SDK + ")");
