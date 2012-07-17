@@ -1,3 +1,4 @@
+[1.7.0]
 * Many fixes (thanks to A. Davidson, J. Spatschil, D. Kahl, L. Weller and M. Sefi):
   - Does not conflict with other dropbear binaries
   - Properly detects server startup with all systems

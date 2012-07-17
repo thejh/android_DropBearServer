@@ -1,10 +1,15 @@
+[Overview]
+
 This is a SSH server, based on DropBear.
 It allows you to easily install, configure and run a Secured SHell on your Android phone.
 SSH is a secured (encrypted) protocol that is used on millions of GNU/Linux servers to issue commands remotely.
 
-THIS REQUIRES ROOT PERMISSIONS
-If you don't know what 'root' or 'ssh' means, you probably don't need this!
+[Attention]
 
+THIS REQUIRES ROOT PERMISSIONS If you don't know what 'root', 'ssh' or 'public key' means, you probably don't need this! This is an Open-Source software released under the GNU GPLv2+. [Features]
+Review its code at GitHub: https://github.com/shkschneider/android_DropBearServer
+
+[Features]
 * You will be able to gain shell access, just like 'adb shell'
 * You will be able to pull files via 'scp' or similar
 
@@ -16,25 +21,40 @@ This rich front-end to DropBear allows you to easily configure tons of things:
 * Start/Stop the server
 * Manage credentials (publickeys or master password)
 * Loads public keys from SDCard
-* and much more!
-
-Highly configurable!
-
-GNU/Linux:
-* Terminal: ssh
-* Terminal: scp
-
-Windows:
-* PuTTY/KiTTY
-* WinSCP
-
-MacOS:
-* Terminal: ssh
-* Terminal: scp
-* Cyberduck
-
-Next to come
-* Working SSH/SCP from phone
-* Proper detection of PID
 
 Now you will have full control of your device!
+
+[Will It Conflict With Other Binaries]
+
+Up to version 1.7, it might.
+From 1.8 and up, it won't :)
+
+[How To Connect From Computer]
+
+* Windows
+- File transfer: WinSCP
+- Shell access: PuTTY
+* Linux
+- File transfer: 'scp' command from terminal
+- Shell access: 'ssh' command from terminal
+* Mac
+- File transfer: Cyberduck, 'scp' command from terminal
+- Shell access: 'ssh' command from terminal
+
+[How To Add Public Keys]
+
+* Put your public key on your sdcard
+* In the Settings panel, click on "Public Keys" to open a built-in file explorer
+* Click on a public key file to review and add it
+* You can remove a public key by clicking on it in the Settings panel.
+
+[Next To Come]
+
+* Proper detection and use of binaries
+* Fixed external IP detection
+* Intents for broadcasts (START/STOP)
+* Public keys fixes
+* Working SSH/SCP from phone
+* SFTP
+
+Tags: public key, ssh, terminal, remote, shell, adb, scp
