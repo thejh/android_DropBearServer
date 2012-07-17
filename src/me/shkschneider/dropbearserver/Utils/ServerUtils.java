@@ -233,7 +233,7 @@ public abstract class ServerUtils {
 		if (f.exists() == true && f.isFile() == true) {
 			try {
 				BufferedWriter out = new BufferedWriter(new FileWriter(path, true));
-				out.write(publicKey);
+				out.write(publicKey + "\n");
 				out.close();
 				return true;
 			}

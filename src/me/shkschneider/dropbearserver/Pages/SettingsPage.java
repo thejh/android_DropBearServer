@@ -171,7 +171,6 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 
 		mPublicKeysAlertDialog = mAlertDialogBuilder.create();
 		mPublicKeysAlertDialog.setTitle("Confirm");
-		mPublicKeysAlertDialog.setMessage("You are about to remove this public key.");
 		mPublicKey = null;
 
 		updateAll();
@@ -249,6 +248,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 		mPublicKeysContent.removeAllViews();
 		mPublicKeysList = ServerUtils.getPublicKeys(ServerUtils.getLocalDir(mContext) + "/authorized_keys");
 		for (String publicKey : mPublicKeysList) {
+			Log.d(TAG, "PUBLICKEY: " + publicKey);
 			View view = mLayoutInflater.inflate(R.layout.settings_list, null);
 			TextView textView = (TextView) view.findViewById(R.id.settings_name);
 			textView.setText(publicKey);
@@ -323,6 +323,7 @@ public class SettingsPage implements OnClickListener, OnCheckedChangeListener, D
 			if (textView != null) {
 				mPublicKey = textView.getText().toString();
 				if (mPublicKey != null) {
+					mPublicKeysAlertDialog.setMessage("You are about to remove this public key:" + "\n" + mPublicKey);
 					mPublicKeysAlertDialog.show();
 				}
 			}
